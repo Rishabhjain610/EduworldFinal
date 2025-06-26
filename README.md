@@ -73,7 +73,5 @@
 ---
 ## 📽️ Demo
 
-🎥 A complete walkthrough video will be provided demonstrating all key features of both teacher and student panels. *(Add your video link here when available)*
-
----
+https://github.com/user-attachments/assets/b81ca59d-f86c-4735-a1f9-23b3d53a5322
 
