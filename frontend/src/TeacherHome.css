@@ -1,0 +1,14 @@
+@media (max-width:530px) {
+.teachingTools{
+    display: none;
+}
+.studentEnag{
+    display: none;
+}
+.orangeCircle{
+    display:none;
+}
+.circularText{
+    display: none;
+}
+}
