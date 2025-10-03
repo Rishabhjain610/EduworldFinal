@@ -1,4 +1,3 @@
-
 import React, { useContext } from "react";
 import { dataContext, prevUser } from "./UserContextChat";
 
@@ -20,13 +19,16 @@ function Chat() {
 
   return (
     <div className="chat-page h-[80vh] bg-black text-white flex flex-col  w-full p-8 gap-8 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700">
-      
       {/* User Message */}
       <div className="flex justify-end">
         <div className="bg-black border border-gray-700 p-6 rounded-xl min-w-[45%] shadow-lg text-lg">
           {prevFeature === "upimg" ? (
             <>
-              <img src={prevUser.imgUrl} alt="Uploaded" className="h-34 w-44 object-cover rounded-lg mb-4" />
+              <img
+                src={prevUser.imgUrl}
+                alt="Uploaded"
+                className="h-34 w-44 object-cover rounded-lg mb-4"
+              />
               <span className="text-lg">{prevUser.prompt}</span>
             </>
           ) : (
@@ -43,7 +45,11 @@ function Chat() {
               {!genImgUrl ? (
                 <span className="text-2xl">Generating Image...</span>
               ) : (
-                <img src={genImgUrl} alt="Generated" className="w-[400px] h-70 rounded-lg mb-4" />
+                <img
+                  src={genImgUrl}
+                  alt="Generated"
+                  className="w-[400px] h-70 rounded-lg mb-4"
+                />
               )}
             </>
           ) : !showResult ? (
@@ -53,7 +59,6 @@ function Chat() {
           )}
         </div>
       </div>
-      
     </div>
   );
 }

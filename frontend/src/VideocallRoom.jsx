@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useParams } from "react-router-dom";
@@ -11,7 +10,7 @@ const VideocallRoom = () => {
     const myMeeting = async () => {
       const appID = 1234567890; // Replace with your actual App ID
       const serverSecret = "your_server_secret"; // Replace with your actual server secret
-      
+
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
         appID,
         serverSecret,

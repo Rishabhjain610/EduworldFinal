@@ -15,7 +15,10 @@ const VideoCallHome = () => {
         className="p-2 rounded-md border border-black bg-neutral-200 text-black focus:outline-none focus:ring-2 focus:ring-black"
         onChange={(e) => setRoomId(e.target.value)}
       />
-      <button className="px-4 py-2 bg-orange-400 text-white rounded-md hover:bg-orange-450 " onClick={handleJoin}>
+      <button
+        className="px-4 py-2 bg-orange-400 text-white rounded-md hover:bg-orange-450 "
+        onClick={handleJoin}
+      >
         Join Now
       </button>
     </div>

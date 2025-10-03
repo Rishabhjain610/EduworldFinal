@@ -1,7 +1,7 @@
-import { useState } from "react"
-import jsPDF from "jspdf"
-import "jspdf-autotable"
-import './Canteen.css'
+import { useState } from "react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import "./Canteen.css";
 import {
   Add,
   Remove,
@@ -14,7 +14,7 @@ import {
   Favorite,
   FavoriteBorder,
   Star,
-} from "@mui/icons-material"
+} from "@mui/icons-material";
 import {
   Button,
   Badge,
@@ -37,7 +37,7 @@ import {
   Tabs,
   Tab,
   Zoom,
-} from "@mui/material"
+} from "@mui/material";
 
 // Import the same images from your original code
 import vadaPavImg from "./assets/vadaPav.jpg";
@@ -53,25 +53,27 @@ import thaliImg from "./assets/thali.jpeg";
 import vegPulaoImg from "./assets/VegPulao.jpeg";
 
 import logocanteen from "./assets/logocanteen.png";
-import axios from "axios"
+import axios from "axios";
 
 const Canteen = () => {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [cart, setCart] = useState([])
-  const [mobileCartOpen, setMobileCartOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" })
-  const [activeTab, setActiveTab] = useState(0)
-  const [favorites, setFavorites] = useState([])
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [cart, setCart] = useState([]);
+  const [mobileCartOpen, setMobileCartOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+  const [activeTab, setActiveTab] = useState(0);
+  const [favorites, setFavorites] = useState([]);
 
   const foodCategories = [
     { id: 0, name: "All" },
     { id: 1, name: "Main Course" },
     { id: 2, name: "Snacks" },
     { id: 3, name: "Beverages" },
-  ]
-
+  ];
 
   const foodItems = [
     {
@@ -108,7 +110,8 @@ const Canteen = () => {
       image: dabeliImg,
       category: "Snacks",
       rating: 4.3,
-      description: "Tangy mashed potato filling in a bun with chutney and pomegranate.",
+      description:
+        "Tangy mashed potato filling in a bun with chutney and pomegranate.",
     },
     {
       id: 5,
@@ -144,7 +147,7 @@ const Canteen = () => {
       image: vegBiryaniImg,
       category: "Main Course",
       rating: 4.6,
-      description: "Aromatic rice cooked with vegetables and spices."
+      description: "Aromatic rice cooked with vegetables and spices.",
     },
     {
       id: 9,
@@ -153,7 +156,8 @@ const Canteen = () => {
       image: thaliImg,
       category: "Main Course",
       rating: 4.3,
-      description: "A balanced meal with a variety of curries, rice, chapati, and salad."
+      description:
+        "A balanced meal with a variety of curries, rice, chapati, and salad.",
     },
     {
       id: 10,
@@ -162,81 +166,102 @@ const Canteen = () => {
       image: vegPulaoImg,
       category: "Main Course",
       rating: 4.4,
-      description: "Flavored rice with mixed vegetables served with raita."
+      description: "Flavored rice with mixed vegetables served with raita.",
     },
   ];
 
-
-  const handleSearch = (e) => setSearchTerm(e.target.value.toLowerCase())
+  const handleSearch = (e) => setSearchTerm(e.target.value.toLowerCase());
 
   const handleAddToCart = (item) => {
-    setLoading(true)
+    setLoading(true);
     setTimeout(() => {
-      const existingItem = cart.find((cartItem) => cartItem.id === item.id)
+      const existingItem = cart.find((cartItem) => cartItem.id === item.id);
       if (existingItem) {
         setCart(
           cart.map((cartItem) =>
-            cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem,
-          ),
-        )
+            cartItem.id === item.id
+              ? { ...cartItem, quantity: cartItem.quantity + 1 }
+              : cartItem
+          )
+        );
       } else {
-        setCart([...cart, { ...item, quantity: 1 }])
+        setCart([...cart, { ...item, quantity: 1 }]);
       }
-      setLoading(false)
-      setSnackbar({ open: true, message: `${item.name} added to cart!`, severity: "success" })
-    }, 300)
-  }
+      setLoading(false);
+      setSnackbar({
+        open: true,
+        message: `${item.name} added to cart!`,
+        severity: "success",
+      });
+    }, 300);
+  };
 
   const handleRemoveFromCart = (id) => {
-    setCart(cart.filter((item) => item.id !== id))
-    setSnackbar({ open: true, message: "Item removed from cart", severity: "info" })
-  }
+    setCart(cart.filter((item) => item.id !== id));
+    setSnackbar({
+      open: true,
+      message: "Item removed from cart",
+      severity: "info",
+    });
+  };
 
   const handleIncreaseQuantity = (id) => {
-    setCart(cart.map((item) => (item.id === id ? { ...item, quantity: item.quantity + 1 } : item)))
-  }
+    setCart(
+      cart.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
 
   const handleDecreaseQuantity = (id) => {
     setCart(
       cart
-        .map((item) => (item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item))
-        .filter((item) => item.quantity > 0),
-    )
-  }
+        .map((item) =>
+          item.id === id && item.quantity > 1
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
 
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0)
-  }
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
 
   const toggleFavorite = (id) => {
     if (favorites.includes(id)) {
-      setFavorites(favorites.filter((itemId) => itemId !== id))
+      setFavorites(favorites.filter((itemId) => itemId !== id));
     } else {
-      setFavorites([...favorites, id])
-      setSnackbar({ open: true, message: "Added to favorites!", severity: "success" })
+      setFavorites([...favorites, id]);
+      setSnackbar({
+        open: true,
+        message: "Added to favorites!",
+        severity: "success",
+      });
     }
-  }
+  };
 
   const generateMenuPDF = () => {
-    setLoading(true)
+    setLoading(true);
     setTimeout(() => {
-      const doc = new jsPDF()
-      doc.setFont("Helvetica", "normal")
+      const doc = new jsPDF();
+      doc.setFont("Helvetica", "normal");
       try {
-        doc.addImage(logocanteen, "PNG", 70, 10, 70, 30)
+        doc.addImage(logocanteen, "PNG", 70, 10, 70, 30);
       } catch (error) {
-        console.error("Error adding logo:", error)
+        console.error("Error adding logo:", error);
       }
-      doc.setFontSize(18)
-      doc.text("Weekly Menu", 105, 50, { align: "center" })
-      let startY = 60
-      doc.setFontSize(12)
-      doc.text("Day", 20, startY)
-      doc.text("Breakfast", 60, startY)
-      doc.text("Lunch", 110, startY)
-      doc.text("Dinner", 160, startY)
-      doc.line(20, startY + 2, 190, startY + 2)
-      startY += 10
+      doc.setFontSize(18);
+      doc.text("Weekly Menu", 105, 50, { align: "center" });
+      let startY = 60;
+      doc.setFontSize(12);
+      doc.text("Day", 20, startY);
+      doc.text("Breakfast", 60, startY);
+      doc.text("Lunch", 110, startY);
+      doc.text("Dinner", 160, startY);
+      doc.line(20, startY + 2, 190, startY + 2);
+      startY += 10;
       const tableData = [
         ["Monday", "Poha", "Misal Pav", "Veg Sandwich"],
         ["Tuesday", "Upma", "Vada Pav", "Cutting Chai"],
@@ -247,25 +272,33 @@ const Canteen = () => {
         ["Sunday", "Mendu Vada", "Dabeli", "Masala Chai"],
       ];
       tableData.forEach((row) => {
-        doc.text(row[0], 20, startY)
-        doc.text(row[1], 60, startY)
-        doc.text(row[2], 110, startY)
-        doc.text(row[3], 160, startY)
-        startY += 10
-      })
-      doc.save("Menu.pdf")
-      setLoading(false)
-      setSnackbar({ open: true, message: "Menu downloaded successfully!", severity: "success" })
-    }, 800)
-  }
+        doc.text(row[0], 20, startY);
+        doc.text(row[1], 60, startY);
+        doc.text(row[2], 110, startY);
+        doc.text(row[3], 160, startY);
+        startY += 10;
+      });
+      doc.save("Menu.pdf");
+      setLoading(false);
+      setSnackbar({
+        open: true,
+        message: "Menu downloaded successfully!",
+        severity: "success",
+      });
+    }, 800);
+  };
 
   const placeOrder = async (orderItems) => {
     setLoading(true);
     try {
       // Directly pass the orderItems (your cart array) as the POST data.
-      const response = await axios.post("http://localhost:8080/place-order", { items: orderItems }, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/order/place-order",
+        { items: orderItems },
+        {
+          withCredentials: true,
+        }
+      );
 
       setSnackbar({
         open: true,
@@ -277,77 +310,97 @@ const Canteen = () => {
       setCart([]);
     } catch (err) {
       console.error("Error placing order:", err);
-      setSnackbar({ open: true, message: "Failed to place order. Please try again.", severity: "error" });
+      setSnackbar({
+        open: true,
+        message: "Failed to place order. Please try again.",
+        severity: "error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const handleCheckout = async () => {
-    await placeOrder(cart.map(item => ({
-      name: item.name,
-      quantity: item.quantity,
-      price: item.price,
-    })));
+    await placeOrder(
+      cart.map((item) => ({
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      }))
+    );
     //console.log("order placed successfully");
   };
 
   const generateBillPDF = () => {
     if (cart.length === 0) {
-      setSnackbar({ open: true, message: "Cart is empty. Cannot generate bill.", severity: "error" })
-      return
+      setSnackbar({
+        open: true,
+        message: "Cart is empty. Cannot generate bill.",
+        severity: "error",
+      });
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
     setTimeout(() => {
-      const doc = new jsPDF()
-      doc.setFont("Helvetica", "normal")
+      const doc = new jsPDF();
+      doc.setFont("Helvetica", "normal");
       try {
-        doc.addImage(logocanteen, "PNG", 70, 10, 70, 30)
+        doc.addImage(logocanteen, "PNG", 70, 10, 70, 30);
       } catch (error) {
-        console.error("Error adding logo:", error)
+        console.error("Error adding logo:", error);
       }
-      doc.setFontSize(18)
-      doc.text("Billing Receipt", 105, 50, { align: "center" })
+      doc.setFontSize(18);
+      doc.text("Billing Receipt", 105, 50, { align: "center" });
 
-      let startY = 60
-      doc.setFontSize(12)
-      doc.text("Item", 20, startY)
-      doc.text("Price", 80, startY)
-      doc.text("Quantity", 120, startY)
-      doc.text("Total", 160, startY)
-      doc.line(20, startY + 2, 190, startY + 2)
-      startY += 10
+      let startY = 60;
+      doc.setFontSize(12);
+      doc.text("Item", 20, startY);
+      doc.text("Price", 80, startY);
+      doc.text("Quantity", 120, startY);
+      doc.text("Total", 160, startY);
+      doc.line(20, startY + 2, 190, startY + 2);
+      startY += 10;
       cart.forEach((item) => {
-        doc.text(item.name, 20, startY)
-        doc.text(`Rs ${item.price}`, 80, startY)
-        doc.text(`${item.quantity}`, 120, startY)
-        doc.text(`Rs ${item.price * item.quantity}`, 160, startY)
-        startY += 10
-      })
-      doc.setFontSize(14)
-      doc.text(`Total: Rs ${calculateTotal()}`, 105, startY + 10, { align: "center" })
-      doc.save("Bill.pdf")
-      setLoading(false)
-      setSnackbar({ open: true, message: "Bill generated successfully!", severity: "success" })
-      setCart([])
-    }, 1000)
-  }
+        doc.text(item.name, 20, startY);
+        doc.text(`Rs ${item.price}`, 80, startY);
+        doc.text(`${item.quantity}`, 120, startY);
+        doc.text(`Rs ${item.price * item.quantity}`, 160, startY);
+        startY += 10;
+      });
+      doc.setFontSize(14);
+      doc.text(`Total: Rs ${calculateTotal()}`, 105, startY + 10, {
+        align: "center",
+      });
+      doc.save("Bill.pdf");
+      setLoading(false);
+      setSnackbar({
+        open: true,
+        message: "Bill generated successfully!",
+        severity: "success",
+      });
+      setCart([]);
+    }, 1000);
+  };
 
   const filteredItems = foodItems.filter((item) => {
     const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm) || item.description.toLowerCase().includes(searchTerm)
-    const matchesCategory = activeTab === 0 || item.category === foodCategories[activeTab].name
-    return matchesSearch && matchesCategory
-  })
+      item.name.toLowerCase().includes(searchTerm) ||
+      item.description.toLowerCase().includes(searchTerm);
+    const matchesCategory =
+      activeTab === 0 || item.category === foodCategories[activeTab].name;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <div className="min-h-screen bg-white">
-
-      <AppBar position="sticky" className="bg-white text-gray-800 shadow-md" id="AppBarHidden">
+      <AppBar
+        position="sticky"
+        className="bg-white text-gray-800 shadow-md"
+        id="AppBarHidden"
+      >
         <Toolbar className="flex justify-between items-center">
-          <div className="flex items-center">
-          </div>
+          <div className="flex items-center"></div>
 
           <div className="hidden md:flex items-center space-x-4">
             <Badge badgeContent={cart.length} color="primary">
@@ -364,7 +417,10 @@ const Canteen = () => {
             </Button>
           </div>
 
-          <IconButton className="lg:hidden" onClick={() => setMobileCartOpen(true)}>
+          <IconButton
+            className="lg:hidden"
+            onClick={() => setMobileCartOpen(true)}
+          >
             <Badge badgeContent={cart.length} color="primary">
               <ShoppingCart />
             </Badge>
@@ -423,8 +479,15 @@ const Canteen = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredItems.length > 0 ? (
               filteredItems.map((item, index) => (
-                <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }} key={item.id}>
-                  <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300" style={{ borderRadius: "15px" }}>
+                <Zoom
+                  in={true}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                  key={item.id}
+                >
+                  <Card
+                    className="overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                    style={{ borderRadius: "15px" }}
+                  >
                     <div className="relative">
                       <CardMedia
                         component="img"
@@ -437,21 +500,40 @@ const Canteen = () => {
                         className="absolute top-6 right-0 bg-white/80 hover:bg-white"
                         onClick={() => toggleFavorite(item.id)}
                       >
-                        {favorites.includes(item.id) ? <Favorite className="text-red-500" /> : <FavoriteBorder />}
+                        {favorites.includes(item.id) ? (
+                          <Favorite className="text-red-500" />
+                        ) : (
+                          <FavoriteBorder />
+                        )}
                       </IconButton>
-                      <Chip label={item.category} size="small" className="absolute bottom-2 left-2 bg-white/80" />
+                      <Chip
+                        label={item.category}
+                        size="small"
+                        className="absolute bottom-2 left-2 bg-white/80"
+                      />
                     </div>
                     <CardContent>
                       <div className="flex justify-between items-start mb-2">
-                        <Typography variant="h6" component="h3" className="font-bold">
+                        <Typography
+                          variant="h6"
+                          component="h3"
+                          className="font-bold"
+                        >
                           {item.name}
                         </Typography>
-                        <Typography variant="h6" className="font-bold text-neutral-800">
+                        <Typography
+                          variant="h6"
+                          className="font-bold text-neutral-800"
+                        >
                           ₹{item.price}
                         </Typography>
                       </div>
 
-                      <Typography variant="body2" color="textSecondary" className="mb-3 line-clamp-2">
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        className="mb-3 line-clamp-2"
+                      >
                         {item.description}
                       </Typography>
 
@@ -459,7 +541,11 @@ const Canteen = () => {
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`text-sm ${i < Math.floor(item.rating) ? "text-yellow-500" : "text-gray-300"}`}
+                            className={`text-sm ${
+                              i < Math.floor(item.rating)
+                                ? "text-yellow-500"
+                                : "text-gray-300"
+                            }`}
                           />
                         ))}
                         <Typography variant="body2" className="ml-1">
@@ -477,7 +563,8 @@ const Canteen = () => {
                             <Remove fontSize="small" />
                           </IconButton>
                           <Typography className="px-2">
-                            {cart.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
+                            {cart.find((cartItem) => cartItem.id === item.id)
+                              ?.quantity || 0}
                           </Typography>
                           <IconButton
                             size="small"
@@ -514,9 +601,15 @@ const Canteen = () => {
 
         {/* Cart Section - Desktop */}
         <div className="hidden lg:block lg:w-1/4">
-          <Card className="sticky top-24 overflow-hidden shadow-lg bg-gradient-to-br from-indigo-600 to-blue-700 text-white" style={{ borderRadius: "15px" }}>
+          <Card
+            className="sticky top-24 overflow-hidden shadow-lg bg-gradient-to-br from-indigo-600 to-blue-700 text-white"
+            style={{ borderRadius: "15px" }}
+          >
             <CardContent>
-              <Typography variant="h5" className="font-bold mb-4 flex items-center">
+              <Typography
+                variant="h5"
+                className="font-bold mb-4 flex items-center"
+              >
                 <ShoppingCart className="mr-2" /> Your Order
               </Typography>
 
@@ -532,7 +625,10 @@ const Canteen = () => {
                 <>
                   <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
                     {cart.map((item) => (
-                      <div key={item.id} className="flex items-center justify-between bg-white/10 p-3 rounded-lg">
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between bg-white/10 p-3 rounded-lg"
+                      >
                         <div className="flex items-center">
                           <img
                             src={item.image || "/placeholder.svg"}
@@ -550,7 +646,10 @@ const Canteen = () => {
                         </div>
 
                         <div className="flex items-center">
-                          <Typography variant="body1" className="font-medium mr-2">
+                          <Typography
+                            variant="body1"
+                            className="font-medium mr-2"
+                          >
                             ₹{item.price * item.quantity}
                           </Typography>
                           <IconButton
@@ -569,7 +668,9 @@ const Canteen = () => {
 
                   <div className="flex justify-between items-center mb-2">
                     <Typography>Subtotal</Typography>
-                    <Typography className="font-medium">₹{calculateTotal()}</Typography>
+                    <Typography className="font-medium">
+                      ₹{calculateTotal()}
+                    </Typography>
                   </div>
 
                   <div className="flex justify-between items-center mb-4">
@@ -594,7 +695,9 @@ const Canteen = () => {
                 onClick={handleCheckout}
                 disabled={cart.length === 0 || loading}
                 className=" text-indigo-700 hover:bg-gray-100 font-medium py-3 rounded-full"
-                startIcon={loading ? <CircularProgress size={20} /> : <ShoppingCart />}
+                startIcon={
+                  loading ? <CircularProgress size={20} /> : <ShoppingCart />
+                }
               >
                 {loading ? "Processing..." : "Checkout"}
               </Button>
@@ -603,13 +706,20 @@ const Canteen = () => {
         </div>
       </div>
       {/* Mobile Cart Drawer */}
-      <Drawer anchor="right" open={mobileCartOpen} onClose={() => setMobileCartOpen(false)}>
+      <Drawer
+        anchor="right"
+        open={mobileCartOpen}
+        onClose={() => setMobileCartOpen(false)}
+      >
         <Box className="w-80 p-4 h-full bg-gradient-to-br from-indigo-600 to-blue-700 text-white">
           <div className="flex justify-between items-center mb-6">
             <Typography variant="h6" className="font-bold">
               Your Order
             </Typography>
-            <IconButton onClick={() => setMobileCartOpen(false)} className="text-white">
+            <IconButton
+              onClick={() => setMobileCartOpen(false)}
+              className="text-white"
+            >
               <DeleteOutline />
             </IconButton>
           </div>
@@ -625,7 +735,10 @@ const Canteen = () => {
             <>
               <div className="space-y-3 flex-1 overflow-y-auto max-h-[calc(100vh-250px)]">
                 {cart.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between bg-white/10 p-3 rounded-lg">
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between bg-white/10 p-3 rounded-lg"
+                  >
                     <div>
                       <Typography variant="body1" className="font-medium">
                         {item.name} × {item.quantity}
@@ -664,7 +777,9 @@ const Canteen = () => {
             }}
             disabled={cart.length === 0 || loading}
             className="bg-white text-indigo-700 hover:bg-gray-100 font-medium py-3 rounded-full"
-            startIcon={loading ? <CircularProgress size={20} /> : <ShoppingCart />}
+            startIcon={
+              loading ? <CircularProgress size={20} /> : <ShoppingCart />
+            }
           >
             {loading ? "Processing..." : "Checkout"}
           </Button>
@@ -678,22 +793,24 @@ const Canteen = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} variant="filled">
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>
       {/* Loading Overlay */}
-      {
-        loading && (
-          <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
-            <Paper className="p-6 rounded-xl flex items-center gap-4">
-              <CircularProgress />
-              <Typography>Processing your request...</Typography>
-            </Paper>
-          </div>
-        )
-      }
-    </div >
-  )
-}
-export default Canteen
+      {loading && (
+        <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
+          <Paper className="p-6 rounded-xl flex items-center gap-4">
+            <CircularProgress />
+            <Typography>Processing your request...</Typography>
+          </Paper>
+        </div>
+      )}
+    </div>
+  );
+};
+export default Canteen;
