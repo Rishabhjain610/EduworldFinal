@@ -335,7 +335,7 @@ const Canteen = () => {
 
     // 2. Open Razorpay checkout
     const options = {
-      key: "YOUR_RAZORPAY_KEY_ID", // Replace with your Razorpay key
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Replace with your Razorpay key
       amount: order.amount,
       currency: order.currency,
       name: "Canteen Order",
@@ -359,6 +359,7 @@ const Canteen = () => {
           },
           { withCredentials: true }
         );
+        generateBillPDF();
         setSnackbar({
           open: true,
           message: "Order placed and payment successful! Check WhatsApp for updates.",
