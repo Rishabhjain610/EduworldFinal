@@ -190,7 +190,9 @@ export default function StudentLandingPage({ username, onLogout }) {
             Chatbot
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-          <Language />
+          <Link>
+            <Language />
+          </Link>
         </nav>
 
         {/* Mobile Hamburger Icon */}
