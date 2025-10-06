@@ -12,7 +12,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-
+import Language from "./Language.jsx";
 export default function StudentLandingPage({ username, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -190,6 +190,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             Chatbot
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
+          <Language />
         </nav>
 
         {/* Mobile Hamburger Icon */}

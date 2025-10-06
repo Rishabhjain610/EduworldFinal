@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import TeacherHome from "./TeacherHome";
 import PdfForm from "./PdfForm";
-
+import Language from "./Language.jsx";
 export default function TeacherLandingPage({ username, onLogout }) {
   console.log(username);
 
@@ -107,10 +107,7 @@ export default function TeacherLandingPage({ username, onLogout }) {
             Meet
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-          {/* <Link href="#" className="text-gray-700 hover:text-black">
-                        Assignments
-                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-                    </Link> */}
+          <Language />
         </nav>
         {username ? (
           <button
