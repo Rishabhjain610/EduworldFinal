@@ -23,6 +23,7 @@
     "@zegocloud/zego-uikit-prebuilt": "^2.14.3-beta",
     "axios": "^1.8.4",
     "dotenv": "^17.2.3",
+    "firebase": "^12.3.0",
     "gsap": "^3.12.7",
     "highlight.js": "^11.11.1",
     "html2canvas": "^1.4.1",
@@ -37,6 +38,7 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.4.0",
     "react-simple-code-editor": "^0.14.1",
+    "react-toastify": "^11.0.5",
     "rehype-highlight": "^7.0.2"
   },
   "devDependencies": {

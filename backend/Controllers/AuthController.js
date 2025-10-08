@@ -1,11 +1,11 @@
+
 const { User } = require("../Models/UserModel");
 const { createSecretToken } = require("../Util/SecretToken");
 const bcrypt = require("bcryptjs");
 
-module.exports.Signup = async (req, res) => {
+const Signup = async (req, res) => {
   try {
     const { email, password, username, phoneNumber } = req.body;
-    // Force role to 'student' regardless of any input
     const role = "student";
 
     const existingUser = await User.findOne({ email });
@@ -13,16 +13,19 @@ module.exports.Signup = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Create user with role forced as 'student'
+    let hashedPassword = "";
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 12);
+    }
+
     const user = await User.create({
       email,
-      password,
+      password: hashedPassword,
       username,
       role,
       phoneNumber,
     });
 
-    // Create token with payload that includes user id and role
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       sameSite: "None",
@@ -42,22 +45,24 @@ module.exports.Signup = async (req, res) => {
   }
 };
 
-module.exports.Login = async (req, res) => {
+const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "Incorrect email or password" });
-    }
-    const auth = await bcrypt.compare(password, user.password);
-    if (!auth) {
-      return res.status(401).json({ message: "Incorrect email or password" });
+      return res.status(400).json({ message: "User not found" });
     }
 
-    // Create token with user id and role
+    if (!user.password) {
+      return res.status(400).json({ message: "This account uses Google login only." });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       sameSite: "None",
@@ -66,13 +71,48 @@ module.exports.Login = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "User logged in successfully",
+      message: "Login successful",
       success: true,
+      user,
       role: user.role,
-      username: user.username,
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error logging in" });
   }
 };
+
+const firebaseLogin = async (req, res) => {
+  try {
+    const { name, email } = req.body; // Changed from username to name
+    let user = await User.findOne({ email });
+    
+    if (!user) {
+      user = await User.create({
+        email,
+        username: name, // Use name as username
+        role: "student",
+        password: "", // No password for Firebase users
+      });
+    }
+    
+    const token = createSecretToken(user._id);
+    res.cookie("token", token, {
+      sameSite: "None",
+      httpOnly: true,
+      secure: true,
+    });
+    
+    return res.status(200).json({
+      message: "Google login successful",
+      success: true,
+      role: user.role,
+      username: user.username,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error with Google login" });
+  }
+};
+
+module.exports = { Signup, Login, firebaseLogin };

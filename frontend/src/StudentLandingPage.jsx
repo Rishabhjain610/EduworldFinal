@@ -13,6 +13,9 @@ import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Language from "./Language.jsx";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function StudentLandingPage({ username, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
 

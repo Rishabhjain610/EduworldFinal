@@ -60,6 +60,7 @@ const Canteen = () => {
   const [cart, setCart] = useState([]);
   const [mobileCartOpen, setMobileCartOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null); // Store order details for PDF
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -110,8 +111,7 @@ const Canteen = () => {
       image: dabeliImg,
       category: "Snacks",
       rating: 4.3,
-      description:
-        "Tangy mashed potato filling in a bun with chutney and pomegranate.",
+      description: "Tangy mashed potato filling in a bun with chutney and pomegranate.",
     },
     {
       id: 5,
@@ -156,8 +156,7 @@ const Canteen = () => {
       image: thaliImg,
       category: "Main Course",
       rating: 4.3,
-      description:
-        "A balanced meal with a variety of curries, rice, chapati, and salad.",
+      description: "A balanced meal with a variety of curries, rice, chapati, and salad.",
     },
     {
       id: 10,
@@ -242,77 +241,77 @@ const Canteen = () => {
     }
   };
 
+  // Enhanced PDF generation with logo and better styling
   const generateMenuPDF = () => {
     setLoading(true);
-    setTimeout(() => {
-      const doc = new jsPDF();
-      doc.setFont("Helvetica", "normal");
-      try {
-        doc.addImage(logocanteen, "PNG", 70, 10, 70, 30);
-      } catch (error) {
-        console.error("Error adding logo:", error);
-      }
-      doc.setFontSize(18);
-      doc.text("Weekly Menu", 105, 50, { align: "center" });
-      let startY = 60;
-      doc.setFontSize(12);
-      doc.text("Day", 20, startY);
-      doc.text("Breakfast", 60, startY);
-      doc.text("Lunch", 110, startY);
-      doc.text("Dinner", 160, startY);
-      doc.line(20, startY + 2, 190, startY + 2);
-      startY += 10;
-      const tableData = [
-        ["Monday", "Poha", "Misal Pav", "Veg Sandwich"],
-        ["Tuesday", "Upma", "Vada Pav", "Cutting Chai"],
-        ["Wednesday", "Idli", "Dabeli", "Masala Chai"],
-        ["Thursday", "Sheera", "Sabudana Vada", "Masala Chai"],
-        ["Friday", "Dosa", "Misal Pav", "Veg Sandwich"],
-        ["Saturday", "Utapam", "Vada Pav", "Cutting Chai"],
-        ["Sunday", "Mendu Vada", "Dabeli", "Masala Chai"],
-      ];
-      tableData.forEach((row) => {
-        doc.text(row[0], 20, startY);
-        doc.text(row[1], 60, startY);
-        doc.text(row[2], 110, startY);
-        doc.text(row[3], 160, startY);
-        startY += 10;
-      });
-      doc.save("Menu.pdf");
-      setLoading(false);
-      setSnackbar({
-        open: true,
-        message: "Menu downloaded successfully!",
-        severity: "success",
-      });
-    }, 800);
-  };
-
-  const placeOrder = async (orderItems) => {
-    setLoading(true);
     try {
-      // Directly pass the orderItems (your cart array) as the POST data.
-      const response = await axios.post(
-        "http://localhost:8080/api/order/place-order",
-        { items: orderItems },
-        {
-          withCredentials: true,
-        }
-      );
+      const doc = new jsPDF();
+      
+   try {
+      const logoWidth = 60;
+      const logoHeight = 30;
+      const pageWidth = doc.internal.pageSize.width;
+      const logoX = (pageWidth - logoWidth) / 2; // Center the logo
+      doc.addImage(logocanteen, 'PNG', logoX, 15, logoWidth, logoHeight);
+    } catch (error) {
+      console.log("Logo not loaded, proceeding without it");
+    }
+      
+      
+      doc.setDrawColor(251, 146, 60);
+      doc.setLineWidth(0.5);
+      doc.line(20, 55, 190, 55);
+      
+      // Create table data
+      const tableData = [
+        ["Monday", "Poha, Upma", "Misal Pav, Veg Sandwich", "Masala Chai, Cutting Chai"],
+        ["Tuesday", "Idli, Vada", "Vada Pav, Dabeli", "Tea, Coffee"],
+        ["Wednesday", "Dosa, Utapam", "Thali, Veg Biryani", "Lassi, Buttermilk"],
+        ["Thursday", "Sheera, Poha", "Sabudana Vada, Misal", "Masala Chai, Cold Drinks"],
+        ["Friday", "Breakfast Combo", "Veg Pulao, Sandwich", "Fresh Juice, Tea"],
+        ["Saturday", "South Indian", "North Indian Thali", "Evening Snacks"],
+        ["Sunday", "Special Menu", "Chef's Choice", "Seasonal Drinks"],
+      ];
 
-      setSnackbar({
-        open: true,
-        message: "Order placed successfully! Check WhatsApp for updates.",
-        severity: "success",
+      // Add table with enhanced styling
+      doc.autoTable({
+        head: [["Day", "Breakfast (8AM - 11AM)", "Lunch (12PM - 3PM)", "Evening (4PM - 7PM)"]],
+        body: tableData,
+        startY: 65,
+        theme: 'grid',
+        headStyles: { 
+          fillColor: [251, 146, 60], 
+          textColor: [255, 255, 255],
+          fontSize: 12,
+          fontStyle: 'bold'
+        },
+        styles: { 
+          fontSize: 10,
+          cellPadding: 8,
+          lineColor: [200, 200, 200],
+          lineWidth: 0.1
+        },
+        alternateRowStyles: { fillColor: [248, 249, 250] },
+        margin: { left: 20, right: 20 }
       });
 
-      generateBillPDF();
-      setCart([]);
-    } catch (err) {
-      console.error("Error placing order:", err);
+      // Footer with contact info
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      
+      doc.save("EduWorld_Canteen_Menu.pdf");
+      console.log("✅ Menu PDF generated successfully");
+      
       setSnackbar({
         open: true,
-        message: "Failed to place order. Please try again.",
+        message: "Menu downloaded successfully! 📄",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("❌ Error generating menu PDF:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to download menu. Please try again.",
         severity: "error",
       });
     } finally {
@@ -320,119 +319,266 @@ const Canteen = () => {
     }
   };
 
+  // Enhanced checkout function with order tracking
   const handleCheckout = async () => {
-  setLoading(true);
-  try {
-    const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-
-    // 1. Create Razorpay order on backend
-    const { data } = await axios.post(
-      "http://localhost:8080/api/order/create-razorpay-order",
-      { amount: totalAmount },
-      { withCredentials: true }
-    );
-    const { order } = data;
-
-    // 2. Open Razorpay checkout
-    const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Replace with your Razorpay key
-      amount: order.amount,
-      currency: order.currency,
-      name: "Canteen Order",
-      description: "Order Payment",
-      order_id: order.id,
-      handler: async function (response) {
-        // 3. On payment success, verify payment and place order
-        await axios.post(
-          "http://localhost:8080/api/order/verify-razorpay-payment",
-          {
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-            orderDetails: {
-              items: cart.map((item) => ({
-                name: item.name,
-                quantity: item.quantity,
-                price: item.price,
-              })),
-            },
-          },
-          { withCredentials: true }
-        );
-        generateBillPDF();
-        setSnackbar({
-          open: true,
-          message: "Order placed and payment successful! Check WhatsApp for updates.",
-          severity: "success",
-        });
-        setCart([]);
-      },
-      prefill: {},
-      theme: { color: "#FB923C" },
-    };
-    const rzp = new window.Razorpay(options);
-    rzp.open();
-  } catch (err) {
-    setSnackbar({
-      open: true,
-      message: "Payment failed. Please try again.",
-      severity: "error",
-    });
-  } finally {
-    setLoading(false);
-  }
-};
-
-  const generateBillPDF = () => {
     if (cart.length === 0) {
       setSnackbar({
         open: true,
-        message: "Cart is empty. Cannot generate bill.",
-        severity: "error",
+        message: "Cart is empty!",
+        severity: "warning",
       });
       return;
     }
 
     setLoading(true);
-    setTimeout(() => {
-      const doc = new jsPDF();
-      doc.setFont("Helvetica", "normal");
-      try {
-        doc.addImage(logocanteen, "PNG", 70, 10, 70, 30);
-      } catch (error) {
-        console.error("Error adding logo:", error);
-      }
-      doc.setFontSize(18);
-      doc.text("Billing Receipt", 105, 50, { align: "center" });
+    try {
+      const totalAmount = calculateTotal();
 
-      let startY = 60;
-      doc.setFontSize(12);
-      doc.text("Item", 20, startY);
-      doc.text("Price", 80, startY);
-      doc.text("Quantity", 120, startY);
-      doc.text("Total", 160, startY);
-      doc.line(20, startY + 2, 190, startY + 2);
-      startY += 10;
-      cart.forEach((item) => {
-        doc.text(item.name, 20, startY);
-        doc.text(`Rs ${item.price}`, 80, startY);
-        doc.text(`${item.quantity}`, 120, startY);
-        doc.text(`Rs ${item.price * item.quantity}`, 160, startY);
-        startY += 10;
+      if (!window.Razorpay) {
+        console.error("❌ Razorpay SDK not loaded");
+        setSnackbar({
+          open: true,
+          message: "Payment system not loaded. Please refresh the page.",
+          severity: "error",
+        });
+        return;
+      }
+
+      // Create Razorpay order
+      const { data } = await axios.post(
+        "http://localhost:8080/api/order/create-razorpay-order",
+        { amount: totalAmount },
+        { withCredentials: true }
+      );
+      
+      const { order } = data;
+      console.log("✅ Razorpay order created:", order.id);
+
+      // Open Razorpay checkout
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: "EduWorld Canteen",
+        description: "Canteen Order Payment",
+        order_id: order.id,
+        handler: async function (response) {
+          try {
+            console.log("✅ Payment successful:", response.razorpay_payment_id);
+            
+            // Verify payment and place order
+            const verifyResponse = await axios.post(
+              "http://localhost:8080/api/order/verify-razorpay-payment",
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                orderDetails: {
+                  items: cart.map((item) => ({
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                  })),
+                },
+              },
+              { withCredentials: true }
+            );
+
+            console.log("✅ Payment verified and order placed", verifyResponse.data);
+            
+            // Store order details for PDF generation
+            setOrderDetails({
+              orderNumber: verifyResponse.data.orderNumber,
+              paymentId: verifyResponse.data.paymentId,
+              items: cart,
+              total: totalAmount,
+              paymentMethod: "Razorpay Online Payment",
+              timestamp: new Date()
+            });
+            
+            // Generate enhanced bill PDF
+            generateEnhancedBillPDF(verifyResponse.data);
+            
+            setSnackbar({
+              open: true,
+              message: `Order placed successfully! Order ID: ${verifyResponse.data.orderNumber} 🎉`,
+              severity: "success",
+            });
+            
+            setCart([]);
+          } catch (error) {
+            console.error("❌ Error verifying payment:", error);
+            setSnackbar({
+              open: true,
+              message: "Payment verification failed. Please contact support.",
+              severity: "error",
+            });
+          }
+        },
+        prefill: {
+          name: "",
+          email: "",
+          contact: "",
+        },
+        theme: { 
+          color: "#FB923C" 
+        },
+        modal: {
+          ondismiss: function() {
+            console.log("Payment cancelled by user");
+            setSnackbar({
+              open: true,
+              message: "Payment cancelled",
+              severity: "info",
+            });
+          }
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (response) {
+        console.error("❌ Payment failed:", response.error);
+        setSnackbar({
+          open: true,
+          message: `Payment failed: ${response.error.description}`,
+          severity: "error",
+        });
       });
-      doc.setFontSize(14);
-      doc.text(`Total: Rs ${calculateTotal()}`, 105, startY + 10, {
-        align: "center",
-      });
-      doc.save("Bill.pdf");
-      setLoading(false);
+      
+      rzp.open();
+    } catch (error) {
+      console.error("❌ Checkout error:", error);
       setSnackbar({
         open: true,
-        message: "Bill generated successfully!",
-        severity: "success",
+        message: "Checkout failed. Please try again.",
+        severity: "error",
       });
-      setCart([]);
-    }, 1000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Enhanced bill PDF generation with logo and order details
+  const generateEnhancedBillPDF = (orderData) => {
+    try {
+      const doc = new jsPDF();
+      
+      try {
+      const logoWidth = 50;
+      const logoHeight = 25;
+      const pageWidth = doc.internal.pageSize.width;
+      const logoX = (pageWidth - logoWidth) / 2; // Center the logo
+      doc.addImage(logocanteen, 'PNG', logoX, 15, logoWidth, logoHeight);
+    } catch (error) {
+      console.log("Logo not loaded, proceeding without it");
+    }
+      doc.setDrawColor(251, 146, 60);
+      doc.setLineWidth(0.8);
+      doc.line(15, 40, 195, 40);
+      
+      // Order information section
+      doc.setFontSize(14);
+      doc.setTextColor(40, 40, 40);
+      doc.text("ORDER DETAILS", 15, 55);
+      
+      doc.setFontSize(10);
+      doc.setTextColor(80, 80, 80);
+      
+      // Two column layout for order info
+      doc.text(`Order ID: ${orderData.orderNumber}`, 15, 65);
+      doc.text(`Date: ${new Date().toLocaleDateString('en-IN')}`, 110, 65);
+      
+      doc.text(`Payment ID: ${orderData.paymentId}`, 15, 72);
+      doc.text(`Time: ${new Date().toLocaleTimeString('en-IN')}`, 110, 72);
+      
+      doc.text(`Payment Method: Razorpay Online Payment`, 15, 79);
+      doc.text(`Status: Paid ✅`, 110, 79);
+      
+      // Items table header
+      doc.setFontSize(12);
+      doc.setTextColor(40, 40, 40);
+      doc.text("ITEMS ORDERED", 15, 95);
+      
+      // Create enhanced table data
+      const tableData = cart.map((item, index) => [
+        (index + 1).toString(),
+        item.name,
+        `Rs ${item.price}`,
+        item.quantity.toString(),
+        `Rs ${item.price * item.quantity}`
+      ]);
+
+      // Add items table with enhanced styling
+      doc.autoTable({
+        head: [["#", "Item Name", "Price", "Qty", "Total"]],
+        body: tableData,
+        startY: 100,
+        theme: 'striped',
+        headStyles: { 
+          fillColor: [251, 146, 60],
+          textColor: [255, 255, 255],
+          fontSize: 10,
+          fontStyle: 'bold'
+        },
+        styles: { 
+          fontSize: 9,
+          cellPadding: 4
+        },
+        columnStyles: {
+          0: { halign: 'center', cellWidth: 15 },
+          1: { cellWidth: 80 },
+          2: { halign: 'right', cellWidth: 25 },
+          3: { halign: 'center', cellWidth: 20 },
+          4: { halign: 'right', cellWidth: 25 }
+        },
+        margin: { left: 15, right: 15 }
+      });
+
+      // Calculate final Y position after table
+      const finalY = doc.lastAutoTable.finalY + 10;
+      
+      // Summary section
+      doc.setDrawColor(200, 200, 200);
+      doc.setLineWidth(0.5);
+      doc.line(120, finalY, 195, finalY);
+      
+      doc.setFontSize(10);
+      doc.setTextColor(80, 80, 80);
+      doc.text("Subtotal:", 120, finalY + 8);
+      doc.text(`Rs ${calculateTotal()}`, 180, finalY + 8, { align: 'right' });
+      
+      doc.text("Taxes & Fees:", 120, finalY + 15);
+      doc.text("Rs 0", 180, finalY + 15, { align: 'right' });
+      
+      doc.text("Delivery Charges:", 120, finalY + 22);
+      doc.text("Rs 0", 180, finalY + 22, { align: 'right' });
+      
+      // Total line
+      doc.setDrawColor(251, 146, 60);
+      doc.setLineWidth(0.8);
+      doc.line(120, finalY + 28, 195, finalY + 28);
+      
+      doc.setFontSize(12);
+      doc.setTextColor(40, 40, 40);
+      doc.setFont(undefined, 'bold');
+      doc.text("TOTAL AMOUNT:", 120, finalY + 38);
+      doc.text(`Rs ${calculateTotal()}`, 180, finalY + 38, { align: 'right' });
+      
+      // Footer section
+
+      
+      // Save with order number in filename
+      doc.save(`EduWorld_Receipt_${orderData.orderNumber}.pdf`);
+      console.log("✅ Enhanced bill PDF generated successfully");
+      
+    } catch (error) {
+      console.error("❌ Error generating enhanced bill PDF:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to generate receipt. Please try again.",
+        severity: "error",
+      });
+    }
   };
 
   const filteredItems = foodItems.filter((item) => {
@@ -452,7 +598,12 @@ const Canteen = () => {
         id="AppBarHidden"
       >
         <Toolbar className="flex justify-between items-center">
-          <div className="flex items-center"></div>
+          <div className="flex items-center">
+            <img src={logocanteen} alt="Logo" className="w-8 h-8 mr-2" />
+            <Typography variant="h6" className="font-bold text-orange-500">
+              🍽️ EduWorld Canteen
+            </Typography>
+          </div>
 
           <div className="hidden md:flex items-center space-x-4">
             <Badge badgeContent={cart.length} color="primary">
@@ -480,6 +631,7 @@ const Canteen = () => {
         </Toolbar>
       </AppBar>
 
+      {/* Rest of your existing component JSX remains the same... */}
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 flex flex-col lg:flex-row gap-6">
         {/* Food Items Section */}
@@ -577,7 +729,7 @@ const Canteen = () => {
                           variant="h6"
                           className="font-bold text-neutral-800"
                         >
-                          ₹{item.price}
+                          Rs {item.price}
                         </Typography>
                       </div>
 
@@ -683,7 +835,7 @@ const Canteen = () => {
                       >
                         <div className="flex items-center">
                           <img
-                            src={item.image || "/placeholder.svg"}
+                            src={item.image}
                             alt={item.name}
                             className="w-12 h-12 rounded-md object-cover mr-3"
                           />
@@ -692,7 +844,7 @@ const Canteen = () => {
                               {item.name}
                             </Typography>
                             <Typography variant="body2" className="opacity-75">
-                              ₹{item.price} × {item.quantity}
+                              Rs {item.price} × {item.quantity}
                             </Typography>
                           </div>
                         </div>
@@ -702,7 +854,7 @@ const Canteen = () => {
                             variant="body1"
                             className="font-medium mr-2"
                           >
-                            ₹{item.price * item.quantity}
+                            Rs {item.price * item.quantity}
                           </Typography>
                           <IconButton
                             size="small"
@@ -721,7 +873,7 @@ const Canteen = () => {
                   <div className="flex justify-between items-center mb-2">
                     <Typography>Subtotal</Typography>
                     <Typography className="font-medium">
-                      ₹{calculateTotal()}
+                      Rs {calculateTotal()}
                     </Typography>
                   </div>
 
@@ -735,7 +887,7 @@ const Canteen = () => {
                       Total
                     </Typography>
                     <Typography variant="h6" className="font-bold">
-                      ₹{calculateTotal()}
+                      Rs {calculateTotal()}
                     </Typography>
                   </div>
                 </>
@@ -746,7 +898,7 @@ const Canteen = () => {
                 fullWidth
                 onClick={handleCheckout}
                 disabled={cart.length === 0 || loading}
-                className=" text-indigo-700 hover:bg-gray-100 font-medium py-3 rounded-full"
+                className="bg-white text-indigo-700 hover:bg-gray-100 font-medium py-3 rounded-full"
                 startIcon={
                   loading ? <CircularProgress size={20} /> : <ShoppingCart />
                 }
@@ -757,6 +909,7 @@ const Canteen = () => {
           </Card>
         </div>
       </div>
+
       {/* Mobile Cart Drawer */}
       <Drawer
         anchor="right"
@@ -793,10 +946,10 @@ const Canteen = () => {
                   >
                     <div>
                       <Typography variant="body1" className="font-medium">
-                        {item.name} × {item.quantity}
+                        Rs {item.name} × {item.quantity}
                       </Typography>
                       <Typography variant="body2" className="opacity-75">
-                        ₹{item.price * item.quantity}
+                        Rs {item.price * item.quantity}
                       </Typography>
                     </div>
                     <IconButton
@@ -815,11 +968,12 @@ const Canteen = () => {
                   Total
                 </Typography>
                 <Typography variant="h6" className="font-bold">
-                  ₹{calculateTotal()}
+                  Rs {calculateTotal()}
                 </Typography>
               </div>
             </>
           )}
+          
           <Button
             variant="contained"
             fullWidth
@@ -841,7 +995,7 @@ const Canteen = () => {
       {/* Snackbar for notifications */}
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={3000}
+        autoHideDuration={6000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
@@ -853,6 +1007,7 @@ const Canteen = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
       {/* Loading Overlay */}
       {loading && (
         <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
@@ -865,4 +1020,5 @@ const Canteen = () => {
     </div>
   );
 };
+
 export default Canteen;

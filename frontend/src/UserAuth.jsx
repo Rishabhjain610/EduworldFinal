@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -31,12 +32,15 @@ import LaptopIcon from "@mui/icons-material/Laptop";
 import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { auth, provider } from "./utils/firebase";
+import { signInWithPopup } from "firebase/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// Create a custom theme with purple primary color
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#000000", // Purple
+      main: "#000000",
       light: "#b085f5",
       dark: "#4d2c91",
       contrastText: "#ffffff",
@@ -53,7 +57,6 @@ const theme = createTheme({
     },
   },
   typography: {
-    //fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h3: {
       fontWeight: 700,
     },
@@ -98,7 +101,6 @@ const theme = createTheme({
   },
 });
 
-// Feature chip component
 const FeatureChip = ({ icon, label }) => (
   <Paper
     elevation={0}
@@ -129,11 +131,34 @@ const UserAuth = () => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  // Updated Google Login function without user.uid
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const name = user.displayName;
+      const email = user.email;
+      
+      const result2 = await axios.post(
+        "http://localhost:8080/auth/firebase-login",
+        { name, email },
+        { withCredentials: true }
+      );
+      
+      console.log("Google authentication successful:", result2.data);
+      toast.success(result2.data.message);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Google authentication error:", error);
+      toast.error("Google authentication failed. Please try again.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (isLogin) {
-        // Login request
         const { data } = await axios.post(
           "http://localhost:8080/auth/login",
           { email, password },
@@ -141,10 +166,10 @@ const UserAuth = () => {
         );
         console.log("Login response:", data);
         if (data.success) {
+          toast.success(data.message);
           navigate("/dashboard");
         }
       } else {
-        // Signup request (role is forced to 'student' on the backend)
         const { data } = await axios.post(
           "http://localhost:8080/auth/signup",
           { username, email, password },
@@ -152,11 +177,13 @@ const UserAuth = () => {
         );
         console.log("Signup response:", data);
         if (data.success) {
+          toast.success(data.message);
           navigate("/dashboard");
         }
       }
     } catch (error) {
       console.error("Authentication error:", error);
+      toast.error(error.response?.data?.message || "Authentication failed");
     }
   };
 
@@ -173,7 +200,6 @@ const UserAuth = () => {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        {/* Left side - Campus imagery */}
         {!isMobile && (
           <Box
             sx={{
@@ -216,7 +242,6 @@ const UserAuth = () => {
                   alt=""
                   style={{ height: "80%", width: "14%" }}
                 />
-                {/* <SchoolIcon sx={{ color: "white", fontSize: 40 }} /> */}
                 <Typography variant="h5" color="white">
                   EduWorld
                 </Typography>
@@ -258,7 +283,6 @@ const UserAuth = () => {
           </Box>
         )}
 
-        {/* Right side - Auth forms */}
         <Box
           sx={{
             flex: 1,
@@ -284,6 +308,39 @@ const UserAuth = () => {
                     ? "Sign in to your account to access your campus dashboard"
                     : "Start your educational journey"}
                 </Typography>
+
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  size="large"
+                  onClick={handleGoogleLogin}
+                  startIcon={
+                    <Box
+                      component="img"
+                      src="https://developers.google.com/identity/images/g-logo.png"
+                      alt="Google"
+                      sx={{ width: 20, height: 20 }}
+                    />
+                  }
+                  sx={{ 
+                    mt: 2, 
+                    mb: 2,
+                    border: '1px solid #dadce0',
+                    color: '#3c4043',
+                    '&:hover': {
+                      backgroundColor: '#f8f9fa',
+                      border: '1px solid #dadce0'
+                    }
+                  }}
+                >
+                  Continue with Google
+                </Button>
+
+                <Divider sx={{ my: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    or
+                  </Typography>
+                </Divider>
 
                 <form onSubmit={handleSubmit}>
                   {!isLogin && (
@@ -353,16 +410,6 @@ const UserAuth = () => {
                       ),
                     }}
                   />
-
-                  {isLogin && (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        mb: 3,
-                      }}
-                    ></Box>
-                  )}
 
                   <Button
                     variant="contained"
