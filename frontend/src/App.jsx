@@ -15,6 +15,7 @@ import Railway from "./Railway";
 import HomeChat from "./HomeChat";
 import VideoCallHome from "./VideoCallHome";
 import VideocallRoom from "./VideocallRoom";
+import VideoLectures from "./videopart/VideoLectures";
 import "./App.css";
 
 function App() {
@@ -104,6 +105,7 @@ function App() {
             />
             <Route path="pdfForm" element={<PdfForm username={username} />} />
             <Route path="calendar" element={<Calendar />} />
+            <Route path="videoLectures" element={<VideoLectures />} />
           </Route>
         </>
       ) : role === "student" ? (
@@ -124,6 +126,7 @@ function App() {
             <Route path="canteen" element={<Canteen />} />
             <Route path="railway" element={<Railway />} />
             <Route path="chatbot" element={<HomeChat />} />
+            <Route path="videoLectures" element={<VideoLectures />} />
           </Route>
         </>
       ) : null}

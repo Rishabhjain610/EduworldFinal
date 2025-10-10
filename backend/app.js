@@ -15,6 +15,7 @@ const { Event } = require("./Models/calendarModel");
 const pdfRouter = require("./Routes/pdfRoutes");
 const eventRouter = require("./Routes/eventsRoute");
 const orderRouter = require("./Routes/orderRoutes");
+const VideoLectureRouter = require("./Routes/Video.routes");
 const cloudinary=require("./Util/Cloudinary");
 const multer = require("multer");
 
@@ -34,13 +35,17 @@ app.use(
 );
 
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({ extended: true , limit: '50mb'}));
+
+app.use('/uploads', express.static('uploads'));
 
 app.use("/auth", authRoute);
 app.use("/ai", aiRoutes);
 app.use("/api/pdf", pdfRouter); // Handles /upload-files and /show-pdfs
 app.use("/api/event", eventRouter); // Handles /events
 app.use("/api/order", orderRouter);
+app.use("/api/videos", VideoLectureRouter);
 
 
 

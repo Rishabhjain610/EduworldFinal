@@ -34,6 +34,8 @@ export default function StudentLandingPage({ username, onLogout }) {
     { to: "calendar", label: "Calendar" },
     { to: "codeEditor", label: "Code Editor" },
     { to: "canteen", label: "Canteen" },
+    { to: "chatbot", label: "ChatBot" },  
+    { to: "videoLectures", label: "Video Lectures" }
   ];
 
   return (
@@ -193,6 +195,28 @@ export default function StudentLandingPage({ username, onLogout }) {
             Chatbot
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
+          <Link
+            to="videoLectures"
+            className="relative flex gap-2 group text-gray-700 hover:text-black gsapNav"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="inline lucide lucide-play-circle"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polygon points="10,8 16,12 10,16 10,8" />
+            </svg>
+            Video Lectures
+            <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link>
+
           <Link>
             <Language />
           </Link>
