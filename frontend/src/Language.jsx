@@ -11,7 +11,7 @@ const Language = () => {
           {
             pageLanguage: "en",
             includedLanguages: "en,fr,de,es,it,pt,hi,ja,ko,zh,ar,ru,mr",
-            layout: window.google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+            layout: window.google.translate.TranslateElement.InlineLayout.VERTICAL,
             
           },
           "google_translate_element"

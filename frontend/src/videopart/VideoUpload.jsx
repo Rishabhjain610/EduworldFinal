@@ -187,9 +187,7 @@ const VideoUpload = () => {
             />
             <label
               htmlFor="video-upload"
-              className={`cursor-pointer bg-orange-400 text-white px-6 py-3 rounded-lg hover:bg-orange-500 inline-block transition-colors ${
-                uploading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
+              
             >
               {videoFile ? 'Change Video' : 'Select Video File'}
             </label>

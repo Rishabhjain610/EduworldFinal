@@ -23,7 +23,9 @@
     "@zegocloud/zego-uikit-prebuilt": "^2.14.3-beta",
     "axios": "^1.8.4",
     "dotenv": "^17.2.3",
+    "emoji-picker-react": "^4.14.0",
     "firebase": "^12.3.0",
+    "framer-motion": "^12.23.24",
     "gsap": "^3.12.7",
     "highlight.js": "^11.11.1",
     "html2canvas": "^1.4.1",
@@ -39,7 +41,8 @@
     "react-router-dom": "^7.4.0",
     "react-simple-code-editor": "^0.14.1",
     "react-toastify": "^11.0.5",
-    "rehype-highlight": "^7.0.2"
+    "rehype-highlight": "^7.0.2",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

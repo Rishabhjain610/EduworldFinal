@@ -16,6 +16,8 @@ import HomeChat from "./HomeChat";
 import VideoCallHome from "./VideoCallHome";
 import VideocallRoom from "./VideocallRoom";
 import VideoLectures from "./videopart/VideoLectures";
+import TeacherChatPage from "./ChatSocket/TeacherChatPage";
+import StudentChatPage from "./ChatSocket/StudentChatPage";
 import "./App.css";
 
 function App() {
@@ -106,6 +108,7 @@ function App() {
             <Route path="pdfForm" element={<PdfForm username={username} />} />
             <Route path="calendar" element={<Calendar />} />
             <Route path="videoLectures" element={<VideoLectures />} />
+            <Route path="chat" element={<TeacherChatPage username={username} />} />
           </Route>
         </>
       ) : role === "student" ? (
@@ -127,6 +130,7 @@ function App() {
             <Route path="railway" element={<Railway />} />
             <Route path="chatbot" element={<HomeChat />} />
             <Route path="videoLectures" element={<VideoLectures />} />
+            <Route path="chat" element={<StudentChatPage username={username} />} />
           </Route>
         </>
       ) : null}

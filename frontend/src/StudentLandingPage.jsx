@@ -1,8 +1,8 @@
+
 import { Link, Outlet } from "react-router-dom";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
+import { motion } from "framer-motion";
 import React from "react";
 
 // Material UI Imports
@@ -19,14 +19,6 @@ import "react-toastify/dist/ReactToastify.css";
 export default function StudentLandingPage({ username, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  useGSAP(() => {
-    gsap.from(".gsapNav", {
-      y: -90,
-      duration: 0.8,
-      stagger: 0.2,
-    });
-  }, []);
-
   // List of mobile navigation links
   const mobileNavLinks = [
     { to: "railway", label: "Rail Concession" },
@@ -35,28 +27,29 @@ export default function StudentLandingPage({ username, onLogout }) {
     { to: "codeEditor", label: "Code Editor" },
     { to: "canteen", label: "Canteen" },
     { to: "chatbot", label: "ChatBot" },  
-    { to: "videoLectures", label: "Video Lectures" }
+    { to: "videoLectures", label: "Video Lectures" },
+    { to: "chat", label: "Chat Room" }
   ];
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white flex items-center justify-between px-3 py-4 mx-auto w-full shadow-lg mt-1 mx-2 rounded-[47px]">
+      <header className="sticky top-0 z-40 bg-white flex items-center justify-between px-3 py-4 mx-auto w-full shadow-lg mt-1 mx-2 ">
         <Link to="/dashboard" className="flex items-center space-x-2">
           <img
             src="../src/assets/navbarLogo.jpeg"
             alt="Logo"
             className="h-6 w-9 md:h-10 md:w-14 object-cover"
           />
-          <span className="font-bold text-lg md:text-2xl gsapNav">
+          <span className="font-bold text-lg md:text-2xl">
             EduWorld
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8 bg-white">
+        <nav className="hidden md:flex items-center text-md space-x-3 bg-white">
           <Link
             to="railway"
-            className="relative flex gap-2 group text-gray-700 hover:text-black gsapNav"
+            className="relative flex gap-1 group text-gray-700 hover:text-black text-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +74,7 @@ export default function StudentLandingPage({ username, onLogout }) {
           </Link>
           <Link
             to="getPdfs"
-            className="relative flex gap-2 group text-gray-700 hover:text-black gsapNav"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +98,7 @@ export default function StudentLandingPage({ username, onLogout }) {
           </Link>
           <Link
             to="calendar"
-            className="relative flex gap-2 group text-gray-700 hover:text-black gsapNav"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +121,7 @@ export default function StudentLandingPage({ username, onLogout }) {
           </Link>
           <Link
             to="codeEditor"
-            className="relative flex gap-2 group text-gray-700 hover:text-black gsapNav"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +142,7 @@ export default function StudentLandingPage({ username, onLogout }) {
           </Link>
           <Link
             to="canteen"
-            className="relative flex gap-2 group text-gray-700 hover:text-black gsapNav"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +164,7 @@ export default function StudentLandingPage({ username, onLogout }) {
           </Link>
           <Link
             to="chatbot"
-            className="relative flex gap-2 group text-gray-700 hover:text-black gsapNav"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +190,7 @@ export default function StudentLandingPage({ username, onLogout }) {
           </Link>
           <Link
             to="videoLectures"
-            className="relative flex gap-2 group text-gray-700 hover:text-black gsapNav"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -213,10 +206,29 @@ export default function StudentLandingPage({ username, onLogout }) {
               <circle cx="12" cy="12" r="10" />
               <polygon points="10,8 16,12 10,16 10,8" />
             </svg>
-            Video Lectures
+            Video
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-
+          <Link
+            to="chat"
+            className="relative flex gap-1 text-sm   group text-gray-700 hover:text-black"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="inline lucide lucide-message-circle"
+            >
+              <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+            </svg>
+            Chat
+            <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link>
           <Link>
             <Language />
           </Link>
@@ -230,7 +242,7 @@ export default function StudentLandingPage({ username, onLogout }) {
         </div>
 
         {!username ? (
-          <button className="rounded-full px-6 py-2 bg-white text-black border border-gray-300 hover:bg-gray-100 transition-colors gsapNav">
+          <button className="rounded-full px-6 py-2 bg-white text-black border border-gray-300 hover:bg-gray-100 transition-colors">
             Sign up
           </button>
         ) : (
@@ -238,13 +250,13 @@ export default function StudentLandingPage({ username, onLogout }) {
         )}
         {username ? (
           <button
-            className="hidden md:inline rounded-full px-6 py-2 bg-white text-black border border-gray-300 hover:bg-gray-100 transition-colors gsapNav"
+            className="hidden md:inline rounded-full px-6 py-2 bg-white text-black border border-gray-300 hover:bg-gray-100 transition-colors"
             onClick={onLogout}
           >
             Logout
           </button>
         ) : (
-          <button className="rounded-full px-6 py-2 bg-white text-black border border-gray-300 hover:bg-gray-100 transition-colors gsapNav">
+          <button className="rounded-full px-6 py-2 bg-white text-black border border-gray-300 hover:bg-gray-100 transition-colors">
             Sign in
           </button>
         )}
@@ -277,49 +289,85 @@ export default function StudentLandingPage({ username, onLogout }) {
 
       <Outlet></Outlet>
 
-      <footer className="py-12 border-t px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-          <div>
+      <motion.footer 
+        className="py-12 border-t px-6"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ 
+            duration: 0.8, 
+            delay: 0.2,
+            staggerChildren: 0.1,
+            delayChildren: 0.3
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             <div className="font-bold text-2xl mb-4">EduWorld.</div>
             <p className="text-gray-600 mb-4">
               Making campus life simpler and more efficient with integrated
               digital tools.
             </p>
-          </div>
-          <div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <h3 className="font-bold text-lg mb-4">Features</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-black">
+                <Link to="railway" className="text-gray-600 hover:text-black">
                   Railway Concession
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-black">
+                <Link to="getPdfs" className="text-gray-600 hover:text-black">
                   Notes App
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-black">
+                <Link to="videoLectures" className="text-gray-600 hover:text-black">
+                  Video Lectures
+                </Link>
+              </li>
+              <li>
+                <Link to="calendar" className="text-gray-600 hover:text-black">
                   E-Calendar
-                </a>
+                </Link>
               </li>
               <li>
-                <Link
-                  to="codeEditor"
-                  className="text-gray-600 hover:text-black"
-                >
+                <Link to="codeEditor" className="text-gray-600 hover:text-black">
                   Code Editor
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-black">
+                <Link to="canteen" className="text-gray-600 hover:text-black">
                   Digital Canteen
-                </a>
+                </Link>
               </li>
             </ul>
-          </div>
-          <div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <h3 className="font-bold text-lg mb-4">Resources</h3>
             <ul className="space-y-2">
               <li>
@@ -343,8 +391,14 @@ export default function StudentLandingPage({ username, onLogout }) {
                 </a>
               </li>
             </ul>
-          </div>
-          <div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             <h3 className="font-bold text-lg mb-4">Contact</h3>
             <ul className="space-y-2">
               <li className="text-gray-600">Email: info@EduWorld.edu</li>
@@ -353,14 +407,21 @@ export default function StudentLandingPage({ username, onLogout }) {
                 Address: 123 Campus Drive, University City
               </li>
             </ul>
-          </div>
-        </div>
-        <div className="border-t pt-8 text-center text-gray-600">
+          </motion.div>
+        </motion.div>
+        
+        <motion.div 
+          className="border-t pt-8 text-center text-gray-600"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
           <p>
             &copy; {new Date().getFullYear()} EduWorld. All rights reserved.
           </p>
-        </div>
-      </footer>
+        </motion.div>
+      </motion.footer>
     </>
   );
 }
