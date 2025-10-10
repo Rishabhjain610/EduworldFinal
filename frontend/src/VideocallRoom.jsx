@@ -8,8 +8,8 @@ const VideocallRoom = () => {
 
   useEffect(() => {
     const myMeeting = async () => {
-      const appID = 1234567890; // Replace with your actual App ID
-      const serverSecret = "your_server_secret"; // Replace with your actual server secret
+      const appID = 260373454; // Replace with your actual App ID
+      const serverSecret = import.meta.env.VITE_VIDEO_CALL_SERVER_SECRET; // Replace with your actual server secret
 
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
         appID,
