@@ -1,17 +1,11 @@
-import { Button } from "../../../components/ui/button";
-import { ResumeContext } from "../../../context/ResumeContext";
-import { Brain, LoaderCircle } from "lucide-react";
-import { useContext, useState } from "react";
 import {
   BtnBold,
   BtnBulletList,
-  BtnClearFormatting,
   BtnItalic,
   BtnLink,
   BtnNumberedList,
   BtnRedo,
   BtnStrikeThrough,
-  BtnStyles,
   BtnUnderline,
   BtnUndo,
   Editor,
@@ -19,105 +13,24 @@ import {
   Separator,
   Toolbar,
 } from "react-simple-wysiwyg";
-import { AIchatSession } from "../../../../services/AiModel";
-import { toast } from "react-toastify";
+import { useState } from "react";
 
-const PROMPT =
-  "Provide 4-5 ATS friendly bullet points for {positionTitle} position. Return only the bullet points as HTML li elements, no additional text or formatting.";
+// This component is now a clean, reusable rich text editor.
+// The AI generation logic has been moved to the components that use it.
+const RichTextEditor = ({ onRichTextEditorChange, value, index }) => {
+  const [editorValue, setEditorValue] = useState(value);
 
-const RichTextEditor = ({ onRichTextEditorChange, index, defaultValue }) => {
-  const [value, setValue] = useState(defaultValue);
-  const { resumeInfo, setResumeInfo } = useContext(ResumeContext);
-  const [loading, setLoading] = useState(false);
-
-  // const GenerateSummaryFromAI = async () => {
-  //   if (!resumeInfo?.experience?.[index]?.title) {
-  //     toast.error("Please add Position Title");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   const prompt = PROMPT.replace('{positionTitle}', resumeInfo?.experience[index]?.title);
-
-  //   try {
-  //     const result = await AIchatSession.sendMessage(prompt);
-  //     const resp = await result.response.text();
-  //     setValue(resp.replace('[', '').replace(']', ''));
-  //   } catch (error) {
-  //     console.error("AI generation failed:", error);
-  //     // Fallback content
-  //     const fallbackContent = `
-  //       <ul>
-  //         <li>Managed and executed ${resumeInfo?.experience[index]?.title} responsibilities effectively</li>
-  //         <li>Collaborated with cross-functional teams to achieve project goals</li>
-  //         <li>Implemented best practices and improved operational efficiency</li>
-  //         <li>Delivered high-quality results within specified timelines</li>
-  //       </ul>
-  //     `;
-  //     setValue(fallbackContent);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-  const GenerateSummaryFromAI = async () => {
-    setLoading(true);
-    if (!resumeInfo.experience[index].title) {
-      toast.error("Please add position title");
-      setLoading(false);
-      return;
-    }
-    const prompt = PROMPT.replace(
-      "{positionTitle}",
-      resumeInfo?.experience[index]?.title
-    );
-    try {
-      const result = await AIchatSession.sendMessage(prompt);
-      const resp = await result.response.text();
-      setValue(resp.replace("[", "").replace("]", "").replace(/"/g, ""));
-      const updatedExperience = [...resumeInfo.experience];
-      updatedExperience[index].workSummary = resp
-        .replace("[", "")
-        .replace("]", "")
-        .replace(/"/g, "");
-      setResumeInfo({ ...resumeInfo, experience: updatedExperience });
-    } catch (error) {
-      toast.error("AI generation failed");
-      console.error(error);
-    } finally {
-      setLoading(false);
+  const handleEditorChange = (e) => {
+    setEditorValue(e.target.value);
+    if (onRichTextEditorChange) {
+      onRichTextEditorChange(e, index);
     }
   };
+
   return (
-    <div>
-      <div className="flex justify-between my-2">
-        <label className="text-xs">Summary</label>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={GenerateSummaryFromAI}
-          disabled={loading}
-          className="flex gap-2 border-primary text-primary"
-        >
-          {loading ? (
-            <LoaderCircle className="h-4 w-4 animate-spin" />
-          ) : (
-            <>
-              <Brain className="h-4 w-4" /> Generate from AI
-            </>
-          )}
-        </Button>
-      </div>
+    <div className="mt-2">
       <EditorProvider>
-        <Editor
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-            onRichTextEditorChange(e);
-            const updatedExperience = [...resumeInfo.experience];
-            updatedExperience[index].workSummary = e.target.value;
-            setResumeInfo({ ...resumeInfo, experience: updatedExperience });
-          }}
-        >
+        <Editor value={editorValue} onChange={handleEditorChange}>
           <Toolbar>
             <BtnUndo />
             <BtnRedo />
