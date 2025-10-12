@@ -16,10 +16,13 @@
     "@fullcalendar/interaction": "^6.1.17",
     "@fullcalendar/react": "^6.1.17",
     "@fullcalendar/timegrid": "^6.1.17",
+    "@google/generative-ai": "^0.24.1",
     "@gsap/react": "^2.1.2",
     "@lottiefiles/dotlottie-react": "^0.13.4",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
+    "@smastrom/react-rating": "^1.5.0",
+    "@tailwindcss/vite": "^4.1.14",
     "@zegocloud/zego-uikit-prebuilt": "^2.14.3-beta",
     "axios": "^1.8.4",
     "dotenv": "^17.2.3",
@@ -40,9 +43,13 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.4.0",
     "react-simple-code-editor": "^0.14.1",
+    "react-simple-wysiwyg": "^3.4.1",
     "react-toastify": "^11.0.5",
+    "react-web-share": "^2.0.2",
     "rehype-highlight": "^7.0.2",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "tailwindcss": "^4.1.14",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

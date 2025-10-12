@@ -32,7 +32,7 @@ import LaptopIcon from "@mui/icons-material/Laptop";
 import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { auth, provider } from "./utils/firebase";
+import { auth, provider } from "./utils/firebase_config";
 import { signInWithPopup } from "firebase/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

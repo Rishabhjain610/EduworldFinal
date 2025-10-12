@@ -1,4 +1,3 @@
-
 import { Link, Outlet } from "react-router-dom";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -26,9 +25,9 @@ export default function StudentLandingPage({ username, onLogout }) {
     { to: "calendar", label: "Calendar" },
     { to: "codeEditor", label: "Code Editor" },
     { to: "canteen", label: "Canteen" },
-    { to: "chatbot", label: "ChatBot" },  
+    { to: "chatbot", label: "ChatBot" },
     { to: "videoLectures", label: "Video Lectures" },
-    { to: "chat", label: "Chat Room" }
+    { to: "chat", label: "Chat Room" },
   ];
 
   return (
@@ -40,13 +39,11 @@ export default function StudentLandingPage({ username, onLogout }) {
             alt="Logo"
             className="h-6 w-9 md:h-10 md:w-14 object-cover"
           />
-          <span className="font-bold text-lg md:text-2xl">
-            EduWorld
-          </span>
+          <span className="font-bold text-lg md:text-2xl">EduWorld</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center text-md space-x-3 bg-white">
+        <nav className="hidden md:flex items-center text-md space-x-4 bg-white">
           <Link
             to="railway"
             className="relative flex gap-1 group text-gray-700 hover:text-black text-sm"
@@ -229,6 +226,29 @@ export default function StudentLandingPage({ username, onLogout }) {
             Chat
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
+          <Link
+            to="resume"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="inline"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+              <polyline points="14,2 14,8 20,8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+            Resume
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link>
           <Link>
             <Language />
           </Link>
@@ -289,23 +309,23 @@ export default function StudentLandingPage({ username, onLogout }) {
 
       <Outlet></Outlet>
 
-      <motion.footer 
+      <motion.footer
         className="py-12 border-t px-6"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ 
-            duration: 0.8, 
+          transition={{
+            duration: 0.8,
             delay: 0.2,
             staggerChildren: 0.1,
-            delayChildren: 0.3
+            delayChildren: 0.3,
           }}
         >
           <motion.div
@@ -320,7 +340,7 @@ export default function StudentLandingPage({ username, onLogout }) {
               digital tools.
             </p>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -340,7 +360,10 @@ export default function StudentLandingPage({ username, onLogout }) {
                 </Link>
               </li>
               <li>
-                <Link to="videoLectures" className="text-gray-600 hover:text-black">
+                <Link
+                  to="videoLectures"
+                  className="text-gray-600 hover:text-black"
+                >
                   Video Lectures
                 </Link>
               </li>
@@ -350,7 +373,10 @@ export default function StudentLandingPage({ username, onLogout }) {
                 </Link>
               </li>
               <li>
-                <Link to="codeEditor" className="text-gray-600 hover:text-black">
+                <Link
+                  to="codeEditor"
+                  className="text-gray-600 hover:text-black"
+                >
                   Code Editor
                 </Link>
               </li>
@@ -361,7 +387,7 @@ export default function StudentLandingPage({ username, onLogout }) {
               </li>
             </ul>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -392,7 +418,7 @@ export default function StudentLandingPage({ username, onLogout }) {
               </li>
             </ul>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -409,8 +435,8 @@ export default function StudentLandingPage({ username, onLogout }) {
             </ul>
           </motion.div>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           className="border-t pt-8 text-center text-gray-600"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

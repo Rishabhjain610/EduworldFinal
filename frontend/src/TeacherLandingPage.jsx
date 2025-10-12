@@ -19,7 +19,7 @@ export default function TeacherLandingPage({ username, onLogout }) {
 
   return (
     <>
-      <header className="flex items-center justify-between px-4 py-4 mx-auto shadow-md my-1 mx-1 w-full rounded-4xl">
+      <header className="flex items-center justify-between px-4 py-4 mx-auto shadow-md my-1 mx-1 w-full ">
         <Link to="/dashboard" className="flex items-center space-x-2">
           <img
             src="../src/assets/navbarLogo.jpeg"

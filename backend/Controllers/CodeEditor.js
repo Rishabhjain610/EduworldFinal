@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const { GoogleGenAI } = require("@google/genai");
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
+const axios= require("axios");
 async function generateContent(prompt) {
   const result = await ai.models.generateContent({
     model: "gemini-2.0-flash",
@@ -26,5 +26,22 @@ const aiResponse = async (req, res) => {
   console.log(response);
   res.send(response);
 };
+const executeCode = async (req, res) => {
+  const { script, language, version } = req.body;
 
-module.exports = { aiResponse };
+  try {
+    const response = await axios.post("https://api.jdoodle.com/v1/execute", {
+      clientId: process.env.CLIENT_ID_JDOODLE,
+      clientSecret: process.env.CLIENT_SECRET_JDOODLE,
+      script: script,
+      language: language,
+      versionIndex: version,
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error executing code via JDoodle:", error.response ? error.response.data : error.message);
+    res.status(500).json({ error: "Failed to execute code." });
+  }
+};
+
+module.exports = { aiResponse, executeCode };
