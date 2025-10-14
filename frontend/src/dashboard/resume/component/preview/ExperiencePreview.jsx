@@ -1,11 +1,11 @@
-/* eslint-disable react/prop-types */
+
 const ExperiencePreview = ({ resumeInfo }) => {
   const experience = resumeInfo?.experience || [];
 
   if (experience.length === 0) {
     return (
       <div className="text-center text-gray-500 text-sm font-medium py-4">
-        No job experience data added.
+        No experience data added.
       </div>
     );
   }
@@ -14,37 +14,38 @@ const ExperiencePreview = ({ resumeInfo }) => {
     <div className="my-6">
       <h2
         className="text-center font-bold text-base mb-2"
-        style={{ color: resumeInfo?.themeColor || "#4c87ff" }}
+        style={{ color: "#222" }} // black
       >
         Professional Experience
       </h2>
       <hr
         className="border-[1.5px] my-2"
-        style={{ borderColor: resumeInfo?.themeColor || "#6b7280" }}
+        style={{ borderColor: resumeInfo?.themeColor || "#fb8500" }}
       />
-      {experience.map((exp, index) => (
+
+      {experience.map((item, index) => (
         <div key={index} className="my-5">
-          <h2 className="text-sm font-bold text-gray-800">
-            {exp?.title || "Position title not provided"}
+          <h2 className="text-base font-bold text-gray-800">
+            {item?.title || "Job Title Not Specified"}
           </h2>
           <div className="flex justify-between text-xs text-gray-600 mb-1">
             <span>
-              {(exp?.companyName || "Company not specified") +
-                (exp?.city ? `, ${exp.city}` : "") +
-                (exp?.state ? `, ${exp.state}` : "")}
+              {item?.companyName || "Company Not Specified"}
+              {item?.city ? `, ${item.city}` : ""}
+              {item?.state ? `, ${item.state}` : ""}
             </span>
             <span>
-              {(exp?.startDate || "Start date not provided") +
-                " - " +
-                (exp?.endDate || "Present")}
+              {item?.startDate
+                ? `${item.startDate} - ${item.endDate || "Present"}`
+                : "Date not specified"}
             </span>
           </div>
-          <div
-            className="text-xs my-2 text-justify"
-            dangerouslySetInnerHTML={{
-              __html: exp?.workSummary || "No work summary provided.",
-            }}
-          />
+          {item?.workSummary && (
+            <div
+              className="text-xs text-black my-1"
+              dangerouslySetInnerHTML={{ __html: item.workSummary }}
+            />
+          )}
         </div>
       ))}
     </div>

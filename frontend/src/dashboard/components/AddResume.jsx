@@ -1,3 +1,4 @@
+
 import {
   Dialog,
   DialogContent,
@@ -13,7 +14,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-// Accept a callback prop to update the resume list in Dashboard
 const AddResume = ({ onResumeCreated }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [resumeTitle, setResumeTitle] = useState("");
@@ -29,7 +29,6 @@ const AddResume = ({ onResumeCreated }) => {
     setTimeout(() => {
       toast.success("Resume Created Successfully!");
 
-      // Add the new resume to the dashboard list
       if (onResumeCreated) {
         onResumeCreated({ resumeId: newResumeId, title: resumeTitle });
       }
@@ -37,7 +36,6 @@ const AddResume = ({ onResumeCreated }) => {
       setLoading(false);
       setOpenDialog(false);
 
-      // Navigate to the edit page for the new resume
       navigate(`/dashboard/resume/edit`);
     }, 1000);
   };
@@ -45,29 +43,33 @@ const AddResume = ({ onResumeCreated }) => {
   return (
     <div>
       <div
-        className="p-14 py-24 border items-center flex justify-center bg-secondary rounded-lg h-[280px] hover:scale-105 transition-all hover:shadow-md cursor-pointer border-dashed"
+        className="p-14 py-24 border-2 border-orange-300 items-center flex justify-center bg-white rounded-xl h-[280px] hover:scale-105 transition-all hover:shadow-lg cursor-pointer border-dashed"
         onClick={() => setOpenDialog(true)}
       >
-        <PlusSquare />
+        <PlusSquare className="text-orange-500" size={48} />
       </div>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent>
+        <DialogContent className="bg-white rounded-xl border border-orange-200">
           <DialogHeader>
-            <DialogTitle>Create New Resume</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-orange-500">Create New Resume</DialogTitle>
+            <DialogDescription className="text-orange-400">
               Add a title for your new resume
               <Input
-                className="my-2"
+                className="my-2 border-orange-300 focus:border-orange-500 focus:ring-orange-200"
                 placeholder="Ex. Full Stack Developer"
                 onChange={(e) => setResumeTitle(e.target.value)}
                 value={resumeTitle}
               />
             </DialogDescription>
-            <div className="flex justify-end gap-5">
-              <Button onClick={() => setOpenDialog(false)} variant="ghost">
+            <div className="flex justify-end gap-5 mt-2">
+              <Button onClick={() => setOpenDialog(false)} variant="ghost" className="text-orange-400">
                 Cancel
               </Button>
-              <Button disabled={!resumeTitle || loading} onClick={onCreate}>
+              <Button
+                disabled={!resumeTitle || loading}
+                onClick={onCreate}
+                className="bg-orange-500 text-white hover:bg-orange-600"
+              >
                 {loading ? <Loader2 className="animate-spin" /> : "Create"}
               </Button>
             </div>

@@ -7,7 +7,7 @@ export const Dialog = ({ open, onOpenChange, children }) => {
       {open && (
         <>
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-orange-100 bg-opacity-50 z-40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -28,7 +28,7 @@ export const Dialog = ({ open, onOpenChange, children }) => {
 };
 
 export const DialogContent = ({ children, className = "" }) => (
-  <div className={`bg-white rounded-lg shadow-lg max-w-md w-full mx-4 p-6 ${className}`}>
+  <div className={`bg-white rounded-lg shadow-lg max-w-md w-full mx-4 p-6 border border-orange-200 ${className}`}>
     {children}
   </div>
 );
@@ -38,9 +38,9 @@ export const DialogHeader = ({ children }) => (
 );
 
 export const DialogTitle = ({ children }) => (
-  <h2 className="text-lg font-semibold text-gray-900 mb-2">{children}</h2>
+  <h2 className="text-lg font-semibold text-orange-500 mb-2">{children}</h2>
 );
 
 export const DialogDescription = ({ children }) => (
-  <div className="text-gray-600">{children}</div>
+  <div className="text-orange-400">{children}</div>
 );

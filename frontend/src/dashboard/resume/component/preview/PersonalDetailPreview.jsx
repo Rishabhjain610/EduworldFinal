@@ -1,39 +1,23 @@
-/* eslint-disable react/prop-types */
-const PersonalDetailPreview = ({ resumeInfo }) => {
-  const personalDetail = resumeInfo?.personalDetail;
 
-  if (!personalDetail) {
-    return (
-      <div className="text-center text-gray-500 text-sm font-medium py-4">
-        No personal data added.
-      </div>
-    );
-  }
+const PersonalDetailPreview = ({ resumeInfo }) => {
+  const personal = resumeInfo?.personalDetail || {};
 
   return (
-    <div>
-      <h2 className="font-bold text-xl text-center">
-        {personalDetail.firstName || "First Name"} {personalDetail.lastName || "Last Name"}
+    <div className="mb-6">
+      <h1 className="text-center font-bold text-2xl mb-1 text-black">
+        {personal.firstName || ""} {personal.lastName || ""}
+      </h1>
+      <h2 className="text-center font-semibold text-lg mb-1 text-black">
+        {personal.jobTitle || ""}
       </h2>
-      <h2 className="text-center text-sm font-medium">
-        {personalDetail.jobTitle || "Job Title not specified"}
-      </h2>
-      <h2 className="text-center font-normal text-xs">
-        {personalDetail.address || "Address not provided"}
-      </h2>
-
-      <div className="flex justify-between">
-        <h2 className="font-normal text-xs">
-          {personalDetail.phone || "Phone not provided"}
-        </h2>
-        <h2 className="font-normal text-xs">
-          {personalDetail.email || "Email not provided"}
-        </h2>
+      <div className="text-center text-sm text-gray-700 mb-1">
+        {personal.address || ""}
       </div>
-      <hr
-        className="border-[1.5px] my-2"
-        style={{ borderColor: resumeInfo?.themeColor || "#000"}}
-      />
+      <div className="flex justify-between text-xs text-gray-700 mb-2">
+        <span>{personal.phone || ""}</span>
+        <span>{personal.email || ""}</span>
+      </div>
+      <hr className="border-[1.5px] my-2" style={{ borderColor: resumeInfo?.themeColor || "#fb8500" }} />
     </div>
   );
 };

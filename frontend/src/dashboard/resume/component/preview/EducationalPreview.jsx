@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+
 const EducationalPreview = ({ resumeInfo }) => {
   const education = resumeInfo?.education || [];
 
@@ -14,28 +14,28 @@ const EducationalPreview = ({ resumeInfo }) => {
     <div className="my-6">
       <h2
         className="text-center font-bold text-base mb-2"
-        style={{ color: resumeInfo?.themeColor || "#4c87ff" }}
+        style={{ color: "#222" }} // black
       >
         Education
       </h2>
       <hr
         className="border-[1.5px] my-2"
-        style={{ borderColor: resumeInfo?.themeColor || "rgb(107 114 128)" }}
+        style={{ borderColor: "#fb8500" }}
       />
 
       {education.map((item, index) => (
         <div key={index} className="my-5">
           <h2 className="text-sm font-bold text-gray-800">
-            {item?.universityName || "University Not Specified"}
+            {item?.school || "University Not Specified"}
           </h2>
-          <div className="flex justify-between text-xs text-gray-600 mb-1">
+                    <div className="flex justify-between text-xs text-gray-600 mb-1">
             <span>
               {item?.degree || "Degree not specified"}
               {item?.major ? ` in ${item.major}` : ""}
             </span>
             <span>
-              {item?.startDate
-                ? `${item.startDate} - ${item.endDate || "Present"}`
+              {item?.graduationDate
+                ? item.graduationDate
                 : "Date not specified"}
             </span>
           </div>
@@ -46,7 +46,7 @@ const EducationalPreview = ({ resumeInfo }) => {
               {item.description.split(",").map((course, i) => (
                 <span
                   key={i}
-                  className="inline-block bg-blue-50 text-blue-700 rounded px-2 py-0.5 mr-1 mb-1"
+                  className="inline-block bg-orange-50 text-black rounded px-2 py-0.5 mr-1 mb-1"
                 >
                   {course.trim()}
                 </span>

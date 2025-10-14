@@ -20,7 +20,7 @@ export const DropdownMenuTrigger = ({ children, isOpen, setIsOpen }) => (
 
 export const DropdownMenuContent = ({ children, isOpen, className = "" }) => (
   isOpen && (
-    <div className={`absolute right-0 top-full z-10 mt-1 w-48 rounded-md border bg-white shadow-lg ${className}`}>
+    <div className={`absolute right-0 top-full z-10 mt-1 w-48 rounded-md border border-orange-200 bg-white shadow-lg ${className}`}>
       {children}
     </div>
   )
@@ -29,7 +29,7 @@ export const DropdownMenuContent = ({ children, isOpen, className = "" }) => (
 export const DropdownMenuItem = ({ children, onClick, className = "" }) => (
   <div
     onClick={onClick}
-    className={`px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer ${className}`}
+    className={`px-4 py-2 text-sm hover:bg-orange-50 text-orange-500 cursor-pointer ${className}`}
   >
     {children}
   </div>

@@ -20,7 +20,7 @@ const ResumePreview = () => {
   return (
     <div
       className="shadow-lg h-full p-14 border-t-[20px]"
-      style={{ borderColor: resumeInfo?.themeColor || '#4c87ff' }}
+      style={{ borderColor: resumeInfo?.themeColor || '#fb8500' }}
     >
       {resumeInfo && (
         <>

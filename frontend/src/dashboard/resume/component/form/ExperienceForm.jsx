@@ -1,3 +1,4 @@
+
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { useContext, useEffect, useState } from "react";
@@ -9,7 +10,7 @@ import { app } from "../../../../utils/firebase_config";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { AIchatSession } from "../../../../../services/AiModel";
 
-// ✅ FIXED: Improved prompt for better formatting
+// Improved prompt for better formatting
 const PROMPT =
   'Job Title: {positionTitle}. Based on this job title, provide 4-5 ATS-friendly bullet points for a resume. Each bullet point should describe a key achievement or responsibility. Return the result as an HTML unordered list (<ul><li>...</li></ul>).';
 
@@ -81,7 +82,7 @@ const ExperienceForm = ({ resumeId, email, enableNext }) => {
     setExperienceList(newEntries);
   };
 
-  // ✅ FIXED: AI Generation logic is now correctly placed here
+  // AI Generation logic
   const GenerateSummaryFromAI = async (index) => {
     if (!experienceList[index]?.title) {
       toast.error("Please add a Position Title first.");
@@ -91,7 +92,23 @@ const ExperienceForm = ({ resumeId, email, enableNext }) => {
     const prompt = PROMPT.replace('{positionTitle}', experienceList[index].title);
     try {
       const result = await AIchatSession.sendMessage(prompt);
-      const resp = (await result.response.text()).replace('```html', '').replace('```', '');
+      let resp = (await result.response.text())
+        .replace('```html', '')
+        .replace('```', '')
+        .trim();
+
+      // Remove all asterisks
+      resp = resp.replace(/\*/g, '');
+
+      // If not HTML, convert each line to <li>
+      if (!resp.startsWith('<ul>')) {
+        const lines = resp
+          .split('\n')
+          .map(line => line.replace(/^[-*]\s*/, '').trim())
+          .filter(line => line.length > 0);
+        resp = `<ul>${lines.map(line => `<li>${line}</li>`).join('')}</ul>`;
+      }
+
       const newEntries = [...experienceList];
       newEntries[index].workSummary = resp;
       setExperienceList(newEntries);
@@ -106,46 +123,45 @@ const ExperienceForm = ({ resumeId, email, enableNext }) => {
 
   return (
     <div>
-      <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
-        <h2 className="font-bold text-lg">Professional Experience</h2>
-        <p>Add Your previous Job experience</p>
+      <div className="p-5 shadow-lg rounded-xl border-t-4 border-orange-400 mt-10 bg-white">
+        <h2 className="font-bold text-lg text-orange-500">Professional Experience</h2>
+        <p className="text-orange-400">Add Your previous Job experience</p>
         <div>
           {experienceList.map((item, index) => (
             <div key={index}>
-              <div className="grid grid-cols-2 gap-3 border p-3 my-5 rounded-lg">
+              <div className="grid grid-cols-2 gap-3 border p-3 my-5 rounded-xl border-orange-200 bg-white">
                 <div>
-                  <label className="text-xs">Position Title</label>
-                  <Input name="title" onChange={(event) => handleChange(index, event)} value={item?.title || ''} />
+                  <label className="text-xs text-orange-500">Position Title</label>
+                  <Input name="title" onChange={(event) => handleChange(index, event)} value={item?.title || ''} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
                 </div>
                 <div>
-                  <label className="text-xs">Company Name</label>
-                  <Input name="companyName" onChange={(event) => handleChange(index, event)} value={item?.companyName || ''} />
+                  <label className="text-xs text-orange-500">Company Name</label>
+                  <Input name="companyName" onChange={(event) => handleChange(index, event)} value={item?.companyName || ''} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
                 </div>
                 <div>
-                  <label className="text-xs">City</label>
-                  <Input name="city" onChange={(event) => handleChange(index, event)} value={item?.city || ''} />
+                  <label className="text-xs text-orange-500">City</label>
+                  <Input name="city" onChange={(event) => handleChange(index, event)} value={item?.city || ''} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
                 </div>
                 <div>
-                  <label className="text-xs">State</label>
-                  <Input name="state" onChange={(event) => handleChange(index, event)} value={item?.state || ''} />
+                  <label className="text-xs text-orange-500">State</label>
+                  <Input name="state" onChange={(event) => handleChange(index, event)} value={item?.state || ''} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
                 </div>
                 <div>
-                  <label className="text-xs">Start Date</label>
-                  <Input type="date" name="startDate" onChange={(event) => handleChange(index, event)} value={item?.startDate || ''} />
+                  <label className="text-xs text-orange-500">Start Date</label>
+                  <Input type="date" name="startDate" onChange={(event) => handleChange(index, event)} value={item?.startDate || ''} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
                 </div>
                 <div>
-                  <label className="text-xs">End Date</label>
-                  <Input type="date" name="endDate" onChange={(event) => handleChange(index, event)} value={item?.endDate || ''} />
+                  <label className="text-xs text-orange-500">End Date</label>
+                  <Input type="date" name="endDate" onChange={(event) => handleChange(index, event)} value={item?.endDate || ''} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
                 </div>
                 <div className="col-span-2">
-                  {/* ✅ FIXED: AI Button is now here, where it belongs */}
                   <div className="flex justify-between items-center">
-                    <label className="text-xs">Work Summary</label>
+                    <label className="text-xs text-orange-500">Work Summary</label>
                     <Button
                       variant="outline" size="sm" type="button"
                       onClick={() => GenerateSummaryFromAI(index)}
                       disabled={aiLoadingIndex === index}
-                      className="flex gap-2 border-primary text-primary"
+                      className="flex gap-2 border-orange-400 text-orange-500"
                     >
                       {aiLoadingIndex === index ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <><Brain className="h-4 w-4" /> Generate from AI</>}
                     </Button>
@@ -162,10 +178,10 @@ const ExperienceForm = ({ resumeId, email, enableNext }) => {
         </div>
         <div className="flex justify-between">
           <div className="flex gap-2">
-            <Button variant="outline" onClick={AddNewExperience} className="text-primary">+ Add More Experience</Button>
-            <Button variant="outline" onClick={RemoveExperience} className="text-primary">- Remove</Button>
+            <Button variant="outline" onClick={AddNewExperience} className="text-orange-500 border-orange-400">+ Add More Experience</Button>
+            <Button variant="outline" onClick={RemoveExperience} className="text-orange-500 border-orange-400">- Remove</Button>
           </div>
-          <Button disabled={loading} onClick={onSave}>
+          <Button disabled={loading} onClick={onSave} className="bg-orange-500 text-white hover:bg-orange-600">
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

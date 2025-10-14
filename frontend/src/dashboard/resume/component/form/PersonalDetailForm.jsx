@@ -1,3 +1,4 @@
+
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { ResumeContext } from "../../../../context/ResumeContext";
@@ -36,10 +37,7 @@ const PersonalDetailForm = ({ resumeId, email, enableNext }) => {
         `usersByEmail/${email}/resumes`,
         `resume-${resumeId}`
       );
-      
-      // ✅ FIXED: Data is now correctly nested under 'personalDetail'
       await setDoc(resumeRef, { personalDetail: formData }, { merge: true });
-      
       toast.success("Details Updated");
       enableNext(true);
     } catch (error) {
@@ -58,7 +56,6 @@ const PersonalDetailForm = ({ resumeId, email, enableNext }) => {
       [name]: value
     };
     setFormData(newFormData);
-    
     setResumeInfo(prev => ({
       ...prev,
       personalDetail: newFormData
@@ -66,68 +63,78 @@ const PersonalDetailForm = ({ resumeId, email, enableNext }) => {
   };
 
   return (
-    <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
-      <h2 className="font-bold text-lg">Personal Detail</h2>
-      <p>Get Started with the basic information</p>
+    <div className="p-5 shadow-lg rounded-xl border-t-4 border-orange-400 mt-10 bg-white">
+      <h2 className="font-bold text-lg text-orange-500">Personal Detail</h2>
+      <p className="text-orange-400">Get Started with the basic information</p>
       <form onSubmit={onSave}>
         <div className="grid grid-cols-2 mt-5 gap-3">
           <div>
-            <label className="text-sm">First Name</label>
+            <label className="text-sm text-orange-500">First Name</label>
             <Input
               name="firstName"
               value={formData.firstName}
               required
               onChange={handleInputChange}
+              className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
             />
           </div>
           <div>
-            <label className="text-sm">Last Name</label>
+            <label className="text-sm text-orange-500">Last Name</label>
             <Input
               name="lastName"
               required
               onChange={handleInputChange}
               value={formData.lastName}
+              className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
             />
           </div>
           <div className="col-span-2">
-            <label className="text-sm">Job Title</label>
+            <label className="text-sm text-orange-500">Job Title</label>
             <Input
               name="jobTitle"
               required
               value={formData.jobTitle}
               onChange={handleInputChange}
+              className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
             />
           </div>
           <div className="col-span-2">
-            <label className="text-sm">Address</label>
+            <label className="text-sm text-orange-500">Address</label>
             <Input
               name="address"
               required
               value={formData.address}
               onChange={handleInputChange}
+              className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
             />
           </div>
           <div>
-            <label className="text-sm">Phone</label>
+            <label className="text-sm text-orange-500">Phone</label>
             <Input
               name="phone"
               required
               value={formData.phone}
               onChange={handleInputChange}
+              className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
             />
           </div>
           <div>
-            <label className="text-sm">Email</label>
+            <label className="text-sm text-orange-500">Email</label>
             <Input
               name="email"
               required
               value={formData.email}
               onChange={handleInputChange}
+              className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
             />
           </div>
         </div>
         <div className="mt-3 flex justify-end">
-          <Button type="submit" disabled={loading}>
+          <Button
+            type="submit"
+            disabled={loading}
+            className="bg-orange-500 text-white hover:bg-orange-600"
+          >
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

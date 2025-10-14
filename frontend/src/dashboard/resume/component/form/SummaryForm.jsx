@@ -1,3 +1,4 @@
+
 import { Button } from "../../../../components/ui/button";
 import { Textarea } from "../../../../components/ui/textarea";
 import { ResumeContext } from "../../../../context/ResumeContext";
@@ -31,7 +32,7 @@ const SummaryForm = ({ resumeId, email, enableNext }) => {
       const PROMPT = prompt.replace("{jobTitle}", resumeInfo?.personalDetail?.jobTitle || "Software Developer");
       const result = await AIchatSession.sendMessage(PROMPT);
       const rawResponse = await result.response.text();
-      
+
       try {
         const parsedResponse = JSON.parse(rawResponse);
         setAiGenerateSummeryList(Array.isArray(parsedResponse) ? parsedResponse : [parsedResponse]);
@@ -52,7 +53,6 @@ const SummaryForm = ({ resumeId, email, enableNext }) => {
     }
   };
 
- 
   const onSave = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -76,16 +76,16 @@ const SummaryForm = ({ resumeId, email, enableNext }) => {
 
   return (
     <div>
-      <div className="p-5 shadow-lg rounded-lg border-t-4 border-t-blue-500 mt-10">
-        <h2 className="font-bold text-lg">Summary Detail</h2>
-        <p>Add Summary for your job title</p>
+      <div className="p-5 shadow-lg rounded-xl border-t-4 border-orange-400 mt-10 bg-white">
+        <h2 className="font-bold text-lg text-orange-500">Summary Detail</h2>
+        <p className="text-orange-400">Add Summary for your job title</p>
         <form className="mt-7" onSubmit={onSave}>
           <div className="flex justify-between items-end">
-            <label>Add Summary</label>
+            <label className="text-orange-500">Add Summary</label>
             <Button
               size="sm"
               variant="outline"
-              className="border-blue-500 text-blue-500 flex gap-2"
+              className="border-orange-400 text-orange-500 flex gap-2"
               type="button"
               onClick={generateSummary}
               disabled={loading}
@@ -95,14 +95,14 @@ const SummaryForm = ({ resumeId, email, enableNext }) => {
             </Button>
           </div>
           <Textarea
-            className="mt-5"
+            className="mt-5 border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
             required
             onChange={(e) => setSummary(e.target.value)}
             value={summary}
             placeholder="Write your job summary here..."
           />
           <div className="mt-2 flex justify-end">
-            <Button disabled={loading} type="submit">
+            <Button disabled={loading} type="submit" className="bg-orange-500 text-white hover:bg-orange-600">
               {loading ? <Loader2 className="animate-spin" /> : "Save"}
             </Button>
           </div>
@@ -110,15 +110,15 @@ const SummaryForm = ({ resumeId, email, enableNext }) => {
       </div>
       {aiGeneratedSummeryList.length > 0 && (
         <div className="my-5">
-          <h2 className="font-bold text-lg">AI Suggestions</h2>
+          <h2 className="font-bold text-lg text-orange-500">AI Suggestions</h2>
           {aiGeneratedSummeryList.map((item, index) => (
             <div
               key={index}
-              className="p-5 shadow-lg my-4 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors border"
+              className="p-5 shadow-lg my-4 rounded-xl cursor-pointer hover:bg-orange-50 transition-colors border border-orange-200"
               onClick={() => setSummary(item.summary)}
             >
-              <h2 className="font-bold my-1 text-blue-500">
-                Level: <span className="text-red-500">{item.experience_level}</span>
+              <h2 className="font-bold my-1 text-orange-500">
+                Level: <span className="text-orange-400">{item.experience_level}</span>
               </h2>
               <p className="text-gray-700">{item.summary}</p>
             </div>

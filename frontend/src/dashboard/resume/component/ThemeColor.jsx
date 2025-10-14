@@ -6,8 +6,10 @@ import {
 import { Button } from "../../../components/ui/button";
 import { LayoutGrid } from "lucide-react";
 import { ResumeContext } from "../../../context/ResumeContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
+
+const DEFAULT_ORANGE = "#FF7133";
 
 const ThemeColor = () => {
   const colors = [
@@ -18,11 +20,23 @@ const ThemeColor = () => {
   ];
 
   const { resumeInfo, setResumeInfo } = useContext(ResumeContext);
-  const [selectedColor, setSelectedColor] = useState();
+  const [selectedColor, setSelectedColor] = useState(
+    resumeInfo?.themeColor || DEFAULT_ORANGE
+  );
   const [open, setOpen] = useState(false);
 
+  // Ensure resumeInfo.themeColor is set to orange by default
+  useEffect(() => {
+    if (!resumeInfo?.themeColor) {
+      setResumeInfo({
+        ...resumeInfo,
+        themeColor: DEFAULT_ORANGE
+      });
+    }
+  }, [resumeInfo, setResumeInfo]);
+
   const onColorSelect = (color) => {
-    setOpen(false); // Close dropdown immediately
+    setOpen(false);
     setSelectedColor(color);
     setResumeInfo({
       ...resumeInfo,

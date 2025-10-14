@@ -111,69 +111,75 @@ const Education = ({ resumeId, email, enableNext }) => {
 
   return (
     <div>
-      <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
-        <h2 className="font-bold text-lg">Education</h2>
-        <p>Add your educational background</p>
+      <div className="p-5 shadow-lg rounded-xl border-t-4 border-orange-400 mt-10 bg-white">
+        <h2 className="font-bold text-lg text-orange-500">Education</h2>
+        <p className="text-orange-400">Add your educational background</p>
         <div>
           {educationList.map((item, index) => (
             <div key={index}>
-              <div className="grid grid-cols-2 gap-3 border p-3 my-5 rounded-lg">
+              <div className="grid grid-cols-2 gap-3 border p-3 my-5 rounded-xl border-orange-200 bg-white">
                 <div>
-                  <label className="text-xs">School/University</label>
+                  <label className="text-xs text-orange-500">School/University</label>
                   <Input
                     name="school"
                     value={item.school}
                     onChange={(event) => handleChange(index, event)}
+                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-xs">Degree</label>
+                  <label className="text-xs text-orange-500">Degree</label>
                   <Input
                     name="degree"
                     value={item.degree}
                     onChange={(event) => handleChange(index, event)}
+                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-xs">City</label>
+                  <label className="text-xs text-orange-500">City</label>
                   <Input
                     name="city"
                     value={item.city}
                     onChange={(event) => handleChange(index, event)}
+                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-xs">State</label>
+                  <label className="text-xs text-orange-500">State</label>
                   <Input
                     name="state"
                     value={item.state}
                     onChange={(event) => handleChange(index, event)}
+                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-xs">Field of Study</label>
+                  <label className="text-xs text-orange-500">Field of Study</label>
                   <Input
                     name="fieldOfStudy"
                     value={item.fieldOfStudy}
                     onChange={(event) => handleChange(index, event)}
+                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-xs">Graduation Date</label>
+                  <label className="text-xs text-orange-500">Graduation Date</label>
                   <Input
                     type="date"
                     name="graduationDate"
                     value={item.graduationDate}
                     onChange={(event) => handleChange(index, event)}
+                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
                   />
                 </div>
                 <div className="col-span-2">
                   <div className="flex justify-between items-end">
-                    <label className="text-xs">Courses (AI Generated)</label>
+                    <label className="text-xs text-orange-500">Courses (AI Generated)</label>
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-blue-500 text-blue-500 flex gap-2"
+                      className="border-orange-400 text-orange-500 flex gap-2"
                       type="button"
                       disabled={aiLoadingIndex === index}
                       onClick={() => generateCoursesAI(index)}
@@ -204,19 +210,19 @@ const Education = ({ resumeId, email, enableNext }) => {
             <Button
               variant="outline"
               onClick={addNewEducation}
-              className="text-primary"
+              className="text-orange-500 border-orange-400"
             >
               + Add More Education
             </Button>
             <Button
               variant="outline"
               onClick={removeEducation}
-              className="text-primary"
+              className="text-orange-500 border-orange-400"
             >
               - Remove
             </Button>
           </div>
-          <Button disabled={loading} onClick={onSave}>
+          <Button disabled={loading} onClick={onSave} className="bg-orange-500 text-white hover:bg-orange-600">
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>
