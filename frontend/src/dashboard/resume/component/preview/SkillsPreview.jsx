@@ -1,4 +1,6 @@
 
+import React from "react";
+
 const SkillsPreview = ({ resumeInfo }) => {
   const skills = resumeInfo?.skills || [];
 
@@ -22,14 +24,23 @@ const SkillsPreview = ({ resumeInfo }) => {
         className="border-[1.5px] my-2"
         style={{ borderColor: resumeInfo?.themeColor || "#fb8500" }}
       />
-      <div className="flex flex-wrap gap-2 justify-center">
-        {skills.map((item, index) => (
-          <span
-            key={index}
-            className="inline-block bg-orange-50 text-black rounded px-2 py-0.5"
-          >
-            {item.name} {item.rating ? `(${item.rating}/5)` : ""}
-          </span>
+      <div className="grid grid-cols-2 gap-x-8 gap-y-3 mt-4">
+        {skills.map((skill, index) => (
+          <div key={index} className="flex items-center justify-between">
+            <h3 className="text-sm font-medium">{skill.name}</h3>
+            <div className="flex items-center">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span
+                  key={i}
+                  className={`text-xl ${
+                    i < skill.rating ? "text-orange-400" : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>

@@ -1,4 +1,4 @@
-
+import React from "react";
 const EducationalPreview = ({ resumeInfo }) => {
   const education = resumeInfo?.education || [];
 

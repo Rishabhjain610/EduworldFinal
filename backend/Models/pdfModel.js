@@ -8,7 +8,7 @@ const pdfSchema = new Schema({
   year: String,
   branch: String,
   uploadedBy: String,
-  extractedText: String // <-- Add this line!
+  extractedText: String 
 });
 
 const Pdf = model("Pdf", pdfSchema);

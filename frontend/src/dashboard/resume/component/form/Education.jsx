@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
@@ -5,10 +6,18 @@ import { useContext, useEffect, useState, useCallback } from "react";
 import RichTextEditor from "../RichTextEditor";
 import { ResumeContext } from "../../../../context/ResumeContext";
 import { toast } from "react-toastify";
-import { LoaderCircle, Brain } from "lucide-react";
+import { LoaderCircle, Brain, Sparkles } from "lucide-react"; // Import Sparkles
 import { app } from "../../../../utils/firebase_config";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { AIchatSession } from "../../../../../services/AiModel";
+
+// Prompt for generating new courses
+const PROMPT_GENERATE_COURSES =
+  'List 3-5 key technical courses for a degree in "{degree}" with a field of study in "{fieldOfStudy}". Return only the course names as a comma-separated string. For example: "Data Structures, Algorithms, Operating Systems".';
+
+// Prompt for modifying existing courses
+const PROMPT_MODIFY_COURSES =
+  'Based on a degree in "{degree}" with a field of study in "{fieldOfStudy}", review and improve the following list of courses for clarity and relevance. Return only the improved course names as a comma-separated string. Here is the list to improve: {existingCourses}';
 
 const formField = {
   school: "",
@@ -71,18 +80,36 @@ const Education = ({ resumeId, email, enableNext }) => {
   }, []);
 
   const generateCoursesAI = async (index) => {
-    setAiLoadingIndex(index);
     const edu = educationList[index];
-    const prompt = `List 3-5 key technical courses completed in the degree "${edu.degree}" with field of study "${edu.fieldOfStudy}" at "${edu.school}". Return only the course names as a comma-separated string, nothing else. Do not include any HTML tags or extra formatting.`;
+    if (!edu.degree || !edu.fieldOfStudy) {
+      toast.error("Please enter a Degree and Field of Study first.");
+      return;
+    }
+    setAiLoadingIndex(index);
+
+    const existingCourses = edu.description;
+    const hasContent = existingCourses && existingCourses.trim().replace(/<[^>]*>?/gm, '').length > 0;
+    let finalPrompt;
+
+    if (hasContent) {
+      finalPrompt = PROMPT_MODIFY_COURSES
+        .replace('{degree}', edu.degree)
+        .replace('{fieldOfStudy}', edu.fieldOfStudy)
+        .replace('{existingCourses}', existingCourses);
+    } else {
+      finalPrompt = PROMPT_GENERATE_COURSES
+        .replace('{degree}', edu.degree)
+        .replace('{fieldOfStudy}', edu.fieldOfStudy);
+    }
 
     try {
-      const result = await AIchatSession.sendMessage(prompt);
+      const result = await AIchatSession.sendMessage(finalPrompt);
       const aiText = await result.response.text();
-      const newEntries = educationList.slice();
+      const newEntries = [...educationList];
       newEntries[index].description = aiText;
       setEducationList(newEntries);
       setShouldUpdateContext(true);
-      toast.success("AI courses generated!");
+      toast.success("AI courses updated!");
     } catch (error) {
       toast.error("AI generation failed");
     } finally {
@@ -116,112 +143,73 @@ const Education = ({ resumeId, email, enableNext }) => {
         <h2 className="font-bold text-lg text-orange-500">Education</h2>
         <p className="text-orange-400">Add your educational background</p>
         <div>
-          {educationList.map((item, index) => (
-            <div key={index}>
-              <div className="grid grid-cols-2 gap-3 border p-3 my-5 rounded-xl border-orange-200 bg-white">
-                <div>
-                  <label className="text-xs text-orange-500">School/University</label>
-                  <Input
-                    name="school"
-                    value={item.school}
-                    onChange={(event) => handleChange(index, event)}
-                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-orange-500">Degree</label>
-                  <Input
-                    name="degree"
-                    value={item.degree}
-                    onChange={(event) => handleChange(index, event)}
-                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-orange-500">City</label>
-                  <Input
-                    name="city"
-                    value={item.city}
-                    onChange={(event) => handleChange(index, event)}
-                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-orange-500">State</label>
-                  <Input
-                    name="state"
-                    value={item.state}
-                    onChange={(event) => handleChange(index, event)}
-                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-orange-500">Field of Study</label>
-                  <Input
-                    name="fieldOfStudy"
-                    value={item.fieldOfStudy}
-                    onChange={(event) => handleChange(index, event)}
-                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-orange-500">Graduation Date</label>
-                  <Input
-                    type="date"
-                    name="graduationDate"
-                    value={item.graduationDate}
-                    onChange={(event) => handleChange(index, event)}
-                    className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <div className="flex justify-between items-end">
-                    <label className="text-xs text-orange-500">Courses (AI Generated)</label>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-orange-400 text-orange-500 flex gap-2"
-                      type="button"
-                      disabled={aiLoadingIndex === index}
-                      onClick={() => generateCoursesAI(index)}
-                    >
-                      <Brain className="h-4 w-4" />
-                      {aiLoadingIndex === index ? (
-                        <LoaderCircle className="animate-spin h-4 w-4" />
-                      ) : (
-                        "Generate from AI"
-                      )}
-                    </Button>
+          {educationList.map((item, index) => {
+            const hasContent = item.description && item.description.trim().replace(/<[^>]*>?/gm, '').length > 0;
+            return (
+              <div key={index}>
+                <div className="grid grid-cols-2 gap-3 border p-3 my-5 rounded-xl border-orange-200 bg-white">
+                  <div>
+                    <label className="text-xs text-orange-500">School/University</label>
+                    <Input name="school" value={item.school} onChange={(event) => handleChange(index, event)} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
                   </div>
-                  <RichTextEditor
-                    index={index}
-                    value={item.description}
-                    onRichTextEditorChange={(event) =>
-                      handleRichTextEditor(event, "description", index)
-                    }
-                  />
+                  <div>
+                    <label className="text-xs text-orange-500">Degree</label>
+                    <Input name="degree" value={item.degree} onChange={(event) => handleChange(index, event)} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
+                  </div>
+                  <div>
+                    <label className="text-xs text-orange-500">City</label>
+                    <Input name="city" value={item.city} onChange={(event) => handleChange(index, event)} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
+                  </div>
+                  <div>
+                    <label className="text-xs text-orange-500">State</label>
+                    <Input name="state" value={item.state} onChange={(event) => handleChange(index, event)} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
+                  </div>
+                  <div>
+                    <label className="text-xs text-orange-500">Field of Study</label>
+                    <Input name="fieldOfStudy" value={item.fieldOfStudy} onChange={(event) => handleChange(index, event)} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
+                  </div>
+                  <div>
+                    <label className="text-xs text-orange-500">Graduation Date</label>
+                    <Input type="date" name="graduationDate" value={item.graduationDate} onChange={(event) => handleChange(index, event)} className="border-orange-300 focus:border-orange-500 focus:ring-orange-200 bg-white" />
+                  </div>
+                  <div className="col-span-2">
+                    <div className="flex justify-between items-end">
+                      <label className="text-xs text-orange-500">Relevant Courses</label>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-orange-400 text-orange-500 flex gap-2"
+                        type="button"
+                        disabled={aiLoadingIndex === index}
+                        onClick={() => generateCoursesAI(index)}
+                      >
+                        {aiLoadingIndex === index ? (
+                          <LoaderCircle className="animate-spin h-4 w-4" />
+                        ) : hasContent ? (
+                          <><Sparkles className="h-4 w-4" /> Improve with AI</>
+                        ) : (
+                          <><Brain className="h-4 w-4" /> Generate from AI</>
+                        )}
+                      </Button>
+                    </div>
+                    <RichTextEditor
+                      index={index}
+                      value={item.description}
+                      onRichTextEditorChange={(event) =>
+                        handleRichTextEditor(event, "description", index)
+                      }
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         <div className="flex justify-between">
           <div className="flex gap-3">
-            <Button
-              variant="outline"
-              onClick={addNewEducation}
-              className="text-orange-500 border-orange-400"
-            >
-              + Add More Education
-            </Button>
-            <Button
-              variant="outline"
-              onClick={removeEducation}
-              className="text-orange-500 border-orange-400"
-            >
-              - Remove
-            </Button>
+            <Button variant="outline" onClick={addNewEducation} className="text-orange-500 border-orange-400">+ Add More Education</Button>
+            <Button variant="outline" onClick={removeEducation} className="text-orange-500 border-orange-400">- Remove</Button>
           </div>
           <Button disabled={loading} onClick={onSave} className="bg-orange-500 text-white hover:bg-orange-600">
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}

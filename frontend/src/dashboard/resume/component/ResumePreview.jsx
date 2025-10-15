@@ -1,3 +1,4 @@
+import React from "react";
 import { ResumeContext } from "../../../context/ResumeContext";
 import { useContext } from "react";
 import PersonalDetailPreview from "./preview/PersonalDetailPreview";

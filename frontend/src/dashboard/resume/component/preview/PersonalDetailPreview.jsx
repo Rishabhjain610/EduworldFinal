@@ -1,4 +1,4 @@
-
+import React from "react";
 const PersonalDetailPreview = ({ resumeInfo }) => {
   const personal = resumeInfo?.personalDetail || {};
 

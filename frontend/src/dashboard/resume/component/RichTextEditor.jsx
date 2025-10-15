@@ -1,3 +1,5 @@
+
+import React, { useState, useEffect } from "react";
 import {
   BtnBold,
   BtnBulletList,
@@ -13,12 +15,16 @@ import {
   Separator,
   Toolbar,
 } from "react-simple-wysiwyg";
-import { useState } from "react";
 
-// This component is now a clean, reusable rich text editor.
-// The AI generation logic has been moved to the components that use it.
 const RichTextEditor = ({ onRichTextEditorChange, value, index }) => {
   const [editorValue, setEditorValue] = useState(value);
+
+  // This useEffect hook will sync the editor's internal state
+  // with the value prop from the parent component.
+  // This is crucial for updating the editor when AI generates new content.
+  useEffect(() => {
+    setEditorValue(value);
+  }, [value]);
 
   const handleEditorChange = (e) => {
     setEditorValue(e.target.value);

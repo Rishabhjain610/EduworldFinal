@@ -1,4 +1,4 @@
-
+import React from "react";
 const SummaryDetails = ({ resumeInfo }) => {
   const summary = resumeInfo?.summary || "";
 
