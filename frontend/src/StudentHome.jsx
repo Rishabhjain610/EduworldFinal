@@ -1,11 +1,11 @@
-
+import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { BookOpen, Calendar, Code, Train, Coffee, Bot, Play, ArrowRight, CheckCircle, Star, Users, TrendingUp, Clock, FileText, User, Sparkles, MessageCircle } from "lucide-react";
 import studentImg from "../src/assets/student.png";
 import studentMobileImg from "../src/assets/studentMobile.png";
 import "./StudentHome.css";
-import React from "react";
+
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { motion } from "framer-motion";
 
