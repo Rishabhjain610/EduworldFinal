@@ -1,6 +1,8 @@
+
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
+// This schema is for messages embedded within a ChatRoom
 const messageSchema = new Schema({
   sender: {
     type: String,
@@ -12,27 +14,15 @@ const messageSchema = new Schema({
     required: true
   },
   content: {
-    type: String,
-    required: function() {
-      return this.messageType === 'text';
-    }
+    type: String
   },
   messageType: {
     type: String,
-    enum: ['text', 'image', 'emoji'],
+    enum: ['text', 'image'], // Simplified schema
     default: 'text'
   },
   imageUrl: {
-    type: String,
-    required: function() {
-      return this.messageType === 'image';
-    }
-  },
-  emoji: {
-    type: String,
-    required: function() {
-      return this.messageType === 'emoji';
-    }
+    type: String
   },
   timestamp: {
     type: Date,
@@ -75,4 +65,5 @@ const chatRoomSchema = new Schema({
   }
 });
 
-module.exports = model("ChatRoom", chatRoomSchema);
+// Check if the model already exists before compiling it
+module.exports = mongoose.models.ChatRoom || model("ChatRoom", chatRoomSchema);
