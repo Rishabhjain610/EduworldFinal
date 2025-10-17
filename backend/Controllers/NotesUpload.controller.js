@@ -142,7 +142,7 @@ const askQuestionFromPdf = async (req, res) => {
       history: [
         {
           role: "user",
-          parts: [{ text: `You are a helpful assistant. Your task is to answer questions based ONLY on the following document. If the answer is not found in the document you are free to answer but dont go off topic. Here is the document:\n\n${pdfDocument.extractedText}` }],
+          parts: [{ text: `You are a helpful assistant. Your task is to answer questions based ONLY on the following document. strictly answer from pdf if it no there simply say  "Unable to process your request since it is not there in the pdf"\n\n${pdfDocument.extractedText}` }],
         },
         {
           role: "model",
