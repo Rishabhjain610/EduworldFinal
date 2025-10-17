@@ -3,8 +3,8 @@ import { Link, Outlet } from "react-router-dom";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
-
+// Add this import at the top of StudentLandingPage.jsx
+ // Add this line
 // Material UI Imports
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -15,7 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Language from "./Language.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { Sparkles,BarChart3 } from "lucide-react";
 export default function StudentLandingPage({ username, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -248,6 +248,14 @@ export default function StudentLandingPage({ username, onLogout }) {
               <line x1="16" y1="17" x2="8" y2="17" />
             </svg>
             Resume
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link>
+          <Link
+            to="analytics"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
+          >
+            <Sparkles className="inline mr-1" size={20} />
+            Analytics
             <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
           <Link>

@@ -16,6 +16,8 @@ const eventRouter = require("./Routes/eventsRoute");
 const orderRouter = require("./Routes/orderRoutes");
 const VideoLectureRouter = require("./Routes/Video.routes");
 const ChatRouter = require("./Routes/Chat.routes");
+// Add this to your app.js after existing routes
+const MarksRouter = require("./Routes/Marks.Route");
 
 const {
   handleConnection, handleAuthenticate, handleJoinRoom, handleSendMessage,
@@ -56,6 +58,7 @@ app.use("/api/event", eventRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/videos", VideoLectureRouter);
 app.use("/api/chat", ChatRouter);
+app.use("/api/marks", MarksRouter);
 
 io.on("connection", (socket) => {
   handleConnection(socket);

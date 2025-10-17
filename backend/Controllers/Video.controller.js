@@ -121,7 +121,9 @@ const uploadVideoLecture = async (req, res) => {
       duration: result.duration || 0,
       fileSize: result.bytes || 0,
       cloudinaryId: result.public_id,
-      uploadedBy: teacher.id
+      uploadedBy: teacher.id,
+      isActive: true
+
     });
 
     await videoLecture.save();

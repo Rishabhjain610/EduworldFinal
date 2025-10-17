@@ -22,6 +22,8 @@ import StudentChatPage from "./ChatSocket/StudentChatPage";
 import Dashboard from "./dashboard/index.jsx";
 import ViewResume from "./my-resume/view/index.jsx";
 import EditResume from "./dashboard/resume/[resumeId]/edit/index.jsx";
+import ExcelUpload from "./ExcelUpload";
+import StudentAnalytics from "./StudentAnalytics";
 import "./App.css";
 
 function App() {
@@ -115,8 +117,8 @@ function App() {
               path="chat"
               element={<TeacherChatPage username={username} />}
             />
+            <Route path="excelUpload" element={<ExcelUpload />} />
             {/* Fixed: Changed from absolute to relative paths */}
-            
           </Route>
         </>
       ) : role === "student" ? (
@@ -142,7 +144,11 @@ function App() {
               path="chat"
               element={<StudentChatPage username={username} />}
             />
-            {/* ADD THESE RESUME ROUTES FOR STUDENTS */}
+            <Route
+              path="analytics"
+              element={<StudentAnalytics username={username} />}
+            />
+
             <Route path="resume" element={<Dashboard />} />
             <Route path="resume/edit" element={<EditResume />} />
             <Route

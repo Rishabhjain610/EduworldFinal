@@ -10,6 +10,8 @@ import {
   Award,
   BarChart,
   VideoIcon,
+  Sparkles,
+  FileSpreadsheet,
 } from "lucide-react";
 import TeacherHome from "./TeacherHome";
 import PdfForm from "./PdfForm";
@@ -139,6 +141,13 @@ export default function TeacherLandingPage({ username, onLogout }) {
             </svg>
             Chat Room
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link>
+          <Link
+            to="excelUpload"
+            className="flex gap-1 items-center group text-gray-700 hover:text-orange-600 font-medium"
+          >
+            <FileSpreadsheet className="inline mr-1" size={20} />
+            Upload Marks
           </Link>
           <Language />
         </nav>

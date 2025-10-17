@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Play, BookOpen, Users, Clock, Filter } from 'lucide-react';
+import { Search, Play, BookOpen, Users, Clock, Filter, AlertCircle, Loader } from 'lucide-react';
 import axios from 'axios';
 
 const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [filters, setFilters] = useState({
     subject: 'all',
     semester: 'all',
@@ -64,26 +65,56 @@ const VideoGallery = () => {
       }
     } catch (error) {
       console.error('Error fetching semester subjects:', error);
+      setError('Failed to load subjects. Please refresh the page.');
     }
   };
 
   const fetchVideos = async () => {
     setLoading(true);
+    setError('');
+    
     try {
-      const queryParams = new URLSearchParams({
-        ...filters,
-        page: pagination.currentPage,
-        limit: 12
-      });
+      // Build query parameters - remove empty/all values
+      const queryParams = new URLSearchParams();
+      
+      // Only add non-default filter values
+      if (filters.subject && filters.subject !== 'all') {
+        queryParams.append('subject', filters.subject);
+      }
+      if (filters.semester && filters.semester !== 'all') {
+        queryParams.append('semester', filters.semester);
+      }
+      if (filters.search && filters.search.trim()) {
+        queryParams.append('search', filters.search.trim());
+      }
+      
+      // Always include sorting and pagination
+      queryParams.append('sortBy', filters.sortBy);
+      queryParams.append('sortOrder', filters.sortOrder);
+      queryParams.append('page', pagination.currentPage.toString());
+      queryParams.append('limit', '12');
+
+      console.log('Fetching videos with params:', queryParams.toString());
 
       const response = await axios.get(`http://localhost:8080/api/videos?${queryParams}`);
 
+      console.log('API Response:', response.data);
+
       if (response.data.success) {
-        setVideos(response.data.videoLectures);
-        setPagination(response.data.pagination);
+        setVideos(response.data.videoLectures || []);
+        setPagination(response.data.pagination || {
+          currentPage: 1,
+          totalPages: 1,
+          totalCount: 0
+        });
+      } else {
+        setError('Failed to fetch videos: ' + (response.data.message || 'Unknown error'));
+        setVideos([]);
       }
     } catch (error) {
       console.error('Error fetching videos:', error);
+      setError('Error fetching videos: ' + (error.response?.data?.message || error.message));
+      setVideos([]);
     } finally {
       setLoading(false);
     }
@@ -99,27 +130,73 @@ const VideoGallery = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
     fetchVideos();
   };
 
   const formatDuration = (seconds) => {
-    if (!seconds) return '0:00';
+    if (!seconds || seconds === 0) return '0:00';
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   const openVideo = (videoUrl) => {
-    window.open(videoUrl, '_blank');
+    if (videoUrl) {
+      window.open(videoUrl, '_blank');
+    } else {
+      alert('Video URL not available');
+    }
   };
 
   const handlePageChange = (newPage) => {
-    setPagination(prev => ({ ...prev, currentPage: newPage }));
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setPagination(prev => ({ ...prev, currentPage: newPage }));
+    }
+  };
+
+  // Debug button to test API
+  const handleDebugAPI = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/videos/statistics');
+      console.log('Statistics response:', response.data);
+      
+      const allVideosResponse = await axios.get('http://localhost:8080/api/videos');
+      console.log('All videos response:', allVideosResponse.data);
+      
+      alert(`Statistics: ${JSON.stringify(response.data, null, 2)}\n\nAll Videos: ${JSON.stringify(allVideosResponse.data, null, 2)}`);
+    } catch (error) {
+      console.error('Debug API error:', error);
+      alert('API Error: ' + error.message);
+    }
   };
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Video Lectures</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">Video Lectures Gallery</h1>
+        {/* Debug button - remove in production */}
+        <button
+          onClick={handleDebugAPI}
+          className="bg-blue-500 text-white px-4 py-2 rounded text-sm"
+        >
+          Debug API
+        </button>
+      </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
+          <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
+          <span className="text-red-700">{error}</span>
+          <button
+            onClick={fetchVideos}
+            className="ml-auto bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
       {/* Search and Filters */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
@@ -139,8 +216,9 @@ const VideoGallery = () => {
             <button
               type="submit"
               className="bg-orange-400 text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition-colors"
+              disabled={loading}
             >
-              Search
+              {loading ? <Loader className="animate-spin" size={20} /> : 'Search'}
             </button>
           </div>
         </form>
@@ -148,7 +226,7 @@ const VideoGallery = () => {
         {/* Filters */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">Semester (Select First)</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700">Semester</label>
             <select
               value={filters.semester}
               onChange={(e) => handleFilterChange('semester', e.target.value)}
@@ -162,7 +240,7 @@ const VideoGallery = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">Subject (Based on Semester)</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700">Subject</label>
             <select
               value={filters.subject}
               onChange={(e) => handleFilterChange('subject', e.target.value)}
@@ -201,7 +279,7 @@ const VideoGallery = () => {
         </div>
 
         {/* Filter Info */}
-        {filters.semester !== 'all' && (
+        {filters.semester !== 'all' && availableSubjects.length > 0 && (
           <div className="mt-3 p-2 bg-orange-50 rounded text-sm text-orange-700">
             Showing subjects for {filters.semester}: {availableSubjects.length} available
           </div>
@@ -211,7 +289,7 @@ const VideoGallery = () => {
       {/* Results Info */}
       <div className="flex justify-between items-center mb-6">
         <p className="text-gray-600">
-          Showing {videos.length} of {pagination.totalCount} videos
+          {loading ? 'Loading...' : `Showing ${videos.length} of ${pagination.totalCount} videos`}
         </p>
         <div className="text-sm text-gray-500">
           Page {pagination.currentPage} of {pagination.totalPages}
@@ -249,6 +327,7 @@ const VideoGallery = () => {
                 <h3 
                   className="font-semibold text-lg mb-2 line-clamp-2 hover:text-orange-600 cursor-pointer"
                   onClick={() => openVideo(video.videoUrl)}
+                  title={video.title}
                 >
                   {video.title}
                 </h3>
@@ -269,7 +348,7 @@ const VideoGallery = () => {
                   <span>{new Date(video.createdAt).toLocaleDateString()}</span>
                 </div>
 
-                <p className="text-sm text-gray-700 mb-3 line-clamp-2">
+                <p className="text-sm text-gray-700 mb-3 line-clamp-2" title={video.description}>
                   {video.description}
                 </p>
 
@@ -288,7 +367,17 @@ const VideoGallery = () => {
         <div className="text-center py-12">
           <Play size={64} className="mx-auto text-gray-400 mb-4" />
           <h3 className="text-xl font-semibold text-gray-600 mb-2">No videos found</h3>
-          <p className="text-gray-500">Try adjusting your search criteria or filters</p>
+          <p className="text-gray-500 mb-4">
+            {filters.search || filters.subject !== 'all' || filters.semester !== 'all' 
+              ? 'Try adjusting your search criteria or filters' 
+              : 'No videos have been uploaded yet'}
+          </p>
+          <button
+            onClick={fetchVideos}
+            className="bg-orange-400 text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition-colors"
+          >
+            Refresh
+          </button>
         </div>
       )}
 
@@ -297,19 +386,45 @@ const VideoGallery = () => {
         <div className="flex justify-center items-center space-x-2 mt-8">
           <button
             onClick={() => handlePageChange(pagination.currentPage - 1)}
-            disabled={!pagination.hasPrevPage}
+            disabled={pagination.currentPage <= 1}
             className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
           >
             Previous
           </button>
           
-          <span className="px-4 py-2">
-            Page {pagination.currentPage} of {pagination.totalPages}
-          </span>
+          {/* Page numbers */}
+          {[...Array(pagination.totalPages)].map((_, index) => {
+            const pageNumber = index + 1;
+            if (
+              pageNumber === 1 ||
+              pageNumber === pagination.totalPages ||
+              (pageNumber >= pagination.currentPage - 1 && pageNumber <= pagination.currentPage + 1)
+            ) {
+              return (
+                <button
+                  key={pageNumber}
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={`px-3 py-2 border rounded-lg transition-colors ${
+                    pageNumber === pagination.currentPage
+                      ? 'bg-orange-400 text-white border-orange-400'
+                      : 'hover:bg-gray-50'
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              );
+            } else if (
+              pageNumber === pagination.currentPage - 2 ||
+              pageNumber === pagination.currentPage + 2
+            ) {
+              return <span key={pageNumber} className="px-2">...</span>;
+            }
+            return null;
+          })}
           
           <button
             onClick={() => handlePageChange(pagination.currentPage + 1)}
-            disabled={!pagination.hasNextPage}
+            disabled={pagination.currentPage >= pagination.totalPages}
             className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
           >
             Next
