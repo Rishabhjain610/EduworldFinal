@@ -24,6 +24,7 @@ import ViewResume from "./my-resume/view/index.jsx";
 import EditResume from "./dashboard/resume/[resumeId]/edit/index.jsx";
 import ExcelUpload from "./ExcelUpload";
 import StudentAnalytics from "./StudentAnalytics";
+import AttendanceSystem from "./Attendance.jsx";
 import "./App.css";
 
 function App() {
@@ -100,6 +101,7 @@ function App() {
       <Route path="/videocall" element={<VideoCallHome />} />
       {role === "teacher" ? (
         <>
+          <Route path="/dashboard/attendance" element={<AttendanceSystem />} />
           <Route
             path="/dashboard"
             element={

@@ -11,11 +11,13 @@ import {
   BarChart,
   VideoIcon,
   Sparkles,
+  NotebookPen,
   FileSpreadsheet,
 } from "lucide-react";
 import TeacherHome from "./TeacherHome";
 import PdfForm from "./PdfForm";
 import Language from "./Language.jsx";
+import AttendanceSystem from "./Attendance.jsx";
 
 export default function TeacherLandingPage({ username, onLogout }) {
   console.log(username);
@@ -32,6 +34,15 @@ export default function TeacherLandingPage({ username, onLogout }) {
           <span className="font-bold text-2xl">EduWorld</span>
         </Link>
         <nav className="hidden md:flex text-sm items-center space-x-6">
+           <Link
+            to="attendance"
+            className="flex gap-1 relative group text-gray-700 hover:text-black text-sm"
+          >
+           <NotebookPen />
+            Upload Attendance
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+
+          </Link>
           <Link
             to="pdfForm"
             className="flex gap-1 relative group text-gray-700 hover:text-black text-sm"
