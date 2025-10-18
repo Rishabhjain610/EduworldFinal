@@ -74,3 +74,9 @@
 ## 📽️ Demo
 
 https://github.com/user-attachments/assets/b81ca59d-f86c-4735-a1f9-23b3d53a5322
+
+
+Version 2
+
+https://github.com/user-attachments/assets/b2e87bf2-b533-4dac-9170-add400a8bdde
+
