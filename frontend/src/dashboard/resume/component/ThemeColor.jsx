@@ -3,8 +3,8 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../../../components/ui/popover";
-import { Button } from "../../../components/ui/button";
+} from "../../../components/ui/Popover";
+import { Button } from "../../../components/ui/Button";
 import { LayoutGrid } from "lucide-react";
 import { ResumeContext } from "../../../context/ResumeContext";
 import { useContext, useState, useEffect } from "react";

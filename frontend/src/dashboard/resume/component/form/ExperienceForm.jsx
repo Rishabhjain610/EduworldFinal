@@ -1,7 +1,7 @@
 
 import React from "react";
-import { Button } from "../../../../components/ui/button";
-import { Input } from "../../../../components/ui/input";
+import { Button } from "../../../../components/ui/Button";
+import { Input } from "../../../../components/ui/Input";
 import { useContext, useEffect, useState } from "react";
 import { ResumeContext } from "../../../../context/ResumeContext";
 import { LoaderCircle, Brain, Sparkles } from "lucide-react";

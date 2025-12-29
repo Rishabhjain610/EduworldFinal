@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "../../../../components/ui/button";
-import { Textarea } from "../../../../components/ui/textarea";
+import { Button } from "../../../../components/ui/Button";
+import { Textarea } from "../../../../components/ui/TextArea";
 import { ResumeContext } from "../../../../context/ResumeContext";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
