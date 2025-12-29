@@ -1,5 +1,5 @@
 import React from "react";
-import  Button  from "../../components/ui/button";
+import  Button  from "../../components/ui/Button.jsx";
 import { ResumeContext } from "../../context/ResumeContext";
 import ResumePreview from "../../dashboard/resume/component/ResumePreview";
 import { useEffect, useState } from "react";
