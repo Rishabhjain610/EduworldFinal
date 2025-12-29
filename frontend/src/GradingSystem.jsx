@@ -1,48 +1,65 @@
-"use client";
-import React, { useState, useEffect } from 'react';
-import { Download, Plus, Trash2, FileText, Calculator, Award, User } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  Download,
+  Plus,
+  Trash2,
+  FileText,
+  Calculator,
+  Award,
+  User,
+} from "lucide-react";
 
 const GradingSystem = () => {
-  const SCHOOL_NAME = 'Sunrise Public School';
+  const SCHOOL_NAME = "Sunrise Public School";
   const [schoolInfo, setSchoolInfo] = useState({
-    academicYear: '2024-2025',
-    term: 'Term 1',
-    className: '',
-    section: '',
-    teacherName: '',
-    teacherSignature: '',
-    principalName: '',
-    dateOfIssue: new Date().toISOString().split('T')[0]
+    academicYear: "2024-2025",
+    term: "Term 1",
+    className: "",
+    section: "",
+    teacherName: "",
+    teacherSignature: "",
+    principalName: "",
+    dateOfIssue: new Date().toISOString().split("T")[0],
   });
 
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('students_v1');
+      const saved = localStorage.getItem("students_v1");
       if (saved) setStudents(JSON.parse(saved));
     } catch (e) {
-      console.warn('Failed to load students from storage', e);
+      console.warn("Failed to load students from storage", e);
     }
   }, []);
   const [currentStudent, setCurrentStudent] = useState({
-    rollNo: '',
-    std: '',
-    div: '',
+    rollNo: "",
+    std: "",
+    div: "",
     subjects: {
-      mathematics: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-      science: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-      english: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-      socialScience: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-      hindi: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-      computer: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 }
+      mathematics: {
+        theory: "",
+        practical: "",
+        maxTheory: 80,
+        maxPractical: 20,
+      },
+      science: { theory: "", practical: "", maxTheory: 80, maxPractical: 20 },
+      english: { theory: "", practical: "", maxTheory: 80, maxPractical: 20 },
+      socialScience: {
+        theory: "",
+        practical: "",
+        maxTheory: 80,
+        maxPractical: 20,
+      },
+      hindi: { theory: "", practical: "", maxTheory: 80, maxPractical: 20 },
+      computer: { theory: "", practical: "", maxTheory: 80, maxPractical: 20 },
     },
     coScholastic: {
-      discipline: '',
-      sports: '',
-      arts: '',
-      leadership: ''
-    }
+      discipline: "",
+      sports: "",
+      arts: "",
+      leadership: "",
+    },
   });
 
   const calculateMarks = (subject) => {
@@ -62,14 +79,14 @@ const GradingSystem = () => {
   };
 
   const getGrade = (percentage) => {
-    if (percentage >= 91) return 'A1';
-    if (percentage >= 81) return 'A2';
-    if (percentage >= 71) return 'B1';
-    if (percentage >= 61) return 'B2';
-    if (percentage >= 51) return 'C1';
-    if (percentage >= 41) return 'C2';
-    if (percentage >= 33) return 'D';
-    return 'E (Fail)';
+    if (percentage >= 91) return "A1";
+    if (percentage >= 81) return "A2";
+    if (percentage >= 71) return "B1";
+    if (percentage >= 61) return "B2";
+    if (percentage >= 51) return "C1";
+    if (percentage >= 41) return "C2";
+    if (percentage >= 33) return "D";
+    return "E (Fail)";
   };
 
   const getGradePoint = (percentage) => {
@@ -84,96 +101,119 @@ const GradingSystem = () => {
   };
 
   const getRemarks = (percentage) => {
-    if (percentage >= 91) return 'Outstanding Performance';
-    if (percentage >= 81) return 'Excellent';
-    if (percentage >= 71) return 'Very Good';
-    if (percentage >= 61) return 'Good';
-    if (percentage >= 51) return 'Above Average';
-    if (percentage >= 41) return 'Average';
-    if (percentage >= 33) return 'Below Average - Needs Improvement';
-    return 'Failed - Extra Attention Required';
+    if (percentage >= 91) return "Outstanding Performance";
+    if (percentage >= 81) return "Excellent";
+    if (percentage >= 71) return "Very Good";
+    if (percentage >= 61) return "Good";
+    if (percentage >= 51) return "Above Average";
+    if (percentage >= 41) return "Average";
+    if (percentage >= 33) return "Below Average - Needs Improvement";
+    return "Failed - Extra Attention Required";
   };
 
   const handleSchoolInfoChange = (e) => {
     const { name, value } = e.target;
-    setSchoolInfo(prev => ({ ...prev, [name]: value }));
+    setSchoolInfo((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleStudentChange = (e) => {
     const { name, value } = e.target;
-    setCurrentStudent(prev => ({ ...prev, [name]: value }));
+    setCurrentStudent((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubjectChange = (subject, field, value) => {
-    setCurrentStudent(prev => ({
+    setCurrentStudent((prev) => ({
       ...prev,
       subjects: {
         ...prev.subjects,
         [subject]: {
           ...prev.subjects[subject],
-          [field]: value
-        }
-      }
+          [field]: value,
+        },
+      },
     }));
   };
 
   const handleCoScholasticChange = (field, value) => {
-    setCurrentStudent(prev => ({
+    setCurrentStudent((prev) => ({
       ...prev,
       coScholastic: {
         ...prev.coScholastic,
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
   const addStudent = () => {
     if (!currentStudent.rollNo || !currentStudent.std || !currentStudent.div) {
-      alert('Please fill Roll No, Standard and Division');
+      alert("Please fill Roll No, Standard and Division");
       return;
     }
 
-    setStudents(prev => {
+    setStudents((prev) => {
       const newStudents = [...prev, { ...currentStudent, id: Date.now() }];
-      try { localStorage.setItem('students_v1', JSON.stringify(newStudents)); } catch (e) { console.warn('Failed to persist students', e); }
+      try {
+        localStorage.setItem("students_v1", JSON.stringify(newStudents));
+      } catch (e) {
+        console.warn("Failed to persist students", e);
+      }
       return newStudents;
     });
-    
+
     // Reset form
     setCurrentStudent({
-      rollNo: '',
-      std: '',
-      div: '',
+      rollNo: "",
+      std: "",
+      div: "",
       subjects: {
-        mathematics: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-        science: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-        english: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-        socialScience: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-        hindi: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 },
-        computer: { theory: '', practical: '', maxTheory: 80, maxPractical: 20 }
+        mathematics: {
+          theory: "",
+          practical: "",
+          maxTheory: 80,
+          maxPractical: 20,
+        },
+        science: { theory: "", practical: "", maxTheory: 80, maxPractical: 20 },
+        english: { theory: "", practical: "", maxTheory: 80, maxPractical: 20 },
+        socialScience: {
+          theory: "",
+          practical: "",
+          maxTheory: 80,
+          maxPractical: 20,
+        },
+        hindi: { theory: "", practical: "", maxTheory: 80, maxPractical: 20 },
+        computer: {
+          theory: "",
+          practical: "",
+          maxTheory: 80,
+          maxPractical: 20,
+        },
       },
       coScholastic: {
-        discipline: '',
-        sports: '',
-        arts: '',
-        leadership: ''
-      }
+        discipline: "",
+        sports: "",
+        arts: "",
+        leadership: "",
+      },
     });
   };
 
   const removeStudent = (id) => {
-    setStudents(prev => {
-      const newStudents = prev.filter(s => s.id !== id);
-      try { localStorage.setItem('students_v1', JSON.stringify(newStudents)); } catch (e) { console.warn('Failed to persist students', e); }
+    setStudents((prev) => {
+      const newStudents = prev.filter((s) => s.id !== id);
+      try {
+        localStorage.setItem("students_v1", JSON.stringify(newStudents));
+      } catch (e) {
+        console.warn("Failed to persist students", e);
+      }
       return newStudents;
     });
   };
 
   const exportToExcel = () => {
-    let csv = 'STUDENT GRADE SHEET - COMPLETE DATA\n\n';
-    
+    let csv = "STUDENT GRADE SHEET - COMPLETE DATA\n\n";
+
     // School Information
-    csv += 'SCHOOL INFORMATION\n';
+    csv += "SCHOOL INFORMATION\n";
     csv += `School Name,${SCHOOL_NAME}\n`;
     csv += `Academic Year,${schoolInfo.academicYear}\n`;
     csv += `Term,${schoolInfo.term}\n`;
@@ -184,17 +224,18 @@ const GradingSystem = () => {
     csv += `Date of Issue,${schoolInfo.dateOfIssue}\n\n`;
 
     // Detailed Student Records
-    csv += 'DETAILED STUDENT GRADE RECORDS\n';
-    csv += 'Roll No,Std,Div,Subject,Theory (Max),Practical (Max),Total Obtained,Max Marks,Percentage,Grade,Grade Point,Status\n';
-    
-    students.forEach(student => {
+    csv += "DETAILED STUDENT GRADE RECORDS\n";
+    csv +=
+      "Roll No,Std,Div,Subject,Theory (Max),Practical (Max),Total Obtained,Max Marks,Percentage,Grade,Grade Point,Status\n";
+
+    students.forEach((student) => {
       const subjectNames = {
-        mathematics: 'Mathematics',
-        science: 'Science',
-        english: 'English',
-        socialScience: 'Social Science',
-        hindi: 'Hindi',
-        computer: 'Computer'
+        mathematics: "Mathematics",
+        science: "Science",
+        english: "English",
+        socialScience: "Social Science",
+        hindi: "Hindi",
+        computer: "Computer",
       };
 
       Object.entries(student.subjects).forEach(([key, subject]) => {
@@ -203,61 +244,99 @@ const GradingSystem = () => {
         const percentage = calculatePercentage(total, maxMarks);
         const grade = getGrade(parseFloat(percentage));
         const gradePoint = getGradePoint(parseFloat(percentage));
-        const status = parseFloat(percentage) >= 33 ? 'Pass' : 'Fail';
+        const status = parseFloat(percentage) >= 33 ? "Pass" : "Fail";
 
-        csv += `${student.rollNo},${student.std || 'N/A'},${student.div || 'N/A'},${subjectNames[key]},${subject.theory} (${subject.maxTheory}),${subject.practical} (${subject.maxPractical}),${total},${maxMarks},${percentage}%,${grade},${gradePoint},${status}\n`;
+        csv += `${student.rollNo},${student.std || "N/A"},${
+          student.div || "N/A"
+        },${subjectNames[key]},${subject.theory} (${subject.maxTheory}),${
+          subject.practical
+        } (${
+          subject.maxPractical
+        }),${total},${maxMarks},${percentage}%,${grade},${gradePoint},${status}\n`;
       });
     });
 
     // Summary Statistics
-    csv += '\n\nSTUDENT SUMMARY - OVERALL PERFORMANCE\n';
-    csv += 'Roll No,Std,Div,Total Marks Obtained,Total Maximum Marks,Overall Percentage,Overall Grade,CGPA,Result,Attendance,Remarks\n';
-    
-    students.forEach(student => {
+    csv += "\n\nSTUDENT SUMMARY - OVERALL PERFORMANCE\n";
+    csv +=
+      "Roll No,Std,Div,Total Marks Obtained,Total Maximum Marks,Overall Percentage,Overall Grade,CGPA,Result,Attendance,Remarks\n";
+
+    students.forEach((student) => {
       const totalObtained = calculateTotalMarks(student.subjects);
-      const totalMax = Object.values(student.subjects).reduce((sum, s) => sum + s.maxTheory + s.maxPractical, 0);
+      const totalMax = Object.values(student.subjects).reduce(
+        (sum, s) => sum + s.maxTheory + s.maxPractical,
+        0
+      );
       const percentage = calculatePercentage(totalObtained, totalMax);
       const grade = getGrade(parseFloat(percentage));
-      const cgpa = (getGradePoint(parseFloat(percentage)) / 10 * 10).toFixed(2);
-      const result = parseFloat(percentage) >= 33 ? 'PASS' : 'FAIL';
-      const attendance = student.attendance && student.totalDays ? `${student.attendance}/${student.totalDays}` : 'N/A';
+      const cgpa = ((getGradePoint(parseFloat(percentage)) / 10) * 10).toFixed(
+        2
+      );
+      const result = parseFloat(percentage) >= 33 ? "PASS" : "FAIL";
+      const attendance =
+        student.attendance && student.totalDays
+          ? `${student.attendance}/${student.totalDays}`
+          : "N/A";
       const remarks = getRemarks(parseFloat(percentage));
 
-      csv += `${student.rollNo},${student.std || 'N/A'},${student.div || 'N/A'},${totalObtained},${totalMax},${percentage}%,${grade},${cgpa},${result},${attendance},"${remarks}"\n`;
+      csv += `${student.rollNo},${student.std || "N/A"},${
+        student.div || "N/A"
+      },${totalObtained},${totalMax},${percentage}%,${grade},${cgpa},${result},${attendance},"${remarks}"\n`;
     });
 
     // Co-Scholastic Activities
-    csv += '\n\nCO-SCHOLASTIC ACTIVITIES ASSESSMENT\n';
-    csv += 'Roll No,Std,Div,Discipline,Sports & Physical Education,Art & Creativity,Leadership & Initiative\n';
-    
-    students.forEach(student => {
-      csv += `${student.rollNo},${student.std || 'N/A'},${student.div || 'N/A'},${student.coScholastic.discipline || 'N/A'},${student.coScholastic.sports || 'N/A'},${student.coScholastic.arts || 'N/A'},${student.coScholastic.leadership || 'N/A'}\n`;
+    csv += "\n\nCO-SCHOLASTIC ACTIVITIES ASSESSMENT\n";
+    csv +=
+      "Roll No,Std,Div,Discipline,Sports & Physical Education,Art & Creativity,Leadership & Initiative\n";
+
+    students.forEach((student) => {
+      csv += `${student.rollNo},${student.std || "N/A"},${
+        student.div || "N/A"
+      },${student.coScholastic.discipline || "N/A"},${
+        student.coScholastic.sports || "N/A"
+      },${student.coScholastic.arts || "N/A"},${
+        student.coScholastic.leadership || "N/A"
+      }\n`;
     });
 
     // Class Statistics
-    csv += '\n\nCLASS STATISTICS\n';
+    csv += "\n\nCLASS STATISTICS\n";
     csv += `Total Students,${students.length}\n`;
-    
-    const passed = students.filter(s => {
-      const percentage = parseFloat(calculatePercentage(calculateTotalMarks(s.subjects), 
-        Object.values(s.subjects).reduce((sum, sub) => sum + sub.maxTheory + sub.maxPractical, 0)));
+
+    const passed = students.filter((s) => {
+      const percentage = parseFloat(
+        calculatePercentage(
+          calculateTotalMarks(s.subjects),
+          Object.values(s.subjects).reduce(
+            (sum, sub) => sum + sub.maxTheory + sub.maxPractical,
+            0
+          )
+        )
+      );
       return percentage >= 33;
     }).length;
-    
+
     csv += `Students Passed,${passed}\n`;
     csv += `Students Failed,${students.length - passed}\n`;
-    csv += `Pass Percentage,${students.length > 0 ? ((passed / students.length) * 100).toFixed(2) : 0}%\n`;
+    csv += `Pass Percentage,${
+      students.length > 0 ? ((passed / students.length) * 100).toFixed(2) : 0
+    }%\n`;
 
     if (students.length > 0) {
-      const allPercentages = students.map(s => {
+      const allPercentages = students.map((s) => {
         const totalObtained = calculateTotalMarks(s.subjects);
-        const totalMax = Object.values(s.subjects).reduce((sum, sub) => sum + sub.maxTheory + sub.maxPractical, 0);
+        const totalMax = Object.values(s.subjects).reduce(
+          (sum, sub) => sum + sub.maxTheory + sub.maxPractical,
+          0
+        );
         return parseFloat(calculatePercentage(totalObtained, totalMax));
       });
 
       const highest = Math.max(...allPercentages).toFixed(2);
       const lowest = Math.min(...allPercentages).toFixed(2);
-      const average = (allPercentages.reduce((a, b) => a + b, 0) / allPercentages.length).toFixed(2);
+      const average = (
+        allPercentages.reduce((a, b) => a + b, 0) / allPercentages.length
+      ).toFixed(2);
 
       csv += `Highest Percentage,${highest}%\n`;
       csv += `Lowest Percentage,${lowest}%\n`;
@@ -265,12 +344,15 @@ const GradingSystem = () => {
     }
 
     // Download
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `Grade_Sheet_${schoolInfo.className}_${schoolInfo.term}_${schoolInfo.dateOfIssue}.csv`);
-    link.style.visibility = 'hidden';
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `Grade_Sheet_${schoolInfo.className}_${schoolInfo.term}_${schoolInfo.dateOfIssue}.csv`
+    );
+    link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -278,10 +360,13 @@ const GradingSystem = () => {
 
   const buildReport = (student) => {
     const totalObtained = calculateTotalMarks(student.subjects);
-    const totalMax = Object.values(student.subjects).reduce((sum, s) => sum + s.maxTheory + s.maxPractical, 0);
+    const totalMax = Object.values(student.subjects).reduce(
+      (sum, s) => sum + s.maxTheory + s.maxPractical,
+      0
+    );
     const percentage = parseFloat(calculatePercentage(totalObtained, totalMax));
     const grade = getGrade(percentage);
-    const cgpa = (getGradePoint(percentage) / 10 * 10).toFixed(2);
+    const cgpa = ((getGradePoint(percentage) / 10) * 10).toFixed(2);
 
     let report = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
     report += `                    STUDENT REPORT CARD\n`;
@@ -294,8 +379,10 @@ const GradingSystem = () => {
     report += `STUDENT INFORMATION\n`;
     report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
     report += `Roll Number    : ${student.rollNo}\n`;
-    report += `Standard/Division: ${student.std || 'N/A'} / ${student.div || 'N/A'}\n\n`;
-    
+    report += `Standard/Division: ${student.std || "N/A"} / ${
+      student.div || "N/A"
+    }\n\n`;
+
     report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
     report += `SCHOLASTIC PERFORMANCE\n`;
     report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
@@ -303,12 +390,12 @@ const GradingSystem = () => {
     report += `─────────────────────────────────────────────────────────────────────\n`;
 
     const subjectNames = {
-      mathematics: 'Mathematics',
-      science: 'Science',
-      english: 'English',
-      socialScience: 'Social Science',
-      hindi: 'Hindi',
-      computer: 'Computer'
+      mathematics: "Mathematics",
+      science: "Science",
+      english: "English",
+      socialScience: "Social Science",
+      hindi: "Hindi",
+      computer: "Computer",
     };
 
     Object.entries(student.subjects).forEach(([key, subject]) => {
@@ -317,20 +404,40 @@ const GradingSystem = () => {
       const subPercent = calculatePercentage(total, maxMarks);
       const subGrade = getGrade(parseFloat(subPercent));
       const gp = getGradePoint(parseFloat(subPercent));
-      
-      report += `${subjectNames[key].padEnd(20)} ${(subject.theory || '0').toString().padStart(5)}   ${(subject.practical || '0').toString().padStart(5)}     ${total.toString().padStart(5)}   ${maxMarks.toString().padStart(3)}   ${parseFloat(subPercent).toFixed(1).padStart(5)}%  ${subGrade.padEnd(6)} ${gp.toString().padStart(2)}\n`;
+
+      report += `${subjectNames[key].padEnd(20)} ${(subject.theory || "0")
+        .toString()
+        .padStart(5)}   ${(subject.practical || "0")
+        .toString()
+        .padStart(5)}     ${total.toString().padStart(5)}   ${maxMarks
+        .toString()
+        .padStart(3)}   ${parseFloat(subPercent)
+        .toFixed(1)
+        .padStart(5)}%  ${subGrade.padEnd(6)} ${gp.toString().padStart(2)}\n`;
     });
 
     report += `─────────────────────────────────────────────────────────────────────\n`;
-    report += `TOTAL                                     ${totalObtained.toString().padStart(5)}   ${totalMax.toString().padStart(3)}   ${percentage.toFixed(1).padStart(5)}%  ${grade.padEnd(6)} ${cgpa}\n\n`;
+    report += `TOTAL                                     ${totalObtained
+      .toString()
+      .padStart(5)}   ${totalMax.toString().padStart(3)}   ${percentage
+      .toFixed(1)
+      .padStart(5)}%  ${grade.padEnd(6)} ${cgpa}\n\n`;
 
     report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
     report += `CO-SCHOLASTIC ACTIVITIES\n`;
     report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-    report += `Discipline & Behavior   : ${student.coScholastic.discipline || 'Not Assessed'}\n`;
-    report += `Sports & Physical Ed.   : ${student.coScholastic.sports || 'Not Assessed'}\n`;
-    report += `Art & Creativity        : ${student.coScholastic.arts || 'Not Assessed'}\n`;
-    report += `Leadership & Initiative : ${student.coScholastic.leadership || 'Not Assessed'}\n\n`;
+    report += `Discipline & Behavior   : ${
+      student.coScholastic.discipline || "Not Assessed"
+    }\n`;
+    report += `Sports & Physical Ed.   : ${
+      student.coScholastic.sports || "Not Assessed"
+    }\n`;
+    report += `Art & Creativity        : ${
+      student.coScholastic.arts || "Not Assessed"
+    }\n`;
+    report += `Leadership & Initiative : ${
+      student.coScholastic.leadership || "Not Assessed"
+    }\n\n`;
 
     report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
     report += `RESULT SUMMARY\n`;
@@ -338,7 +445,9 @@ const GradingSystem = () => {
     report += `Overall Percentage : ${percentage.toFixed(2)}%\n`;
     report += `Overall Grade      : ${grade}\n`;
     report += `CGPA               : ${cgpa}\n`;
-    report += `Result             : ${percentage >= 33 ? '✓ PASS' : '✗ FAIL'}\n`;
+    report += `Result             : ${
+      percentage >= 33 ? "✓ PASS" : "✗ FAIL"
+    }\n`;
     report += `Remarks            : ${getRemarks(percentage)}\n\n`;
 
     report += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
@@ -359,12 +468,12 @@ const GradingSystem = () => {
 
   const generateReportCard = (student) => {
     const report = buildReport(student);
-    const blob = new Blob([report], { type: 'text/plain;charset=utf-8;' });
-    const link = document.createElement('a');
+    const blob = new Blob([report], { type: "text/plain;charset=utf-8;" });
+    const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `Report_Card_${student.rollNo}.txt`);
-    link.style.visibility = 'hidden';
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Report_Card_${student.rollNo}.txt`);
+    link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -372,14 +481,23 @@ const GradingSystem = () => {
 
   const downloadClassTxt = () => {
     if (students.length === 0) return;
-    const combined = students.map(s => buildReport(s)).join('\n\n');
-    try { localStorage.setItem('class_report_txt', combined); } catch (e) { console.warn('Failed to save class report', e); }
-    const blob = new Blob([combined], { type: 'text/plain;charset=utf-8;' });
-    const link = document.createElement('a');
+    const combined = students.map((s) => buildReport(s)).join("\n\n");
+    try {
+      localStorage.setItem("class_report_txt", combined);
+    } catch (e) {
+      console.warn("Failed to save class report", e);
+    }
+    const blob = new Blob([combined], { type: "text/plain;charset=utf-8;" });
+    const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `Class_Results_${schoolInfo.className || 'Class'}_${schoolInfo.section || 'Section'}_${schoolInfo.dateOfIssue}.txt`);
-    link.style.visibility = 'hidden';
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `Class_Results_${schoolInfo.className || "Class"}_${
+        schoolInfo.section || "Section"
+      }_${schoolInfo.dateOfIssue}.txt`
+    );
+    link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -395,14 +513,16 @@ const GradingSystem = () => {
               <Award className="mr-3 text-yellow-500" size={40} />
               Automated Grading & Report Card System
             </h1>
-            <p className="text-gray-600">Complete Student Performance Management</p>
+            <p className="text-gray-600">
+              Complete Student Performance Management
+            </p>
           </div>
 
           {/* School Information */}
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-              <FileText className="mr-2 text-blue-600" />
-              School Details — {SCHOOL_NAME}
-            </h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+            <FileText className="mr-2 text-blue-600" />
+            School Details — {SCHOOL_NAME}
+          </h2>
 
           {/* Student Entry Form */}
           <div className="mb-8 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6">
@@ -413,10 +533,14 @@ const GradingSystem = () => {
 
             {/* Basic Info */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-700 mb-4">Basic Information</h3>
+              <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                Basic Information
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Roll Number *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Roll Number *
+                  </label>
                   <input
                     type="text"
                     name="rollNo"
@@ -428,7 +552,9 @@ const GradingSystem = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Standard *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Standard *
+                  </label>
                   <input
                     type="text"
                     name="std"
@@ -440,7 +566,9 @@ const GradingSystem = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Division *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Division *
+                  </label>
                   <input
                     type="text"
                     name="div"
@@ -465,67 +593,99 @@ const GradingSystem = () => {
                     <tr>
                       <th className="px-4 py-3 text-left">Subject</th>
                       <th className="px-4 py-3 text-center">Theory (Max 80)</th>
-                      <th className="px-4 py-3 text-center">Practical (Max 20)</th>
+                      <th className="px-4 py-3 text-center">
+                        Practical (Max 20)
+                      </th>
                       <th className="px-4 py-3 text-center">Total</th>
                       <th className="px-4 py-3 text-center">Percentage</th>
                       <th className="px-4 py-3 text-center">Grade</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {Object.entries(currentStudent.subjects).map(([key, subject]) => {
-                      const total = calculateMarks(subject);
-                      const maxMarks = subject.maxTheory + subject.maxPractical;
-                      const percentage = calculatePercentage(total, maxMarks);
-                      const grade = total > 0 ? getGrade(parseFloat(percentage)) : '-';
-                      
-                      const subjectNames = {
-                        mathematics: 'Mathematics',
-                        science: 'Science',
-                        english: 'English',
-                        socialScience: 'Social Science',
-                        hindi: 'Hindi',
-                        computer: 'Computer Science'
-                      };
+                    {Object.entries(currentStudent.subjects).map(
+                      ([key, subject]) => {
+                        const total = calculateMarks(subject);
+                        const maxMarks =
+                          subject.maxTheory + subject.maxPractical;
+                        const percentage = calculatePercentage(total, maxMarks);
+                        const grade =
+                          total > 0 ? getGrade(parseFloat(percentage)) : "-";
 
-                      return (
-                        <tr key={key} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 font-medium text-gray-700">{subjectNames[key]}</td>
-                          <td className="px-4 py-3">
-                            <input
-                              type="number"
-                              value={subject.theory}
-                              onChange={(e) => handleSubjectChange(key, 'theory', e.target.value)}
-                              max={subject.maxTheory}
-                              className="w-24 px-2 py-1 border border-gray-300 rounded text-center focus:ring-2 focus:ring-blue-500"
-                              placeholder="0"
-                            />
-                          </td>
-                          <td className="px-4 py-3">
-                            <input
-                              type="number"
-                              value={subject.practical}
-                              onChange={(e) => handleSubjectChange(key, 'practical', e.target.value)}
-                              max={subject.maxPractical}
-                              className="w-24 px-2 py-1 border border-gray-300 rounded text-center focus:ring-2 focus:ring-blue-500"
-                              placeholder="0"
-                            />
-                          </td>
-                          <td className="px-4 py-3 text-center font-semibold">{total}/{maxMarks}</td>
-                          <td className="px-4 py-3 text-center">{percentage}%</td>
-                          <td className="px-4 py-3 text-center">
-                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                              grade.startsWith('A') ? 'bg-green-100 text-green-800' :
-                              grade.startsWith('B') ? 'bg-blue-100 text-blue-800' :
-                              grade.startsWith('C') ? 'bg-yellow-100 text-yellow-800' :
-                              grade === 'D' ? 'bg-orange-100 text-orange-800' :
-                              grade.startsWith('E') ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
-                            }`}>
-                              {grade}
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                        const subjectNames = {
+                          mathematics: "Mathematics",
+                          science: "Science",
+                          english: "English",
+                          socialScience: "Social Science",
+                          hindi: "Hindi",
+                          computer: "Computer Science",
+                        };
+
+                        return (
+                          <tr key={key} className="hover:bg-gray-50">
+                            <td className="px-4 py-3 font-medium text-gray-700">
+                              {subjectNames[key]}
+                            </td>
+                            <td className="px-4 py-3">
+                              <input
+                                type="number"
+                                value={subject.theory}
+                                onChange={(e) =>
+                                  handleSubjectChange(
+                                    key,
+                                    "theory",
+                                    e.target.value
+                                  )
+                                }
+                                max={subject.maxTheory}
+                                className="w-24 px-2 py-1 border border-gray-300 rounded text-center focus:ring-2 focus:ring-blue-500"
+                                placeholder="0"
+                              />
+                            </td>
+                            <td className="px-4 py-3">
+                              <input
+                                type="number"
+                                value={subject.practical}
+                                onChange={(e) =>
+                                  handleSubjectChange(
+                                    key,
+                                    "practical",
+                                    e.target.value
+                                  )
+                                }
+                                max={subject.maxPractical}
+                                className="w-24 px-2 py-1 border border-gray-300 rounded text-center focus:ring-2 focus:ring-blue-500"
+                                placeholder="0"
+                              />
+                            </td>
+                            <td className="px-4 py-3 text-center font-semibold">
+                              {total}/{maxMarks}
+                            </td>
+                            <td className="px-4 py-3 text-center">
+                              {percentage}%
+                            </td>
+                            <td className="px-4 py-3 text-center">
+                              <span
+                                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                  grade.startsWith("A")
+                                    ? "bg-green-100 text-green-800"
+                                    : grade.startsWith("B")
+                                    ? "bg-blue-100 text-blue-800"
+                                    : grade.startsWith("C")
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : grade === "D"
+                                    ? "bg-orange-100 text-orange-800"
+                                    : grade.startsWith("E")
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-gray-100 text-gray-800"
+                                }`}
+                              >
+                                {grade}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -533,13 +693,19 @@ const GradingSystem = () => {
 
             {/* Co-Scholastic Activities */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-700 mb-4">Co-Scholastic Activities (A/B/C/D/E)</h3>
+              <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                Co-Scholastic Activities (A/B/C/D/E)
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Discipline & Behavior</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Discipline & Behavior
+                  </label>
                   <select
                     value={currentStudent.coScholastic.discipline}
-                    onChange={(e) => handleCoScholasticChange('discipline', e.target.value)}
+                    onChange={(e) =>
+                      handleCoScholasticChange("discipline", e.target.value)
+                    }
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     <option value="">Select</option>
@@ -552,10 +718,14 @@ const GradingSystem = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Sports & Physical Ed.</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Sports & Physical Ed.
+                  </label>
                   <select
                     value={currentStudent.coScholastic.sports}
-                    onChange={(e) => handleCoScholasticChange('sports', e.target.value)}
+                    onChange={(e) =>
+                      handleCoScholasticChange("sports", e.target.value)
+                    }
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     <option value="">Select</option>
@@ -568,10 +738,14 @@ const GradingSystem = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Art & Creativity</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Art & Creativity
+                  </label>
                   <select
                     value={currentStudent.coScholastic.arts}
-                    onChange={(e) => handleCoScholasticChange('arts', e.target.value)}
+                    onChange={(e) =>
+                      handleCoScholasticChange("arts", e.target.value)
+                    }
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     <option value="">Select</option>
@@ -584,10 +758,14 @@ const GradingSystem = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Leadership & Initiative</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Leadership & Initiative
+                  </label>
                   <select
                     value={currentStudent.coScholastic.leadership}
-                    onChange={(e) => handleCoScholasticChange('leadership', e.target.value)}
+                    onChange={(e) =>
+                      handleCoScholasticChange("leadership", e.target.value)
+                    }
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     <option value="">Select</option>
@@ -620,47 +798,93 @@ const GradingSystem = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase">Roll</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase">Std/Div</th>
-                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">Total Marks</th>
-                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">Percentage</th>
-                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">Grade</th>
-                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">CGPA</th>
-                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">Result</th>
-                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">Actions</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium uppercase">
+                        Roll
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium uppercase">
+                        Std/Div
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">
+                        Total Marks
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">
+                        Percentage
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">
+                        Grade
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">
+                        CGPA
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">
+                        Result
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium uppercase">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {students.map((student) => {
-                      const totalObtained = calculateTotalMarks(student.subjects);
-                      const totalMax = Object.values(student.subjects).reduce((sum, s) => sum + s.maxTheory + s.maxPractical, 0);
-                      const percentage = parseFloat(calculatePercentage(totalObtained, totalMax));
+                      const totalObtained = calculateTotalMarks(
+                        student.subjects
+                      );
+                      const totalMax = Object.values(student.subjects).reduce(
+                        (sum, s) => sum + s.maxTheory + s.maxPractical,
+                        0
+                      );
+                      const percentage = parseFloat(
+                        calculatePercentage(totalObtained, totalMax)
+                      );
                       const grade = getGrade(percentage);
-                      const cgpa = (getGradePoint(percentage) / 10 * 10).toFixed(2);
-                      const result = percentage >= 33 ? 'PASS' : 'FAIL';
+                      const cgpa = (
+                        (getGradePoint(percentage) / 10) *
+                        10
+                      ).toFixed(2);
+                      const result = percentage >= 33 ? "PASS" : "FAIL";
 
                       return (
                         <tr key={student.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm font-medium text-gray-900">{student.rollNo}</td>
-                          <td className="px-4 py-3 text-sm text-gray-700">{student.std}/{student.div}</td>
-                          <td className="px-4 py-3 text-sm text-center font-semibold">{totalObtained}/{totalMax}</td>
-                          <td className="px-4 py-3 text-sm text-center font-semibold">{percentage.toFixed(2)}%</td>
+                          <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                            {student.rollNo}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-700">
+                            {student.std}/{student.div}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-center font-semibold">
+                            {totalObtained}/{totalMax}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-center font-semibold">
+                            {percentage.toFixed(2)}%
+                          </td>
                           <td className="px-4 py-3 text-center">
-                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                              grade.startsWith('A') ? 'bg-green-100 text-green-800' :
-                              grade.startsWith('B') ? 'bg-blue-100 text-blue-800' :
-                              grade.startsWith('C') ? 'bg-yellow-100 text-yellow-800' :
-                              grade === 'D' ? 'bg-orange-100 text-orange-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                grade.startsWith("A")
+                                  ? "bg-green-100 text-green-800"
+                                  : grade.startsWith("B")
+                                  ? "bg-blue-100 text-blue-800"
+                                  : grade.startsWith("C")
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : grade === "D"
+                                  ? "bg-orange-100 text-orange-800"
+                                  : "bg-red-100 text-red-800"
+                              }`}
+                            >
                               {grade}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-sm text-center font-semibold">{cgpa}</td>
+                          <td className="px-4 py-3 text-sm text-center font-semibold">
+                            {cgpa}
+                          </td>
                           <td className="px-4 py-3 text-center">
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                              result === 'PASS' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-                            }`}>
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                result === "PASS"
+                                  ? "bg-green-500 text-white"
+                                  : "bg-red-500 text-white"
+                              }`}
+                            >
                               {result}
                             </span>
                           </td>
@@ -698,45 +922,89 @@ const GradingSystem = () => {
                 <div className="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg p-4 shadow-lg">
                   <p className="text-sm opacity-90">Passed</p>
                   <p className="text-3xl font-bold">
-                    {students.filter(s => {
-                      const percentage = parseFloat(calculatePercentage(calculateTotalMarks(s.subjects), 
-                        Object.values(s.subjects).reduce((sum, sub) => sum + sub.maxTheory + sub.maxPractical, 0)));
-                      return percentage >= 33;
-                    }).length}
+                    {
+                      students.filter((s) => {
+                        const percentage = parseFloat(
+                          calculatePercentage(
+                            calculateTotalMarks(s.subjects),
+                            Object.values(s.subjects).reduce(
+                              (sum, sub) =>
+                                sum + sub.maxTheory + sub.maxPractical,
+                              0
+                            )
+                          )
+                        );
+                        return percentage >= 33;
+                      }).length
+                    }
                   </p>
                 </div>
                 <div className="bg-gradient-to-br from-red-500 to-red-600 text-white rounded-lg p-4 shadow-lg">
                   <p className="text-sm opacity-90">Failed</p>
                   <p className="text-3xl font-bold">
-                    {students.filter(s => {
-                      const percentage = parseFloat(calculatePercentage(calculateTotalMarks(s.subjects), 
-                        Object.values(s.subjects).reduce((sum, sub) => sum + sub.maxTheory + sub.maxPractical, 0)));
-                      return percentage < 33;
-                    }).length}
+                    {
+                      students.filter((s) => {
+                        const percentage = parseFloat(
+                          calculatePercentage(
+                            calculateTotalMarks(s.subjects),
+                            Object.values(s.subjects).reduce(
+                              (sum, sub) =>
+                                sum + sub.maxTheory + sub.maxPractical,
+                              0
+                            )
+                          )
+                        );
+                        return percentage < 33;
+                      }).length
+                    }
                   </p>
                 </div>
                 <div className="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg p-4 shadow-lg">
                   <p className="text-sm opacity-90">Pass %</p>
                   <p className="text-3xl font-bold">
-                    {students.length > 0 ? (
-                      (students.filter(s => {
-                        const percentage = parseFloat(calculatePercentage(calculateTotalMarks(s.subjects), 
-                          Object.values(s.subjects).reduce((sum, sub) => sum + sub.maxTheory + sub.maxPractical, 0)));
-                        return percentage >= 33;
-                      }).length / students.length * 100).toFixed(1)
-                    ) : 0}%
+                    {students.length > 0
+                      ? (
+                          (students.filter((s) => {
+                            const percentage = parseFloat(
+                              calculatePercentage(
+                                calculateTotalMarks(s.subjects),
+                                Object.values(s.subjects).reduce(
+                                  (sum, sub) =>
+                                    sum + sub.maxTheory + sub.maxPractical,
+                                  0
+                                )
+                              )
+                            );
+                            return percentage >= 33;
+                          }).length /
+                            students.length) *
+                          100
+                        ).toFixed(1)
+                      : 0}
+                    %
                   </p>
                 </div>
                 <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-lg p-4 shadow-lg">
                   <p className="text-sm opacity-90">Class Average</p>
                   <p className="text-3xl font-bold">
-                    {students.length > 0 ? (
-                      students.reduce((sum, s) => {
-                        const percentage = parseFloat(calculatePercentage(calculateTotalMarks(s.subjects), 
-                          Object.values(s.subjects).reduce((total, sub) => total + sub.maxTheory + sub.maxPractical, 0)));
-                        return sum + percentage;
-                      }, 0) / students.length
-                    ).toFixed(1) : 0}%
+                    {students.length > 0
+                      ? (
+                          students.reduce((sum, s) => {
+                            const percentage = parseFloat(
+                              calculatePercentage(
+                                calculateTotalMarks(s.subjects),
+                                Object.values(s.subjects).reduce(
+                                  (total, sub) =>
+                                    total + sub.maxTheory + sub.maxPractical,
+                                  0
+                                )
+                              )
+                            );
+                            return sum + percentage;
+                          }, 0) / students.length
+                        ).toFixed(1)
+                      : 0}
+                    %
                   </p>
                 </div>
               </div>
@@ -766,14 +1034,36 @@ const GradingSystem = () => {
 
           {/* Information Footer */}
           <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 rounded-lg">
-            <h3 className="font-bold text-gray-800 mb-3 text-lg">📊 System Features:</h3>
+            <h3 className="font-bold text-gray-800 mb-3 text-lg">
+              📊 System Features:
+            </h3>
             <ul className="text-sm text-gray-700 space-y-2">
-              <li>✓ <strong>Automatic Calculations:</strong> Total marks, percentage, grade, and CGPA computed automatically</li>
-              <li>✓ <strong>Grading System:</strong> A1 (91-100%), A2 (81-90%), B1 (71-80%), B2 (61-70%), C1 (51-60%), C2 (41-50%), D (33-40%), E (Below 33% - Fail)</li>
-              <li>✓ <strong>Excel Export:</strong> Complete grade sheet with all student data, subject-wise marks, and class statistics</li>
-              <li>✓ <strong>Individual Report Cards:</strong> Click the document icon next to each student to generate their personalized report card</li>
-              <li>✓ <strong>Co-Scholastic Assessment:</strong> Track performance in discipline, sports, arts, and leadership</li>
-              <li>✓ <strong>Real-time Statistics:</strong> Class performance metrics updated automatically</li>
+              <li>
+                ✓ <strong>Automatic Calculations:</strong> Total marks,
+                percentage, grade, and CGPA computed automatically
+              </li>
+              <li>
+                ✓ <strong>Grading System:</strong> A1 (91-100%), A2 (81-90%), B1
+                (71-80%), B2 (61-70%), C1 (51-60%), C2 (41-50%), D (33-40%), E
+                (Below 33% - Fail)
+              </li>
+              <li>
+                ✓ <strong>Excel Export:</strong> Complete grade sheet with all
+                student data, subject-wise marks, and class statistics
+              </li>
+              <li>
+                ✓ <strong>Individual Report Cards:</strong> Click the document
+                icon next to each student to generate their personalized report
+                card
+              </li>
+              <li>
+                ✓ <strong>Co-Scholastic Assessment:</strong> Track performance
+                in discipline, sports, arts, and leadership
+              </li>
+              <li>
+                ✓ <strong>Real-time Statistics:</strong> Class performance
+                metrics updated automatically
+              </li>
             </ul>
           </div>
         </div>
