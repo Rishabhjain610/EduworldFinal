@@ -60,6 +60,9 @@ export default function ExcelUpload() {
       ['CS004', 'Monishka Jethani', 'CN', 'Midterm', '82', '100', 'Excellent grasp of OSI model. Strong in routing protocols.'],
       ['CS004', 'Monishka Jethani', 'DBMS', 'Midterm', '41', '100', 'Difficulty with complex joins and transactions. Basic SQL knowledge only.'],
       ['CS004', 'Monishka Jethani', 'OS', 'Final', '88', '100', 'Outstanding understanding of threading and synchronization concepts.'],
+      ['CS005', 'rishabh jain', 'CN', 'Midterm', '45', '100', 'Weak understanding of TCP/IP protocols. Needs more practice on network layers.'],
+      ['CS005', 'rishabh jain', 'DBMS', 'Midterm', '78', '100', 'Good SQL query writing but needs improvement in normalization concepts.'],
+      ['CS005', 'rishabh jain', 'OS', 'Final', '52', '100', 'Struggling with process scheduling algorithms. Poor understanding of memory management.'],
     ];
     
     const csv = templateData.map(row => row.join(',')).join('\n');
