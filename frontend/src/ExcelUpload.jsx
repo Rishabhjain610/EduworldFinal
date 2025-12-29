@@ -1,5 +1,6 @@
 import React, { useState,useContext } from 'react';
 import { Upload, FileSpreadsheet, CheckCircle, AlertCircle, Bot, Download } from 'lucide-react';
+import * as XLSX from 'xlsx';
 import { AuthDataContext } from "./AuthContext.jsx";
 export default function ExcelUpload() {
   const [file, setFile] = useState(null);
@@ -51,28 +52,102 @@ export default function ExcelUpload() {
     }
   };
 
-  const downloadTemplate = () => {
+  
+ const downloadTemplate = () => {
     const templateData = [
-      ['Roll No', 'Name', 'Subject', 'Exam', 'Obtained', 'Total', 'Remarks'],
-      ['CS003', 'Rishabh', 'CN', 'Midterm', '45', '100', 'Weak understanding of TCP/IP protocols. Needs more practice on network layers.'],
-      ['CS003', 'Rishabh', 'DBMS', 'Midterm', '78', '100', 'Good SQL query writing but needs improvement in normalization concepts.'],
-      ['CS003', 'Rishabh', 'OS', 'Final', '52', '100', 'Struggling with process scheduling algorithms. Poor understanding of memory management.'],
-      ['CS004', 'Monishka Jethani', 'CN', 'Midterm', '82', '100', 'Excellent grasp of OSI model. Strong in routing protocols.'],
-      ['CS004', 'Monishka Jethani', 'DBMS', 'Midterm', '41', '100', 'Difficulty with complex joins and transactions. Basic SQL knowledge only.'],
-      ['CS004', 'Monishka Jethani', 'OS', 'Final', '88', '100', 'Outstanding understanding of threading and synchronization concepts.'],
-      ['CS005', 'rishabh jain', 'CN', 'Midterm', '45', '100', 'Weak understanding of TCP/IP protocols. Needs more practice on network layers.'],
-      ['CS005', 'rishabh jain', 'DBMS', 'Midterm', '78', '100', 'Good SQL query writing but needs improvement in normalization concepts.'],
-      ['CS005', 'rishabh jain', 'OS', 'Final', '52', '100', 'Struggling with process scheduling algorithms. Poor understanding of memory management.'],
+      ["Roll No", "Name", "Subject", "Exam", "Obtained", "Total", "Remarks"],
+      [
+        "CS003",
+        "Rishabh",
+        "CN",
+        "Midterm",
+        "45",
+        "100",
+        "Weak understanding of TCP/IP protocols. Needs more practice on network layers.",
+      ],
+      [
+        "CS003",
+        "Rishabh",
+        "DBMS",
+        "Midterm",
+        "78",
+        "100",
+        "Good SQL query writing but needs improvement in normalization concepts.",
+      ],
+      [
+        "CS003",
+        "Rishabh",
+        "OS",
+        "Final",
+        "52",
+        "100",
+        "Struggling with process scheduling algorithms. Poor understanding of memory management.",
+      ],
+      [
+        "CS004",
+        "Monishka Jethani",
+        "CN",
+        "Midterm",
+        "82",
+        "100",
+        "Excellent grasp of OSI model. Strong in routing protocols.",
+      ],
+      [
+        "CS004",
+        "Monishka Jethani",
+        "DBMS",
+        "Midterm",
+        "41",
+        "100",
+        "Difficulty with complex joins and transactions. Basic SQL knowledge only.",
+      ],
+      [
+        "CS004",
+        "Monishka Jethani",
+        "OS",
+        "Final",
+        "88",
+        "100",
+        "Outstanding understanding of threading and synchronization concepts.",
+      ],
+      [
+        "CS005",
+        "Rishabh Jain",
+        "CN",
+        "Midterm",
+        "45",
+        "100",
+        "Weak understanding of TCP/IP protocols. Needs more practice on network layers.",
+      ],
+      [
+        "CS005",
+        "Rishabh Jain",
+        "DBMS",
+        "Midterm",
+        "78",
+        "100",
+        "Good SQL query writing but needs improvement in normalization concepts.",
+      ],
+      [
+        "CS005",
+        "Rishabh Jain",
+        "OS",
+        "Final",
+        "52",
+        "100",
+        "Struggling with process scheduling algorithms. Poor understanding of memory management.",
+      ],
     ];
-    
-    const csv = templateData.map(row => row.join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'marks_template_with_remarks.csv';
-    a.click();
-    window.URL.revokeObjectURL(url);
+
+    // Create a worksheet from the template data
+    const worksheet = XLSX.utils.aoa_to_sheet(templateData);
+
+    // Create a workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Marks Template");
+
+    // Generate the .xlsx file and trigger download
+    XLSX.writeFile(workbook, "marks_template_with_remarks.xlsx");
   };
 
   return (
@@ -299,3 +374,269 @@ export default function ExcelUpload() {
     </div>
   );
 }
+// import React, { useState, useContext } from "react";
+// import * as XLSX from "xlsx";
+// import {
+//   Upload,
+//   FileSpreadsheet,
+//   CheckCircle,
+//   AlertCircle,
+//   Bot,
+//   Download,
+// } from "lucide-react";
+// import { AuthDataContext } from "./AuthContext.jsx";
+
+// export default function ExcelUpload() {
+//   const [file, setFile] = useState(null);
+//   const [uploading, setUploading] = useState(false);
+//   const [uploadResult, setUploadResult] = useState(null);
+//   const [error, setError] = useState(null);
+//   const { serverUrl } = useContext(AuthDataContext);
+
+//   const handleFileChange = (e) => {
+//     const selectedFile = e.target.files[0];
+//     if (selectedFile) {
+//       setFile(selectedFile);
+//       setError(null);
+//       setUploadResult(null);
+//     }
+//   };
+
+//   const handleUpload = async () => {
+//     if (!file) {
+//       setError("Please select a file first");
+//       return;
+//     }
+
+//     setUploading(true);
+//     setError(null);
+
+//     try {
+//       const formData = new FormData();
+//       formData.append("marksFile", file);
+
+//       const response = await fetch(`${serverUrl}/api/marks/upload`, {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       const result = await response.json();
+
+//       if (result.success) {
+//         setUploadResult(result);
+//         setFile(null);
+//         // Reset file input
+//         document.getElementById("file-input").value = "";
+//       } else {
+//         setError(result.message);
+//       }
+//     } catch (error) {
+//       setError("Upload failed: " + error.message);
+//     } finally {
+//       setUploading(false);
+//     }
+//   };
+
+//   const downloadTemplate = () => {
+//     const templateData = [
+//       ["Roll No", "Name", "Subject", "Exam", "Obtained", "Total", "Remarks"],
+//       [
+//         "CS003",
+//         "Rishabh",
+//         "CN",
+//         "Midterm",
+//         "45",
+//         "100",
+//         "Weak understanding of TCP/IP protocols. Needs more practice on network layers.",
+//       ],
+//       [
+//         "CS003",
+//         "Rishabh",
+//         "DBMS",
+//         "Midterm",
+//         "78",
+//         "100",
+//         "Good SQL query writing but needs improvement in normalization concepts.",
+//       ],
+//       [
+//         "CS003",
+//         "Rishabh",
+//         "OS",
+//         "Final",
+//         "52",
+//         "100",
+//         "Struggling with process scheduling algorithms. Poor understanding of memory management.",
+//       ],
+//       [
+//         "CS004",
+//         "Monishka Jethani",
+//         "CN",
+//         "Midterm",
+//         "82",
+//         "100",
+//         "Excellent grasp of OSI model. Strong in routing protocols.",
+//       ],
+//       [
+//         "CS004",
+//         "Monishka Jethani",
+//         "DBMS",
+//         "Midterm",
+//         "41",
+//         "100",
+//         "Difficulty with complex joins and transactions. Basic SQL knowledge only.",
+//       ],
+//       [
+//         "CS004",
+//         "Monishka Jethani",
+//         "OS",
+//         "Final",
+//         "88",
+//         "100",
+//         "Outstanding understanding of threading and synchronization concepts.",
+//       ],
+//       [
+//         "CS005",
+//         "Rishabh Jain",
+//         "CN",
+//         "Midterm",
+//         "45",
+//         "100",
+//         "Weak understanding of TCP/IP protocols. Needs more practice on network layers.",
+//       ],
+//       [
+//         "CS005",
+//         "Rishabh Jain",
+//         "DBMS",
+//         "Midterm",
+//         "78",
+//         "100",
+//         "Good SQL query writing but needs improvement in normalization concepts.",
+//       ],
+//       [
+//         "CS005",
+//         "Rishabh Jain",
+//         "OS",
+//         "Final",
+//         "52",
+//         "100",
+//         "Struggling with process scheduling algorithms. Poor understanding of memory management.",
+//       ],
+//     ];
+
+//     // Create a worksheet from the template data
+//     const worksheet = XLSX.utils.aoa_to_sheet(templateData);
+
+//     // Create a workbook and append the worksheet
+//     const workbook = XLSX.utils.book_new();
+//     XLSX.utils.book_append_sheet(workbook, worksheet, "Marks Template");
+
+//     // Generate the .xlsx file and trigger download
+//     XLSX.writeFile(workbook, "marks_template_with_remarks.xlsx");
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-6">
+//       <div className="max-w-4xl mx-auto">
+//         <div className="bg-white rounded-2xl shadow-lg border-t-4 border-orange-500 p-8">
+//           <div className="text-center mb-8">
+//             <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+//               <FileSpreadsheet className="text-orange-600" size={32} />
+//             </div>
+//             <h1 className="text-3xl font-bold text-orange-600 mb-2">
+//               Upload Marks Excel
+//             </h1>
+//             <p className="text-orange-500">
+//               Upload Excel file with student marks for AI analysis
+//             </p>
+//           </div>
+
+//           {/* Download Template Button */}
+//           <div className="text-center mb-6">
+//             <button
+//               onClick={downloadTemplate}
+//               className="inline-flex items-center px-4 py-2 bg-orange-100 text-orange-600 rounded-lg hover:bg-orange-200 transition-colors"
+//             >
+//               <Download className="mr-2" size={16} />
+//               Download Sample Template
+//             </button>
+//           </div>
+
+//           {/* File Upload */}
+//           <div className="space-y-6">
+//             <div>
+//               <label className="block text-sm font-medium text-orange-600 mb-2">
+//                 Select Excel File (.xlsx or .csv)
+//               </label>
+//               <div className="flex items-center space-x-4">
+//                 <input
+//                   id="file-input"
+//                   type="file"
+//                   accept=".xlsx,.xls,.csv"
+//                   onChange={handleFileChange}
+//                   className="flex-1 px-4 py-3 border-2 border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
+//                 />
+//                 <button
+//                   onClick={handleUpload}
+//                   disabled={!file || uploading}
+//                   className={`px-6 py-3 rounded-lg font-medium text-white transition-colors flex items-center ${
+//                     uploading
+//                       ? "bg-orange-400 cursor-not-allowed"
+//                       : "bg-orange-500 hover:bg-orange-600"
+//                   }`}
+//                 >
+//                   {uploading ? (
+//                     <>
+//                       <Bot className="animate-spin mr-2" size={20} />
+//                       Processing with AI...
+//                     </>
+//                   ) : (
+//                     <>
+//                       <Upload className="mr-2" size={20} />
+//                       Upload & Analyze
+//                     </>
+//                   )}
+//                 </button>
+//               </div>
+//               {file && (
+//                 <p className="text-sm text-orange-600 mt-2">
+//                   Selected: {file.name} ({(file.size / 1024).toFixed(1)} KB)
+//                 </p>
+//               )}
+//             </div>
+
+//             {/* Error Display */}
+//             {error && (
+//               <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center">
+//                 <AlertCircle className="text-red-500 mr-3" size={20} />
+//                 <div>
+//                   <h4 className="font-medium text-red-800">Upload Error</h4>
+//                   <p className="text-red-600">{error}</p>
+//                 </div>
+//               </div>
+//             )}
+
+//             {/* Success Display */}
+//             {uploadResult && (
+//               <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+//                 <div className="flex items-center mb-4">
+//                   <CheckCircle className="text-green-500 mr-3" size={24} />
+//                   <div>
+//                     <h4 className="font-semibold text-green-800">
+//                       Upload Successful!
+//                     </h4>
+//                     <p className="text-green-600">{uploadResult.message}</p>
+//                     {uploadResult.aiCallsUsed && (
+//                       <p className="text-green-500 text-sm">
+//                         AI Analysis calls used: {uploadResult.aiCallsUsed}
+//                       </p>
+//                     )}
+//                   </div>
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

@@ -52,7 +52,8 @@
     "rehype-highlight": "^7.0.2",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.14",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
