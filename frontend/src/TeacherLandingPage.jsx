@@ -34,15 +34,14 @@ export default function TeacherLandingPage({ username, onLogout }) {
           <span className="font-bold text-2xl">EduWorld</span>
         </Link>
         <nav className="hidden md:flex text-sm items-center space-x-6">
-           <Link
+          {/* <Link
             to="attendance"
             className="flex gap-1 relative group text-gray-700 hover:text-black text-sm"
           >
-           <NotebookPen />
+            <NotebookPen />
             Upload Attendance
             <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-
-          </Link>
+          </Link> */}
           <Link
             to="pdfForm"
             className="flex gap-1 relative group text-gray-700 hover:text-black text-sm"
@@ -67,7 +66,7 @@ export default function TeacherLandingPage({ username, onLogout }) {
             Upload Notes
             <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-          <Link
+          {/* <Link
             to="calendar"
             className="relative flex gap-1 group text-gray-700 hover:text-black"
           >
@@ -89,8 +88,16 @@ export default function TeacherLandingPage({ username, onLogout }) {
             </svg>
             Calendar
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
+            to="gradingSystem"
+            className="flex gap-1 relative group text-gray-700 hover:text-black text-sm"
+          >
+            <BarChart />
+            Grading System
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link> */}
+          {/* <Link
             to="/videocall"
             className="flex gap-1 relative group text-gray-700 hover:text-black"
           >
@@ -111,8 +118,8 @@ export default function TeacherLandingPage({ username, onLogout }) {
             </svg>
             Meet
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             to="videoLectures"
             className="relative flex gap-1 group text-gray-700 hover:text-black"
           >
@@ -132,7 +139,7 @@ export default function TeacherLandingPage({ username, onLogout }) {
             </svg>
             Video Lectures
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link>
+          </Link> */}
           <Link
             to="chat"
             className="relative flex gap-1 group text-gray-700 hover:text-black"

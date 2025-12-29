@@ -45,7 +45,7 @@ export default function StudentLandingPage({ username, onLogout }) {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center text-md space-x-4 bg-white">
-          <Link
+          {/* <Link
             to="railway"
             className="relative flex gap-1 group text-gray-700 hover:text-black text-sm"
           >
@@ -69,7 +69,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             </svg>
             Rail Concession
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link>
+          </Link> */}
           <Link
             to="getPdfs"
             className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
@@ -94,7 +94,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             Notes
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-          <Link
+          {/* <Link
             to="calendar"
             className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
@@ -116,7 +116,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             </svg>
             Calendar
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link>
+          </Link> */}
           <Link
             to="codeEditor"
             className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
@@ -138,7 +138,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             Code Editor
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-          <Link
+          {/* <Link
             to="canteen"
             className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
@@ -159,7 +159,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             </svg>
             Canteen
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link>
+          </Link> */}
           <Link
             to="chatbot"
             className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
@@ -186,7 +186,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             Chatbot
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-          <Link
+          {/* <Link
             to="videoLectures"
             className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
@@ -206,7 +206,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             </svg>
             Video
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link>
+          </Link> */}
           <Link
             to="chat"
             className="relative flex gap-1 text-sm   group text-gray-700 hover:text-black"

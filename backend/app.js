@@ -16,7 +16,7 @@ const eventRouter = require("./Routes/eventsRoute");
 const orderRouter = require("./Routes/orderRoutes");
 const VideoLectureRouter = require("./Routes/Video.routes");
 const ChatRouter = require("./Routes/Chat.routes");
-// Add this to your app.js after existing routes
+
 const MarksRouter = require("./Routes/Marks.Route");
 
 const {

@@ -25,6 +25,7 @@ import EditResume from "./dashboard/resume/[resumeId]/edit/index.jsx";
 import ExcelUpload from "./ExcelUpload";
 import StudentAnalytics from "./StudentAnalytics";
 import AttendanceSystem from "./Attendance.jsx";
+import GradingSystem from "./GradingSystem.jsx";
 import "./App.css";
 
 function App() {
@@ -115,6 +116,7 @@ function App() {
             <Route path="pdfForm" element={<PdfForm username={username} />} />
             <Route path="calendar" element={<Calendar />} />
             <Route path="videoLectures" element={<VideoLectures />} />
+            <Route path="gradingSystem" element={<GradingSystem />} />
             <Route
               path="chat"
               element={<TeacherChatPage username={username} />}
@@ -142,6 +144,7 @@ function App() {
             <Route path="railway" element={<Railway />} />
             <Route path="chatbot" element={<HomeChat />} />
             <Route path="videoLectures" element={<VideoLectures />} />
+            
             <Route
               path="chat"
               element={<StudentChatPage username={username} />}
