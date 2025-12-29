@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { Upload, FileSpreadsheet, CheckCircle, AlertCircle, Bot, Download } from 'lucide-react';
-
+import { AuthDataContext } from "./AuthContext.jsx";
 export default function ExcelUpload() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState(null);
   const [error, setError] = useState(null);
-
+  const { serverUrl } = useContext(AuthDataContext);
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -29,7 +29,7 @@ export default function ExcelUpload() {
       const formData = new FormData();
       formData.append('marksFile', file);
 
-      const response = await fetch('http://localhost:8080/api/marks/upload', {
+      const response = await fetch(`${serverUrl}/api/marks/upload`, {
         method: 'POST',
         body: formData,
       });

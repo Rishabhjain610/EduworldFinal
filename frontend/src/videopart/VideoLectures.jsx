@@ -15,8 +15,9 @@ import {
   Download
 } from 'lucide-react';
 import axios from 'axios';
-
+import { AuthDataContext } from '../AuthContext.jsx';
 const VideoLectures = () => {
+  const { serverUrl } = useContext(AuthDataContext);
   const [activeTab, setActiveTab] = useState('browse');
   const [userRole, setUserRole] = useState(null);
   
@@ -85,7 +86,7 @@ const VideoLectures = () => {
 
   const fetchUserRole = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/auth/verify-cookie', {
+      const response = await axios.get(`${serverUrl}/auth/verify-cookie`, {
         withCredentials: true
       });
       if (response.data.status) {
@@ -98,7 +99,7 @@ const VideoLectures = () => {
 
   const fetchSemesterSubjects = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/videos/semester-subjects');
+      const response = await axios.get(`${serverUrl}/api/videos/semester-subjects`);
       
       if (response.data.success) {
         setSemesterSubjects(response.data.semesterSubjects);
@@ -226,7 +227,7 @@ const VideoLectures = () => {
         setUploading(false);
       });
 
-      xhr.open('POST', 'http://localhost:8080/api/videos/upload');
+      xhr.open('POST', `${serverUrl}/api/videos/upload`);
       xhr.withCredentials = true;
       xhr.send(formDataToSend);
 
@@ -247,7 +248,7 @@ const VideoLectures = () => {
         limit: 12
       });
 
-      const response = await axios.get(`http://localhost:8080/api/videos?${queryParams}`);
+      const response = await axios.get(`${serverUrl}/api/videos?${queryParams}`);
 
       if (response.data.success) {
         setVideos(response.data.videoLectures);
@@ -280,7 +281,7 @@ const VideoLectures = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/videos/teacher/my-videos?page=${managePagination.currentPage}&limit=10`,
+        `${serverUrl}/api/videos/teacher/my-videos?page=${managePagination.currentPage}&limit=10`,
         { withCredentials: true }
       );
 
@@ -303,7 +304,7 @@ const VideoLectures = () => {
     setDeleting(videoId);
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/videos/${videoId}`,
+        `${serverUrl}/api/videos/${videoId}`,
         { withCredentials: true }
       );
 

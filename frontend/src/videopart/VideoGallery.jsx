@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Search, Play, BookOpen, Users, Clock, Filter, AlertCircle, Loader } from 'lucide-react';
 import axios from 'axios';
-
+import { AuthDataContext } from '../AuthContext.jsx';
 const VideoGallery = () => {
+  const { serverUrl } = useContext(AuthDataContext);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -51,7 +52,7 @@ const VideoGallery = () => {
 
   const fetchSemesterSubjects = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/videos/semester-subjects');
+      const response = await axios.get(`${serverUrl}/api/videos/semester-subjects`);
       
       if (response.data.success) {
         setSemesterSubjects(response.data.semesterSubjects);
@@ -96,7 +97,7 @@ const VideoGallery = () => {
 
       console.log('Fetching videos with params:', queryParams.toString());
 
-      const response = await axios.get(`http://localhost:8080/api/videos?${queryParams}`);
+      const response = await axios.get(`${serverUrl}/api/videos?${queryParams}`);
 
       console.log('API Response:', response.data);
 
@@ -158,10 +159,10 @@ const VideoGallery = () => {
   // Debug button to test API
   const handleDebugAPI = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/videos/statistics');
+      const response = await axios.get(`${serverUrl}/api/videos/statistics`);
       console.log('Statistics response:', response.data);
       
-      const allVideosResponse = await axios.get('http://localhost:8080/api/videos');
+      const allVideosResponse = await axios.get(`${serverUrl}/api/videos`);
       console.log('All videos response:', allVideosResponse.data);
       
       alert(`Statistics: ${JSON.stringify(response.data, null, 2)}\n\nAll Videos: ${JSON.stringify(allVideosResponse.data, null, 2)}`);

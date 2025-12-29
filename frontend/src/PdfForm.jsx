@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import axios from "axios";
 import {
   Button,
@@ -21,7 +21,7 @@ import {
   CheckCircle as CheckCircleIcon,
   Error as ErrorIcon,
 } from "@mui/icons-material";
-
+import { AuthDataContext } from "./AuthContext.jsx";
 export default function PdfForm({ username }) {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -32,7 +32,7 @@ export default function PdfForm({ username }) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState("idle");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const { serverUrl } = useContext(AuthDataContext);
   // Define subject lists for each year
   const subjectsByYear = {
     FE: [
@@ -140,7 +140,7 @@ export default function PdfForm({ username }) {
 
     try {
       const result = await axios.post(
-        "http://localhost:8080/api/pdf/upload-files",
+        `${serverUrl}/api/pdf/upload-files`,
         formData,
         {
           withCredentials: true,

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Upload, Video, BookOpen, Users, AlertCircle } from 'lucide-react';
 import axios from 'axios';
-
+import { AuthDataContext } from '../AuthContext.jsx';
 const VideoUpload = () => {
+  const { serverUrl } = useContext(AuthDataContext);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -38,7 +39,7 @@ const VideoUpload = () => {
 
   const fetchSemesterSubjects = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/videos/semester-subjects');
+      const response = await axios.get(`${serverUrl}/api/videos/semester-subjects`);
       
       if (response.data.success) {
         setSemesterSubjects(response.data.semesterSubjects);
@@ -147,7 +148,7 @@ const VideoUpload = () => {
         setUploading(false);
       });
 
-      xhr.open('POST', 'http://localhost:8080/api/videos/upload');
+      xhr.open('POST', `${serverUrl}/api/videos/upload`);
       xhr.withCredentials = true;
       xhr.send(formDataToSend);
 

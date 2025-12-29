@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Play, Trash2, Eye, Calendar, BookOpen, Users } from 'lucide-react';
 import axios from 'axios';
-
+import { AuthDataContext } from '../AuthContext.jsx';
 const TeacherVideoManager = () => {
+  const { serverUrl } = useContext(AuthDataContext);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(null);
@@ -20,7 +21,7 @@ const TeacherVideoManager = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/videos/teacher/my-videos?page=${pagination.currentPage}&limit=10`,
+        `${serverUrl}/api/videos/teacher/my-videos?page=${pagination.currentPage}&limit=10`,
         { withCredentials: true }
       );
 
@@ -43,7 +44,7 @@ const TeacherVideoManager = () => {
     setDeleting(videoId);
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/videos/${videoId}`,
+        `${serverUrl}/api/videos/${videoId}`,
         { withCredentials: true }
       );
 

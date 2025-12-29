@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Line, Bar, Doughnut, Radar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -28,7 +28,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import axios from 'axios';
-
+import { AuthDataContext } from './AuthContext.jsx';  
 // Register Chart.js components
 ChartJS.register(
   CategoryScale,
@@ -48,7 +48,7 @@ export default function StudentAnalytics({ username, userEmail }) {
   const [aiInsights, setAiInsights] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const { serverUrl } = useContext(AuthDataContext);
   // Get email from props or derive from username
   const getStudentEmail = () => {
     if (userEmail) return userEmail;
@@ -95,7 +95,7 @@ export default function StudentAnalytics({ username, userEmail }) {
       
       // Use axios with credentials for authentication
       const response = await axios.get(
-        `http://localhost:8080/api/marks/student/email/${encodeURIComponent(studentEmail)}`,
+        `${serverUrl}/api/marks/student/email/${encodeURIComponent(studentEmail)}`,
         { withCredentials: true }
       );
       

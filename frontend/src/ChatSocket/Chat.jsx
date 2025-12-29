@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useContext } from "react";
 import { io } from "socket.io-client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -16,7 +16,7 @@ import {
   LoaderCircle,
 } from "lucide-react";
 import EmojiPicker from "emoji-picker-react";
-
+import { AuthDataContext } from "../AuthContext.jsx";
 const Chat = ({ username = "Anonymous", role = "student" }) => {
   const [socket, setSocket] = useState(null);
   const [currentRoom, setCurrentRoom] = useState(null);
@@ -42,8 +42,9 @@ const Chat = ({ username = "Anonymous", role = "student" }) => {
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const typingTimeoutRef = useRef(null);
-  const API_BASE_URL = "http://localhost:8080/api";
-
+  const { serverUrl } = useContext(AuthDataContext);
+  const API_BASE_URL = `${serverUrl}/api`;
+  
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -55,7 +56,7 @@ const Chat = ({ username = "Anonymous", role = "student" }) => {
   }, []);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:8080", {
+    const newSocket = io(`${serverUrl}`, {
       transports: ["websocket"],
     });
     setSocket(newSocket);
@@ -603,7 +604,7 @@ const Chat = ({ username = "Anonymous", role = "student" }) => {
                         )}
                         {message.messageType === "image" && (
                           <img
-                            src={`http://localhost:8080${message.imageUrl}`}
+                            src={`${message.imageUrl}`}
                             alt="Shared"
                             className="max-w-full h-auto rounded-lg"
                           />

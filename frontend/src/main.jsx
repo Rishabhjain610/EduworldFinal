@@ -8,9 +8,11 @@ import { BrowserRouter } from "react-router-dom";
 import UserContextChat from "./UserContextChat.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuthContext from "./AuthContext.jsx";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <StrictMode>
+      <AuthContext>
       <UserContextChat>
         <App />
         <ToastContainer
@@ -28,6 +30,7 @@ createRoot(document.getElementById("root")).render(
       />
 
       </UserContextChat>
+      </AuthContext>
     </StrictMode>
   </BrowserRouter>
 );

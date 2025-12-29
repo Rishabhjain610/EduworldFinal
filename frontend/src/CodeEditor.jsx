@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
 // Import additional languages for Prism
@@ -14,6 +14,7 @@ import "highlight.js/styles/night-owl.css";
 import axios from "axios";
 import Markdown from "react-markdown";
 import { CodeIcon, CheckCircleIcon, PlayIcon, Terminal } from "lucide-react";
+import { AuthDataContext } from "./AuthContext";
 
 // Mapping for JDoodle API
 const jdoodleLanguageMap = {
@@ -32,7 +33,7 @@ const CodeEditor = () => {
   const [output, setOutput] = useState("");
   const [isReviewing, setIsReviewing] = useState(false);
   const [isExecuting, setIsExecuting] = useState(false);
-
+  const { serverUrl } = useContext(AuthDataContext);
   // Set default code snippet when language changes
   useEffect(() => {
     const defaultCode = {
@@ -81,7 +82,7 @@ const CodeEditor = () => {
     try {
       // The backend endpoint now securely handles the API call
       const response = await axios.post(
-        "http://localhost:8080/ai/execute-code",
+        `${serverUrl}/ai/execute-code`,
         {
           script: code,
           language: langDetails.name,
@@ -110,7 +111,7 @@ const CodeEditor = () => {
     setIsReviewing(true);
     setAiResponse("AI is reviewing your code...");
     try {
-      const res = await axios.post("http://localhost:8080/ai/get-response", {
+      const res = await axios.post(`${serverUrl}/ai/get-response`, {
         prompt: `You are an expert code reviewer. Analyze the following ${language} code for bugs, improvements, and best practices. Provide clear, concise, and actionable feedback in Markdown format.\n\n\`\`\`${language}\n${code}\n\`\`\``,
       });
       setAiResponse(res.data);

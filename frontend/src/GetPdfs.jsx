@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useContext } from "react";
 import axios from "axios";
 import {
   FiDownload,
@@ -27,7 +27,7 @@ import {
   Send as SendIcon,
   Person as UserIcon,
 } from "@mui/icons-material";
-
+import { AuthDataContext } from "./AuthContext.jsx";
 export default function GetPdfs() {
   const [pdfs, setPdfs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export default function GetPdfs() {
   const [userQuestion, setUserQuestion] = useState("");
   const [isReplying, setIsReplying] = useState(false);
   const chatEndRef = useRef(null);
-
+  const { serverUrl } = useContext(AuthDataContext);
   const subjectsByYear = {
     FE: ["Engineering Physics - I", "Engineering Physics - II", "Engineering Chemistry-I", "Engineering Chemistry-II", "Engineeing Mechanics", "Basic Electrical Engineering", "Engineering Mathematics I", "Engineering Mathematics II", "Engineering Graphics", "Professional Communication-I"],
     SE: ["Engineering Mathematics-III", "DSGT", "DS", "DLCA", "Computer Graphics", "Engineering Mathematics-IV", "AOA", "MP", "OS", "DBMS"],
@@ -56,7 +56,7 @@ export default function GetPdfs() {
   const fetchPdfs = async (year = "", subject = "") => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8080/api/pdf/show-pdfs", {
+      const response = await axios.get(`${serverUrl}/api/pdf/show-pdfs`, {
         withCredentials: true,
         params: { year, subject },
       });
@@ -103,7 +103,7 @@ export default function GetPdfs() {
   const handleAISummary = async (pdfId, title) => {
     setSummaryLoading(prev => ({ ...prev, [pdfId]: true }));
     try {
-      const response = await axios.post(`http://localhost:8080/api/pdf/summary/${pdfId}`, {}, { withCredentials: true });
+      const response = await axios.post(`${serverUrl}/api/pdf/summary/${pdfId}`, {}, { withCredentials: true });
       if (response.data.success) {
         setChatHistory([{ role: "model", parts: [{ text: response.data.summary }] }]);
         setCurrentPdfId(pdfId);
@@ -160,7 +160,7 @@ const handleAskQuestion = async () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/pdf/ask-question/${currentPdfId}`,
+        `${serverUrl}/api/pdf/ask-question/${currentPdfId}`,
         // Send the history that existed BEFORE the user asked the new question
         { question: userQuestion, history: historyForBackend },
         { withCredentials: true }

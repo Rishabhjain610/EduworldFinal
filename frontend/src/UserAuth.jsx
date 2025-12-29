@@ -1,7 +1,7 @@
 
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -36,7 +36,7 @@ import { auth, provider } from "./utils/firebase_config";
 import { signInWithPopup } from "firebase/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { AuthDataContext } from "./AuthContext.jsx";
 const theme = createTheme({
   palette: {
     primary: {
@@ -130,7 +130,7 @@ const UserAuth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const { serverUrl } = useContext(AuthDataContext);  
   // Updated Google Login function without user.uid
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
@@ -141,7 +141,7 @@ const UserAuth = () => {
       const email = user.email;
       
       const result2 = await axios.post(
-        "http://localhost:8080/auth/firebase-login",
+        `${serverUrl}/auth/firebase-login`,
         { name, email },
         { withCredentials: true }
       );
@@ -160,7 +160,7 @@ const UserAuth = () => {
     try {
       if (isLogin) {
         const { data } = await axios.post(
-          "http://localhost:8080/auth/login",
+          `${serverUrl}/auth/login`,
           { email, password },
           { withCredentials: true }
         );
@@ -171,7 +171,7 @@ const UserAuth = () => {
         }
       } else {
         const { data } = await axios.post(
-          "http://localhost:8080/auth/signup",
+          `${serverUrl}/auth/signup`,
           { username, email, password },
           { withCredentials: true }
         );

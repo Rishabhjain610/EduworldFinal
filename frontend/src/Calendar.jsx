@@ -21,7 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { AuthDataContext } from "./AuthContext.jsx";
 export default function ECalendar() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +32,7 @@ export default function ECalendar() {
   const [userRole, setUserRole] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  
+  const { serverUrl } = useContext(AuthDataContext);
   const [formData, setFormData] = useState({
     title: "",
     subject: "",
@@ -49,13 +49,13 @@ export default function ECalendar() {
     const fetchData = async () => {
       try {
         // Fetch user role first
-        const userResponse = await axios.get("http://localhost:8080/auth/verify-cookie", {
+        const userResponse = await axios.get(`${serverUrl}/auth/verify-cookie`, {
           withCredentials: true,
         });
         setUserRole(userResponse.data.role);
 
         // Fetch events
-        const eventsResponse = await axios.get("http://localhost:8080/api/event/events", {
+        const eventsResponse = await axios.get(`${serverUrl}/api/event/events`, {
           withCredentials: true,
         });
         const calendarEvents = eventsResponse.data.events.map((event) => ({
@@ -121,7 +121,7 @@ export default function ECalendar() {
     
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/event/events/${selectedEvent.id}`,
+        `${serverUrl}/api/event/events/${selectedEvent.id}`,
         { withCredentials: true }
       );
       
@@ -157,7 +157,7 @@ export default function ECalendar() {
     if (window.confirm("Are you sure you want to delete this event?")) {
       try {
         await axios.delete(
-          `http://localhost:8080/api/event/events/${selectedEvent.id}`,
+          `${serverUrl}/api/event/events/${selectedEvent.id}`,
           { withCredentials: true }
         );
         
@@ -198,7 +198,7 @@ export default function ECalendar() {
       if (editMode && selectedEventId) {
         // Update existing event
         response = await axios.put(
-          `http://localhost:8080/api/event/events/${selectedEventId}`,
+          `${serverUrl}/api/event/events/${selectedEventId}`,
           eventData,
           { withCredentials: true }
         );
@@ -226,7 +226,7 @@ export default function ECalendar() {
       } else {
         // Create new event
         response = await axios.post(
-          "http://localhost:8080/api/event/events",
+          `${serverUrl}/api/event/events`,
           eventData,
           { withCredentials: true }
         );

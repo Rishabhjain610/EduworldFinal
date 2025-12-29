@@ -55,7 +55,7 @@ import vegPulaoImg from "./assets/VegPulao.jpeg";
 
 import logocanteen from "./assets/logocanteen.png";
 import axios from "axios";
-
+import { AuthDataContext } from "./AuthContext.jsx";
 const Canteen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [cart, setCart] = useState([]);
@@ -69,7 +69,7 @@ const Canteen = () => {
   });
   const [activeTab, setActiveTab] = useState(0);
   const [favorites, setFavorites] = useState([]);
-
+  const { serverUrl } = useContext(AuthDataContext);
   const foodCategories = [
     { id: 0, name: "All" },
     { id: 1, name: "Main Course" },
@@ -347,7 +347,7 @@ const Canteen = () => {
 
       // Create Razorpay order
       const { data } = await axios.post(
-        "http://localhost:8080/api/order/create-razorpay-order",
+        `${serverUrl}/api/order/create-razorpay-order`,
         { amount: totalAmount },
         { withCredentials: true }
       );
@@ -369,7 +369,7 @@ const Canteen = () => {
             
             // Verify payment and place order
             const verifyResponse = await axios.post(
-              "http://localhost:8080/api/order/verify-razorpay-payment",
+              `${serverUrl}/api/order/verify-razorpay-payment`,
               {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,

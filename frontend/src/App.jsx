@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PdfForm from "./PdfForm";
@@ -26,6 +26,7 @@ import ExcelUpload from "./ExcelUpload";
 import StudentAnalytics from "./StudentAnalytics";
 import AttendanceSystem from "./Attendance.jsx";
 import GradingSystem from "./GradingSystem.jsx";
+import { AuthDataContext } from "./AuthContext.jsx";
 import "./App.css";
 
 function App() {
@@ -33,12 +34,12 @@ function App() {
   const [username, setUsername] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  const { serverUrl } = useContext(AuthDataContext);
   useEffect(() => {
     const verifyCookie = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:8080/auth/verify-cookie",
+          `${serverUrl}/auth/verify-cookie`,
           { withCredentials: true }
         );
         console.log("API response:", data);
@@ -80,7 +81,7 @@ function App() {
   const Logout = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/auth/logout",
+        `${serverUrl}/auth/logout`,
         {},
         { withCredentials: true }
       );
