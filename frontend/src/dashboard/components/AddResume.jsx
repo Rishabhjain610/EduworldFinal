@@ -6,8 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../../components/ui/Dialog";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/Button";
+import { Input } from "../../components/ui/Input";
 import { Loader2, PlusSquare } from "lucide-react";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
