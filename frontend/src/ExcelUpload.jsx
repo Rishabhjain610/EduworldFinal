@@ -54,9 +54,9 @@ export default function ExcelUpload() {
   const downloadTemplate = () => {
     const templateData = [
       ['Roll No', 'Name', 'Subject', 'Exam', 'Obtained', 'Total', 'Remarks'],
-      ['CS003', 'rishabh jain', 'CN', 'Midterm', '45', '100', 'Weak understanding of TCP/IP protocols. Needs more practice on network layers.'],
-      ['CS003', 'rishabh jain', 'DBMS', 'Midterm', '78', '100', 'Good SQL query writing but needs improvement in normalization concepts.'],
-      ['CS003', 'rishabh jain', 'OS', 'Final', '52', '100', 'Struggling with process scheduling algorithms. Poor understanding of memory management.'],
+      ['CS003', 'Rishabh', 'CN', 'Midterm', '45', '100', 'Weak understanding of TCP/IP protocols. Needs more practice on network layers.'],
+      ['CS003', 'Rishabh', 'DBMS', 'Midterm', '78', '100', 'Good SQL query writing but needs improvement in normalization concepts.'],
+      ['CS003', 'Rishabh', 'OS', 'Final', '52', '100', 'Struggling with process scheduling algorithms. Poor understanding of memory management.'],
       ['CS004', 'Monishka Jethani', 'CN', 'Midterm', '82', '100', 'Excellent grasp of OSI model. Strong in routing protocols.'],
       ['CS004', 'Monishka Jethani', 'DBMS', 'Midterm', '41', '100', 'Difficulty with complex joins and transactions. Basic SQL knowledge only.'],
       ['CS004', 'Monishka Jethani', 'OS', 'Final', '88', '100', 'Outstanding understanding of threading and synchronization concepts.'],
