@@ -4,7 +4,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 // Add this import at the top of StudentLandingPage.jsx
- // Add this line
+// Add this line
 // Material UI Imports
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -15,20 +15,25 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Language from "./Language.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Sparkles,BarChart3 } from "lucide-react";
+import { Sparkles, BarChart3,Brain } from "lucide-react";
 export default function StudentLandingPage({ username, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
 
   // List of mobile navigation links
   const mobileNavLinks = [
-    { to: "railway", label: "Rail Concession" },
+    // { to: "railway", label: "Rail Concession" },
     { to: "getPdfs", label: "Notes" },
-    { to: "calendar", label: "Calendar" },
+    // { to: "calendar", label: "Calendar" },
     { to: "codeEditor", label: "Code Editor" },
-    { to: "canteen", label: "Canteen" },
+    // { to: "canteen", label: "Canteen" },
     { to: "chatbot", label: "ChatBot" },
-    { to: "videoLectures", label: "Video Lectures" },
+    // { to: "videoLectures", label: "Video Lectures" },
     { to: "chat", label: "Chat Room" },
+    { to:"resume", label: "Resume" },
+    { to:"library", label: "Library" },
+    { to:"ytvideos", label: "YouTube Videos" },
+    { to: "analytics", label: "Analytics" },
+    { to:"researchAgent", label: "Research Agent" }
   ];
 
   return (
@@ -248,6 +253,56 @@ export default function StudentLandingPage({ username, onLogout }) {
               <line x1="16" y1="17" x2="8" y2="17" />
             </svg>
             Resume
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link>
+          <Link
+            to="library"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="inline lucide lucide-book-open"
+            >
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            Library
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link>
+          <Link
+            to="ytvideos"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="inline"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polygon points="10 8 16 12 10 16 10 8" />
+            </svg>
+            YouTube
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          </Link>
+          <Link
+            to="researchAgent"
+            className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
+          >
+            <Brain className="inline mr-1" size={20} />
+            Research Agent
             <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
           <Link

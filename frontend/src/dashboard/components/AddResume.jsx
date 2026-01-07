@@ -20,7 +20,8 @@ const AddResume = ({ onResumeCreated }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const userEmail = "demo@example.com"; // Replace with actual user email if available
+  const userEmail = "demo@example.com"; 
+  // // Replace with actual user email if available
 
   const onCreate = () => {
     setLoading(true);

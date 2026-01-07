@@ -16,7 +16,7 @@ const eventRouter = require("./Routes/eventsRoute");
 const orderRouter = require("./Routes/orderRoutes");
 const VideoLectureRouter = require("./Routes/Video.routes");
 const ChatRouter = require("./Routes/Chat.routes");
-
+const Googlerouter = require("./Routes/GoogleSearchRoutes");
 const MarksRouter = require("./Routes/Marks.Route");
 
 const {
@@ -59,7 +59,7 @@ app.use("/api/order", orderRouter);
 app.use("/api/videos", VideoLectureRouter);
 app.use("/api/chat", ChatRouter);
 app.use("/api/marks", MarksRouter);
-
+app.use("/api", Googlerouter);
 io.on("connection", (socket) => {
   handleConnection(socket);
   socket.on("authenticate", (data) => handleAuthenticate(socket, data, io));

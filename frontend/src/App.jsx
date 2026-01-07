@@ -27,6 +27,9 @@ import StudentAnalytics from "./StudentAnalytics";
 import AttendanceSystem from "./Attendance.jsx";
 import GradingSystem from "./GradingSystem.jsx";
 import { AuthDataContext } from "./AuthContext.jsx";
+import Library from './Library.jsx'
+import Ytvideos from "./Ytvideos.jsx";
+import GoogleSearchChatbot from "./GoogleSearchChatbot.jsx";
 import "./App.css";
 
 function App() {
@@ -144,8 +147,10 @@ function App() {
             <Route path="canteen" element={<Canteen />} />
             <Route path="railway" element={<Railway />} />
             <Route path="chatbot" element={<HomeChat />} />
+            <Route path="researchAgent" element={<GoogleSearchChatbot />} />
             <Route path="videoLectures" element={<VideoLectures />} />
-            
+            <Route path="library" element={<Library/>}/>
+            <Route path="ytvideos" element={<Ytvideos/>}/>
             <Route
               path="chat"
               element={<StudentChatPage username={username} />}
@@ -157,6 +162,7 @@ function App() {
 
             <Route path="resume" element={<Dashboard />} />
             <Route path="resume/edit" element={<EditResume />} />
+           
             <Route
               path="resume/:email/:resumeId/view"
               element={<ViewResume />}

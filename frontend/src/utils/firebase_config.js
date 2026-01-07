@@ -13,6 +13,7 @@ const firebaseConfig = {
   appId: "1:405435349497:web:83c0ce72d3a992b799a528"
 };
 
+
 // Initialize Firebase only if it hasn't been initialized yet
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 
