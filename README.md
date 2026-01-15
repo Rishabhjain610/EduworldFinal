@@ -1,3 +1,7 @@
+## 📽️ Demo
+
+https://github.com/user-attachments/assets/b81ca59d-f86c-4735-a1f9-23b3d53a5322
+
 # 🎓 EduWorld
 
 **EduWorld** is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) web application designed for seamless interaction between teachers and students. It features real-time communication, document generation, intelligent chat, and a rich educational ecosystem powered by modern technologies.
@@ -71,11 +75,11 @@
 | Video Calling            | ✅              | ✅              |
 
 ---
-## 📽️ Demo
-
-https://github.com/user-attachments/assets/b81ca59d-f86c-4735-a1f9-23b3d53a5322
 
 ## Version 2
+## 📽️ Demo
+
+https://github.com/user-attachments/assets/b2e87bf2-b533-4dac-9170-add400a8bdde
 
 # EduWorld – AI-Powered Digital Campus
 
@@ -247,7 +251,5 @@ EduWorld is an AI-first digital campus platform that unifies key academic and ca
 
 
 
-Version 2
 
-https://github.com/user-attachments/assets/b2e87bf2-b533-4dac-9170-add400a8bdde
 
