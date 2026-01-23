@@ -143,7 +143,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             Code Editor
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-          {/* <Link
+          <Link
             to="canteen"
             className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
           >
@@ -164,7 +164,7 @@ export default function StudentLandingPage({ username, onLogout }) {
             </svg>
             Canteen
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link> */}
+          </Link>
           <Link
             to="chatbot"
             className="relative flex gap-1 text-sm group text-gray-700 hover:text-black"
