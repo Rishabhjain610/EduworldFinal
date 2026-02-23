@@ -1,4 +1,4 @@
-## 📽️ Demo
+## 📽️ Demo(Version 1) Scroll down to see updated versions 
 
 https://github.com/user-attachments/assets/b81ca59d-f86c-4735-a1f9-23b3d53a5322
 
@@ -248,8 +248,136 @@ EduWorld is an AI-first digital campus platform that unifies key academic and ca
   - Image recognition/understanding.
 
 ---
+## Version 3
+## 📽️ Demo
+https://github.com/user-attachments/assets/85e9f5cc-3e66-463c-aba8-f83790d13572
+# 🚀 Core Features
 
+---
 
+## 💬 1. Smart Chat Room (With AI Summarizer)
+
+A real-time communication system enhanced with AI capabilities.
+
+### 🔹 Features
+- Multi-user chat (Student–Teacher)
+- Room-based messaging (Socket.io)
+- Message history stored in MongoDB
+- Online user tracking
+- AI-powered chat assistant
+- AI chat summarization (Summarize long conversations instantly)
+- Context-aware responses using Qwen480 model
+
+### 🔹 AI Chat Summarizer
+- One-click conversation summary
+- Extracts key discussion points
+- Generates action items
+- Useful for revision & meeting recap
+
+---
+
+## 🧠 2. AI Learning Assistant (Notes + Chat + Summary)
+
+This combines:
+- Upload Notes
+- AI Notes Summary
+- AI Chat With Notes
+
+### 🔹 Upload Notes
+- Upload PDF / text documents
+- Backend text extraction
+- Store in database
+
+### 🔹 AI Notes Summarization
+- Generate concise summaries
+- Extract key concepts
+- Topic breakdown
+- Highlight important points
+
+### 🔹 AI Chat With Notes
+- Ask questions from uploaded notes
+- AI responds using document context
+- Perfect for exam preparation
+- Context injection using Qwen480
+
+---
+
+## 📅 3. Academic Calendar
+- Add / Edit / Delete events
+- Lecture scheduling
+- MongoDB storage
+- Interactive calendar UI
+
+---
+
+## 📊 4. AI Marks Analyzer (Excel + AI + Charts)
+
+Upload Excel sheets and generate intelligent performance analytics.
+
+### 🔹 Features
+- Excel upload (SheetJS)
+- Extract student marks
+- AI-generated performance insights
+- Subject-wise analysis
+- Class average calculation
+- Identify weak & strong areas
+- Generate charts using Chart.js
+- Downloadable reports
+
+---
+
+## 📺 5. YouTube Educational Search
+- Search YouTube videos
+- Display search results
+- Embedded previews
+- API-based fetching
+
+---
+
+## 📖 6. E-Library (Google Books API)
+- Search books by title/author
+- Fetch metadata using Google Books API
+- Book preview links
+- Academic references
+
+---
+
+## 🔎 7. AI Search Agent (Google Search + Qwen480)
+
+Smart research assistant.
+
+### 🔹 Flow
+User Query  
+→ Google Search API  
+→ Fetch Top Articles  
+→ Extract Content  
+→ Summarize Using Qwen480  
+→ Return Clean Summary
+
+### 🔹 Features
+- Web article summarization
+- Research automation
+- AI-powered content extraction
+- Fast academic research tool
+
+---
+
+## 🍽 8. E-Canteen System
+- Digital menu system
+- Cart & order management
+- Razorpay payment integration
+- jsPDF invoice generation
+- Twilio SMS order confirmation
+
+---
+
+## 🚆 9. Railway Concession Generator
+- Auto-fill student details
+- Generate concession PDF (jsPDF)
+- Razorpay payment processing
+- Downloadable official document
+
+---
 
 
 
