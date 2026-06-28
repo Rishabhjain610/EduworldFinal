@@ -66,7 +66,7 @@ export default function TeacherLandingPage({ username, onLogout }) {
             Upload Notes
             <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
           </Link>
-          {/* <Link
+          <Link
             to="calendar"
             className="relative flex gap-1 group text-gray-700 hover:text-black"
           >
@@ -88,7 +88,7 @@ export default function TeacherLandingPage({ username, onLogout }) {
             </svg>
             Calendar
             <span className="absolute  -bottom-1 left-0 w-full h-0.5 bg-black transform scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-          </Link> */}
+          </Link>
           {/* <Link
             to="gradingSystem"
             className="flex gap-1 relative group text-gray-700 hover:text-black text-sm"
