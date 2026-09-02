@@ -1,383 +1,225 @@
-## 📽️ Demo(Version 1) Scroll down to see updated versions 
+# 🎓 EduWorld – AI-Powered Digital Campus Platform
 
-https://github.com/user-attachments/assets/b81ca59d-f86c-4735-a1f9-23b3d53a5322
-
-# 🎓 EduWorld
-
-**EduWorld** is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) web application designed for seamless interaction between teachers and students. It features real-time communication, document generation, intelligent chat, and a rich educational ecosystem powered by modern technologies.
+**EduWorld** is an AI-first, full-stack digital campus ecosystem designed for modern educational institutions. It unifies academic management, real-time collaboration, document processing, intelligent multimodal AI assistance, online canteen payments, and administrative workflows into a role-based dashboard for students and teachers.
 
 ---
 
+## 📽️ Project Evolution & Release History (Descending Order)
 
-## 🚀 Tech Stack
-
-### 🧩 Frontend
-- **React.js**
-- **Material UI (MUI)** + **Tailwind CSS**
-- **GSAP** (Animations)
-
-### 🔧 Backend
-- **Node.js**
-- **Express.js**
-- **MongoDB (Mongoose)**
-
-### 📦 APIs & Libraries
-- **Gemini API** (Google AI)
-- **Hugging Face** (AI/NLP/Image)
-- **Twilio** (WhatsApp/SMS)
-- **Cloudinary** (File/Image Storage)
-- **Multer** (File Uploads)
-- **jsPDF** (PDF Generation)
+```
+Version 3 (Latest) ──► Version 2 ──► Version 1 (Initial Release)
+```
 
 ---
 
-## 👥 User Roles
+## 🚀 Version 3 (Latest Release)
 
-### 👨‍🏫 Teacher Panel
-- Upload notes using Multer and Cloudinary
-- Mark/update shared event calendar
-- Conduct video meetings with:
-  - Screen share
-  - Audio/video
-  - Inbuilt chat
-- Fully responsive interface
+### 📽️ Demo (Version 3)
+https://github.com/user-attachments/assets/85e9f5cc-3e66-463c-aba8-f83790d13572
 
-### 👨‍🎓 Student Panel
-- 📄 **Railway Concession Form Generator**:
-  - Generates PDF using jspdf
-- 🧠 **AI Chatbot**:
-  - Text-based Q&A
-  - Image recognition
-  - Image generation
-- 📚 **Notes Viewer**:
-  - View and download notes uploaded by teachers
-- 🍱 **Online Canteen**:
-  - Order food
-  - Generate bill (PDF)
-  - Get WhatsApp confirmation using Twilio
-- 📅 **Event Calendar**:
-  - View events and announcements from teachers
-- 💻 **Code Editor**:
-  - Write, debug, and detect errors in code
+### 🌟 Core Modules & Architecture
 
 ---
 
-## 🧩 Features Summary
-
-| Feature                  | Student Side ✅ | Teacher Side ✅ |
-|--------------------------|----------------|-----------------|
-| Railway Concession PDF   | ✅              | ❌              |
-| AI Chatbot (Text/Image)  | ✅              | ❌              |
-| Notes Upload/View        | ✅ (view)       | ✅ (upload)     |
-| Online Canteen + Billing | ✅              | ❌              |
-| Event Calendar           | ✅ (view only)  | ✅ (add/edit)   |
-| Code Editor              | ✅              | ❌              |
-| Video Calling            | ✅              | ✅              |
+### 💬 1. Smart Chat Room (With AI Summarizer)
+A real-time communication system enhanced with Google Gemini AI capabilities.
+- **Multi-user Chat**: Student-to-Teacher and batch-wide discussions.
+- **Room & Direct Messaging**: Real-time WebSocket communication via **Socket.io**.
+- **Persistence**: Chat history & direct messages stored in **MongoDB**.
+- **Live User Tracking**: Active online user presence & typing indicators.
+- **AI Chat Summarizer**: One-click meeting & conversation summarizer powered by **Google Gemini (gemini-2.5-flash)** to extract key takeaways, action items, and revision notes.
 
 ---
 
-## Version 2
-## 📽️ Demo
+### 🧠 2. AI Learning Assistant (Notes + Q&A + PDF Summarization)
+- **Document Upload & Storage**: Upload PDF lecture notes via **Multer** and stream to **Cloudinary CDN**.
+- **Text Extraction**: Automatic backend text extraction and indexing using `pdf-parse-new`.
+- **Context-Aware Note Q&A**: Strict in-document RAG-style conversational Q&A powered by **Gemini 2.5 Flash** (system-prompted to answer strictly from document context).
+- **Concise PDF Summarizer**: Generates 2-paragraph summaries of extensive study material with MongoDB caching.
 
+---
+
+### 📅 3. Smart Academic Calendar
+- **Full CRUD Management**: Teacher-exclusive event creation, updates, and deletions for lectures, assignment deadlines, and exam dates.
+- **Student View**: Interactive, synchronized calendar view for all class members.
+- **FullCalendar Integration**: Visual monthly, weekly, and daily agendas.
+
+---
+
+### 📊 4. AI Marks Analyzer & Performance Insights
+- **Excel Ingestion**: Upload spreadsheet marksheets (`.xlsx`, `.csv`) processed by **SheetJS / xlsx**.
+- **Automated Grade & Performance Evaluation**: Calculates percentages, subject-level breakdowns, class averages, and grade distributions.
+- **AI Personalized Feedback**: Generates automated subject-specific feedback (strengths, improvement areas, recommendations) using **Gemini 1.5 Flash** with rule-based subject fallback.
+- **Data Visualization**: Dynamic analytics charts generated via **Chart.js** & **react-chartjs-2**.
+
+---
+
+### 🔎 5. AI Search & Research Agent (Google Search + Gemini AI)
+- **Automated Web Research**: Queries Google Custom Search API (`v1/customsearch`) to retrieve top indexed educational articles and snippets.
+- **AI Synthesis**: Passes retrieved search context into **Gemini 2.5 Flash-Lite** to synthesize a cohesive, citation-free explanatory research brief.
+
+---
+
+### 📺 6. YouTube Educational Video Hub
+- Search and stream curriculum-relevant educational video lectures directly within the platform.
+- Clean embedded video player with instant topic search.
+
+---
+
+### 📖 7. E-Library (Google Books API)
+- Real-time book discovery powered by **Google Books API**.
+- Search by title, author, or ISBN with metadata, synopsis preview, and direct reading/purchase links.
+
+---
+
+### 🍽️ 8. Digital E-Canteen System
+- **Interactive Menu & Cart**: Live food item selection, quantity adjustment, and order staging.
+- **Payment Gateway**: End-to-end checkout with **Razorpay** (HMAC-SHA256 signature verification).
+- **Instant Invoicing**: Downloadable PDF tax invoice generated via **jsPDF** & **jspdf-autotable**.
+- **Automated WhatsApp Notifications**: **Twilio WhatsApp API** sends instant "Order Placed" confirmation and automated "Order Ready for Pickup" alerts.
+
+---
+
+### 🚆 9. Railway Concession Form Generator
+- Streamlined digital application form for student rail travel concessions.
+- Generates official, standardized concession passes in **PDF** format using **jsPDF**.
+
+---
+
+### 💻 10. AI Code Editor & Compiler
+- Multi-language in-browser code editor supporting C, C++, Java, Python, and JavaScript.
+- **Code Execution**: Powered by the **JDoodle API** compiler backend.
+- **AI Code Review**: Automated code inspection, bug detection, time/space complexity analysis, and refactoring tips powered by **Gemini 2.5 Flash**.
+
+---
+
+### 📹 11. Live Virtual Classrooms (ZegoCloud SDK)
+- Live interactive audio/video lecture rooms powered by **ZegoCloud WebRTC UIKit**.
+- Supports screen sharing, participant grid, and real-time in-meeting chat.
+
+---
+
+### 📝 12. AI-Powered Resume Builder
+- Dynamic resume creation wizard with live template preview and PDF export.
+- AI generation of professional profile summaries, experience bullet points, and project descriptions powered by **Google Gemini**.
+
+---
+
+<br/>
+
+## 🛠️ Version 2
+
+### 📽️ Demo (Version 2)
 https://github.com/user-attachments/assets/b2e87bf2-b533-4dac-9170-add400a8bdde
 
-# EduWorld – AI-Powered Digital Campus
-
-EduWorld is an AI-first digital campus platform that unifies key academic and campus workflows into a single dashboard – railway concessions, notes, AI tools, calendar, code editor, canteen, chat, video classes, analytics, attendance, resume builder, and more.[page:3][page:4]
-
----
-
-## 🚀 Features
-
-### 1. Railway Concession PDF Generator
-- Digital railway concession form where students fill details like ID, name, class, route, etc.
-- Generates a well-formatted concession PDF using **jsPDF** for download/print.
-- Minimizes manual paperwork and speeds up concession processing.
-
-### 2. Notes Uploader & Viewer
-- Teachers upload notes (PDFs) organized by subject/class.
-- Students can:
-  - View notes inside the platform.
-  - Download notes for offline usage.
-
-### 3. AI PDF Summarizer & Chat with PDF
-- AI summarizer creates concise summaries of uploaded/selected PDFs.
-- Students can **chat with the contents of a PDF**:
-  - All answers are grounded strictly in that PDF.
-  - Responses are powered by **Google Gemini**.
-
-### 4. Smart Academic Calendar
-- Teachers can create events with date, time, title, and description.
-- Full **CRUD** access for teachers (create, update, delete events).
-- Students can only view events so they stay updated on tests, deadlines, and activities.
-
-### 5. Multi-language UI (Google Translate)
-- Google Translate widget integrated into the UI.
-- Makes the interface **multilingual** (e.g., Hindi, Marathi, Arabic, French, German, Spanish, etc.) so language is not a barrier to learning.[page:3]
-
-### 6. AI-Powered Code Editor
-- In-browser code editor supporting:
-  - C, C++, Java, Python, JavaScript.
-- Code can be executed from the editor.
-- On **AI Review**:
-  - Code is sent to **Gemini**.
-  - Gemini detects bugs and logical issues and suggests fixes and improvements.
-
-### 7. Digital Canteen with Payments
-- Students add food items to a cart.
-- On confirming the order:
-  - **Razorpay** payment gateway opens for secure payment.
-  - After successful payment:
-    - WhatsApp confirmation is sent to the student.
-    - A PDF bill is generated via **jsPDF** and shared/downloaded.
-
-### 8. AI Chatbot (Study Assistant)
-- Gemini-based chatbot to help with:
-  - General study queries.
-  - Concept explanations.
-  - Doubt solving while revising or doing homework.
-- Supports normal chat as well as academic Q&A.
-
-### 9. AI Image Tools
-- Image generation using **ZB Tech** (or similar) image generation API.
-- Image recognition to analyze uploaded images and respond contextually.
-- Normal text chat flows handled via Gemini.
-
-### 10. Video Lectures Module
-- Teachers upload lecture videos.
-- Videos are tagged by:
-  - Subject.
-  - Class/semester/branch.
-- Students can filter and watch relevant videos anytime.
-
-### 11. Real-time Chat Application
-- Group chat for classes/batches.
-- Direct 1:1 chat between:
-  - Teacher ↔ Student.
-  - Student ↔ Student (optional based on configuration).
-- **AI Chat Summarizer**:
-  - Uses Gemini to summarize long chat histories.
-  - Helps students quickly catch up on missed discussions.
-
-### 12. AI Resume Builder
-- AI-based resume builder for students.
-- Generates **ATS-friendly** resumes in **PDF** format.
-- Uses Gemini to:
-  - Structure sections (Education, Projects, Skills, Experience, etc.).
-  - Improve bullet points.
-  - Tailor profiles for internships and placements.
-
-### 13. Analytics – Upload Marks (Excel)
-- Teacher uploads an Excel/CSV file containing:
-  - Student identifiers (Roll No, Name, etc.).
-  - Subject-wise marks, totals.
-  - Remarks or comments.
-- Gemini analyzes the sheet and generates:
-  - Student-wise performance analytics.
-  - Subjects where a student can score better.
-  - Personalized improvement suggestions.[page:4]
-
-### 14. Meet (Live Classes with ZegoCloud)
-- Teacher can host live online classes using **ZegoCloud SDK**.
-- Features include:
-  - Audio/video conferencing.
-  - Screen sharing for slides, code, or demos.
-  - In-built chat during the meet.
-- Designed to mimic a normal online classroom experience.
-
-### 15. ML-based Face Recognition Attendance
-- **Upload Attendance** module uses ML/face recognition.
-- Teacher uploads/captures class images/video frames.
-- System detects students’ faces and marks attendance automatically.
-- Reduces manual roll calls and improves accuracy.
+### 🚀 Key Additions in Version 2
+- **Expanded AI Capabilities**: Introduction of Gemini API for code review, PDF Q&A, chat summarization, and resume building.
+- **Razorpay Integration**: Transitioned canteen payments to online transactions with Razorpay API.
+- **Live Video Conferencing**: Added ZegoCloud-powered live classroom streaming with screen sharing.
+- **Multilingual Support**: Added Google Translate widget for instant multi-language UI localization (Hindi, Marathi, French, German, Spanish, Arabic).
+- **Teacher Video Portal**: Cloudinary video uploads categorized by branch, semester, and subject.
+- **Face Recognition Attendance (Prototype)**: Experimental image-based attendance module.
 
 ---
 
-## 🧩 Tech Stack (Example – Update as Needed)
+<br/>
 
-- **Frontend:** React + Vite, Tailwind CSS.
-- **Backend:** Node.js / Express.
-- **Database:** MongoDB .
-- **AI:** Google Gemini API for chat, code review, PDF QA, analytics, resume, summarization.
-- **Payments:** Razorpay.
-- **PDF Handling:** jsPDF.
-- **Real-time Chat & Meet:** Socket.io / ZegoCloud SDK / WebSockets.
-- **Storage:** Cloud storage (e.g., Cloudinary/S3) or local server storage.
-- **Translations:** Google Translate widget.
+## 📦 Version 1 (Initial Release)
 
+### 📽️ Demo (Version 1)
+https://github.com/user-attachments/assets/b81ca59d-f86c-4735-a1f9-23b3d53a5322
 
----
-
-
-
-## 👤 Roles & Permissions
-
-### Student
-- View/download notes.
-- View calendar events.
-- Use AI PDF summarizer & chat with PDF.
-- Use code editor and AI review.
-- Order from canteen and make payments.
-- Join live meets.
-- Use AI chatbot, image tools, and video library.
-- Chat (group + direct) and view AI chat summaries.
-- Generate resumes via AI.
-- View analytics generated for them (if exposed in UI).
-
-### Teacher
-- Upload notes and lecture videos.
-- Manage calendar events (CRUD).
-- Upload marks Excel for analytics.
-- Create and host meets using ZegoCloud.
-- Use attendance module with ML-based face recognition.
-- Participate in chats and manage academic communication.
+### 💡 Initial Features
+- Basic MERN stack foundation with student and teacher panels.
+- Railway Concession PDF generation with **jsPDF**.
+- Teacher notes upload via **Multer** and **Cloudinary**.
+- Online Canteen ordering with Twilio WhatsApp order alerts.
+- Academic Event Calendar for lecture tracking.
+- Foundational in-browser Code Editor and AI chatbot.
 
 ---
 
-## 🧠 AI Modules Overview
+## 💻 Tech Stack Summary
 
-- **Gemini** used for:
-  - General chatbot.
-  - Chat with PDF.
-  - Code review and debugging.
-  - Chat summarization.
-  - Resume generation.
-  - Analytics from Excel marks.
-- **Image API (ZB Tech)** used for:
-  - Image generation.
-  - Image recognition/understanding.
-
----
-## Version 3
-## 📽️ Demo
-https://github.com/user-attachments/assets/85e9f5cc-3e66-463c-aba8-f83790d13572
-# 🚀 Core Features
+| Layer | Technologies |
+|---|---|
+| **Frontend** | React.js 18 (Vite), Tailwind CSS 4, Material UI (MUI), Framer Motion, GSAP, Chart.js, FullCalendar |
+| **Backend** | Node.js, Express.js, MongoDB (Mongoose), Socket.io, Multer |
+| **AI Models & LLMs** | Google Gemini 2.5 Flash, Gemini 2.5 Flash-Lite, Gemini 1.5 Flash, Hugging Face Fast-SDXL |
+| **Cloud & APIs** | Cloudinary CDN, Razorpay Payments, Twilio WhatsApp API, Google Custom Search API, Google Books API, JDoodle Compiler API, ZegoCloud WebRTC, Firebase Auth |
+| **Document Processing** | jsPDF, jspdf-autotable, pdf-parse-new, SheetJS (xlsx), ExcelJS |
 
 ---
 
-## 💬 1. Smart Chat Room (With AI Summarizer)
+## 👥 Roles & Permissions Matrix
 
-A real-time communication system enhanced with AI capabilities.
-
-### 🔹 Features
-- Multi-user chat (Student–Teacher)
-- Room-based messaging (Socket.io)
-- Message history stored in MongoDB
-- Online user tracking
-- AI-powered chat assistant
-- AI chat summarization (Summarize long conversations instantly)
-- Context-aware responses using Qwen480 model
-
-### 🔹 AI Chat Summarizer
-- One-click conversation summary
-- Extracts key discussion points
-- Generates action items
-- Useful for revision & meeting recap
+| Feature / Module | Student Side | Teacher Side |
+|---|:---:|:---:|
+| Railway Concession PDF Generator | ✅ Fill & Download | ❌ |
+| AI Learning Assistant & Chat with Notes | ✅ View & Query | ✅ Upload & Manage |
+| Smart Academic Calendar | 👁️ View Only | ✏️ Full CRUD |
+| AI Marks Analyzer & Performance Dashboard | 👁️ View Analytics | 📤 Upload Excel & Generate |
+| AI Search Agent (Google Search + Gemini) | ✅ Available | ✅ Available |
+| E-Library & YouTube Video Search | ✅ Available | ✅ Available |
+| Digital Canteen & Razorpay Checkout | ✅ Order & Pay | ❌ |
+| Live Video Classes (ZegoCloud) | 👥 Join Meet | 🎙️ Host & Manage |
+| Video Lecture Library | 👁️ Stream & Filter | 📤 Upload by Semester |
+| AI ATS Resume Builder | ✅ Generate & Export | ❌ |
+| AI Code Editor & Compiler | ✅ Write, Run & Review | ❌ |
+| Real-Time Socket.io Group & 1:1 Chat | ✅ Available | ✅ Available |
 
 ---
 
-## 🧠 2. AI Learning Assistant (Notes + Chat + Summary)
+## ⚙️ Installation & Local Setup
 
-This combines:
-- Upload Notes
-- AI Notes Summary
-- AI Chat With Notes
+### 1. Clone the repository
+```bash
+git clone https://github.com/Rishabhjain610/EduworldFinal.git
+cd EduworldFinal
+```
 
-### 🔹 Upload Notes
-- Upload PDF / text documents
-- Backend text extraction
-- Store in database
+### 2. Configure Environment Variables
+Create `.env` in `backend/` and `frontend/`:
 
-### 🔹 AI Notes Summarization
-- Generate concise summaries
-- Extract key concepts
-- Topic breakdown
-- Highlight important points
+**`backend/.env`**:
+```env
+PORT=5000
+MONGO_URL=your_mongodb_connection_string
+TOKEN_KEY=your_jwt_secret_key
+GEMINI_API_KEY=your_gemini_api_key
+API_KEY=your_gemini_api_key
+GOOGLE_API_KEY=your_google_custom_search_api_key
+GOOGLE_CX=your_google_search_engine_cx
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+TWILIO_ACCOUNT_SID=your_twilio_account_sid
+TWILIO_AUTH_TOKEN=your_twilio_auth_token
+TWILIO_WHATSAPP_FROM=your_twilio_whatsapp_number
+CLIENT_ID_JDOODLE=your_jdoodle_client_id
+CLIENT_SECRET_JDOODLE=your_jdoodle_client_secret
+```
 
-### 🔹 AI Chat With Notes
-- Ask questions from uploaded notes
-- AI responds using document context
-- Perfect for exam preparation
-- Context injection using Qwen480
+**`frontend/.env`**:
+```env
+VITE_SERVER_URL=http://localhost:5000
+VITE_GEMINI_API_URL=your_gemini_api_key
+VITE_HUGGINGFACE_API_URL=your_huggingface_api_token
+VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+```
 
----
+### 3. Run Backend
+```bash
+cd backend
+npm install
+npm run dev
+```
 
-## 📅 3. Academic Calendar
-- Add / Edit / Delete events
-- Lecture scheduling
-- MongoDB storage
-- Interactive calendar UI
-
----
-
-## 📊 4. AI Marks Analyzer (Excel + AI + Charts)
-
-Upload Excel sheets and generate intelligent performance analytics.
-
-### 🔹 Features
-- Excel upload (SheetJS)
-- Extract student marks
-- AI-generated performance insights
-- Subject-wise analysis
-- Class average calculation
-- Identify weak & strong areas
-- Generate charts using Chart.js
-- Downloadable reports
-
----
-
-## 📺 5. YouTube Educational Search
-- Search YouTube videos
-- Display search results
-- Embedded previews
-- API-based fetching
-
----
-
-## 📖 6. E-Library (Google Books API)
-- Search books by title/author
-- Fetch metadata using Google Books API
-- Book preview links
-- Academic references
-
----
-
-## 🔎 7. AI Search Agent (Google Search + Qwen480)
-
-Smart research assistant.
-
-### 🔹 Flow
-User Query  
-→ Google Search API  
-→ Fetch Top Articles  
-→ Extract Content  
-→ Summarize Using Qwen480  
-→ Return Clean Summary
-
-### 🔹 Features
-- Web article summarization
-- Research automation
-- AI-powered content extraction
-- Fast academic research tool
-
----
-
-## 🍽 8. E-Canteen System
-- Digital menu system
-- Cart & order management
-- Razorpay payment integration
-- jsPDF invoice generation
-- Twilio SMS order confirmation
-
----
-
-## 🚆 9. Railway Concession Generator
-- Auto-fill student details
-- Generate concession PDF (jsPDF)
-- Razorpay payment processing
-- Downloadable official document
-
----
-
-
-
+### 4. Run Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
