@@ -101,7 +101,13 @@ A real-time communication system enhanced with Google Gemini AI capabilities.
 
 ### 📝 12. AI-Powered Resume Builder
 - Dynamic resume creation wizard with live template preview and PDF export.
-- AI generation of professional profile summaries, experience bullet points, and project descriptions powered by **Google Gemini**.
+- AI generation of professional profile summaries, experience bullet points, and project descriptions powered by **Google Gemini (gemini-2.5-flash)**.
+
+---
+
+### 🎨 13. Multimodal AI Assistant & Image Generation
+- **Multimodal Conversational AI**: In-chat AI assistant supporting text and image input powered by **Gemini 2.5 Flash** (`gemini-2.5-flash:generateContent`).
+- **Text-to-Image Generation**: Prompt-to-image synthesis powered by **Hugging Face Router (fal-ai/fast-sdxl)**.
 
 ---
 
@@ -139,13 +145,31 @@ https://github.com/user-attachments/assets/b81ca59d-f86c-4735-a1f9-23b3d53a5322
 
 ---
 
+## 🤖 AI Models & Generative AI Architecture Breakdown
+
+The table below details the exact model identifiers, SDKs, and integration methods verified directly against the codebase:
+
+| Feature / Capability | Exact Model Identifier | Provider / SDK / Route | Purpose & Prompting |
+|---|---|---|---|
+| **AI Chat Room Summarizer** | `gemini-2.5-flash` | `@google/generative-ai` (Backend) | Extracts key discussion takeaways, action items, and revision notes from chat transcripts. |
+| **Notes Summarization (PDF)** | `gemini-2.5-flash` | `@google/generative-ai` (Backend) | Generates concise 2-paragraph summaries from extracted PDF text (with MongoDB caching). |
+| **Chat with Notes (PDF Q&A)** | `gemini-2.5-flash` | `@google/generative-ai` (Backend) | Context-aware strict RAG conversational Q&A constrained strictly to the lecture PDF document. |
+| **Marks Analyzer & Insights** | `gemini-1.5-flash` | `@google/generative-ai` (Backend) | Analyzes student marks, percentage, and teacher remarks to generate grades, strengths, improvements & recommendations. |
+| **AI Search & Research Agent** | `gemini-2.5-flash-lite` | `@google/generative-ai` (Backend) | Synthesizes Google Custom Search retrieved snippets and knowledge into an academic research brief. |
+| **AI Code Review & Quality** | `gemini-2.5-flash` | `@google/genai` (Backend) | Performs automated code review, bug detection, complexity evaluation, and refactoring tips. |
+| **AI Resume Builder** | `gemini-2.5-flash` | `@google/generative-ai` (Frontend) | Generates ATS-friendly summaries, experience bullet points, and education details (`AIchatSession`). |
+| **Multimodal Chat Assistant** | `gemini-2.5-flash` | Google Generative Language REST API (`v1beta`) | Multimodal prompt & image query resolution with exponential backoff & jitter retry handling. |
+| **AI Text-to-Image Generator** | `fal-ai/fast-sdxl` | Hugging Face Router API | Fast Stable Diffusion XL image generation directly from user prompts. |
+
+---
+
 ## 💻 Tech Stack Summary
 
 | Layer | Technologies |
 |---|---|
 | **Frontend** | React.js 18 (Vite), Tailwind CSS 4, Material UI (MUI), Framer Motion, GSAP, Chart.js, FullCalendar |
 | **Backend** | Node.js, Express.js, MongoDB (Mongoose), Socket.io, Multer |
-| **AI Models & LLMs** | Google Gemini 2.5 Flash, Gemini 2.5 Flash-Lite, Gemini 1.5 Flash, Hugging Face Fast-SDXL |
+| **AI Models & LLMs** | Google Gemini 2.5 Flash (`gemini-2.5-flash`), Gemini 2.5 Flash-Lite (`gemini-2.5-flash-lite`), Gemini 1.5 Flash (`gemini-1.5-flash`), Hugging Face Fast-SDXL (`fal-ai/fast-sdxl`) |
 | **Cloud & APIs** | Cloudinary CDN, Razorpay Payments, Twilio WhatsApp API, Google Custom Search API, Google Books API, JDoodle Compiler API, ZegoCloud WebRTC, Firebase Auth |
 | **Document Processing** | jsPDF, jspdf-autotable, pdf-parse-new, SheetJS (xlsx), ExcelJS |
 
